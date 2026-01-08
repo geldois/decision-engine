@@ -1,3 +1,5 @@
+from app.domain.events.event import Event
+
 class Rule:
     # constructor
     def __init__(self, rule_id: int, rule_name: str, rule_condition: callable, rule_outcome: str):
@@ -16,6 +18,6 @@ class Rule:
         self.rule_condition = rule_condition
         self.rule_outcome = rule_outcome.strip()
     # methods
-    def applies_to(self, event: object):
+    def applies_to(self, event: Event):
         return self.rule_condition(event)
     
