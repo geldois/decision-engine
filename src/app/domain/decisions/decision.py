@@ -6,7 +6,7 @@ class Decision:
             raise ValueError("Decision id is required.")
         if event_id is None or not isinstance(event_id, int):
             raise ValueError("Event id is required.")
-        if rule_id is None or not isinstance(rule_id, int):
+        if rule_id is not None and not isinstance(rule_id, int):
             raise ValueError("Rule id is required.")
         if rule_outcome is None or not rule_outcome.strip():
             raise ValueError("Rule outcome is required.")
