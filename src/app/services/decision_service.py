@@ -9,7 +9,7 @@ class DecisionService:
             if rule.applies_to(event):
                 outcome = rule.outcome
                 explanation = "Rule applied to Event."
-                return Decision(event.event_id, rule.rule_id, outcome, explanation)
-            outcome = "rejected"
-            explanation = "No Rule applied do Event."
-            return Decision(event.event_id, None, outcome, explanation)
+                return Decision(event, rule, outcome, explanation)
+        outcome = "rejected"
+        explanation = "No Rule applied do Event."
+        return Decision(event, None, outcome, explanation)
