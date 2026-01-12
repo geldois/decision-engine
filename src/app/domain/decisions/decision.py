@@ -15,7 +15,7 @@ class Decision:
             raise ValueError("Decision explanation is required.")
         if decision_id is not None and (not isinstance(decision_id, int) or decision_id < 0):
             raise ValueError("Decision id is invalid.")
-        # atributions
+        # assignments
         self.event = event
         self.rule = rule
         self.outcome = outcome
