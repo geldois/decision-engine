@@ -14,10 +14,10 @@ def test_decision_service_returns_decision_when_rule_applies():
     name = "ALWAYS_APPLIES"
     condition = lambda event: True
     outcome = "approved"
-    # WHEN
     event = Event(event_type, payload, timestamp)
     rule = Rule(name, condition, outcome)
     service = DecisionService()
+    # WHEN
     decision = service.decide(event, [rule])
     # THEN
     assert decision.event == event
@@ -34,9 +34,9 @@ def test_decision_service_rejects_when_no_rule_applies():
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    # WHEN
     event = Event(event_type, payload, timestamp)
     service = DecisionService()
+    # WHEN
     decision = service.decide(event, [])
     # THEN
     assert decision.event == event

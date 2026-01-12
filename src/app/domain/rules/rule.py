@@ -12,7 +12,7 @@ class Rule:
             raise ValueError("Rule outcome is required.")
         if rule_id is not None and (not isinstance(rule_id, int) or rule_id < 0):
             raise ValueError("Rule id is invalid.")
-        # atributions
+        # assignments
         self.name = name.strip()
         self.condition = condition
         self.outcome = outcome.strip()
