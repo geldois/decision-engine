@@ -10,7 +10,7 @@ class Event:
             raise ValueError("Event timestamp is required.")
         if event_id is not None and (not isinstance(event_id, int) or event_id < 0):
             raise ValueError("Event id is invalid.")
-        # atributions
+        # assignments
         self.event_type = event_type.strip()
         self.payload = payload
         self.timestamp = timestamp
