@@ -9,7 +9,7 @@ def get_register_event_use_case() -> RegisterEvent:
     decision_service = DecisionService()
 
     return RegisterEvent(
-        event_repository=event_repository,
-        rule_repository=rule_repository,
-        decision_service=decision_service
+        event_repository = event_repository,
+        rule_repository = rule_repository,
+        decision_service = decision_service
     )

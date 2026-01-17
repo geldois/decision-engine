@@ -10,12 +10,19 @@ def test_event_repository_assigns_id_when_event_is_saved():
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    event = Event(event_type, payload, timestamp)
+    event = Event(
+        event_type = event_type, 
+        payload = payload, 
+        timestamp = timestamp
+    )
     event_repository = EventRepository()
+    
     # WHEN
     saved_event = event_repository.save(event)
+    
     # THEN
     assert saved_event.event_id is not None
+    
     assert saved_event.event_id == event.event_id
 
 # === GET EVENT BY ID ===
@@ -27,10 +34,16 @@ def test_event_repository_returns_event_when_id_exists():
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    event = Event(event_type, payload, timestamp)
+    event = Event(
+        event_type = event_type, 
+        payload = payload, 
+        timestamp = timestamp
+        )
     event_repository = EventRepository()
     saved_event = event_repository.save(event)
+    
     # WHEN
     returned_event = event_repository.get_by_id(saved_event.event_id)
+    
     # THEN
     assert returned_event == saved_event
