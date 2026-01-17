@@ -15,7 +15,7 @@ router = APIRouter()
 def register_event(
     request: RegisterEventHttpRequest,
     use_case: RegisterEvent = Depends(get_register_event_use_case)
-):
+) -> RegisterEventHttpResponse:
     try:
         register_event_request = RegisterEventRequest(
             event_type = request.event_type,

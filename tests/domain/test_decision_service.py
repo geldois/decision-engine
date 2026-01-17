@@ -14,15 +14,31 @@ def test_decision_service_returns_decision_when_rule_applies():
     name = "ALWAYS_APPLIES"
     condition = lambda event: True
     outcome = "approved"
-    event = Event(event_type, payload, timestamp)
-    rule = Rule(name, condition, outcome)
-    service = DecisionService()
+    event = Event(
+        event_type = event_type, 
+        payload = payload, 
+        timestamp = timestamp
+    )
+    rule = Rule(
+        name = name, 
+        condition = condition, 
+        outcome = outcome
+    )
+    decision_service = DecisionService()
+    
     # WHEN
-    decision = service.decide(event, [rule])
+    decision = decision_service.decide(
+        event = event, 
+        rules = [rule]
+    )
+    
     # THEN
     assert decision.event == event
+    
     assert decision.rule == rule
+    
     assert decision.outcome == outcome
+    
     assert decision.explanation is not None
 
 # === NO RULE APPLIES ===
@@ -34,13 +50,25 @@ def test_decision_service_rejects_when_no_rule_applies():
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    event = Event(event_type, payload, timestamp)
-    service = DecisionService()
+    event = Event(
+        event_type = event_type, 
+        payload = payload, 
+        timestamp = timestamp
+    )
+    decision_service = DecisionService()
+    
     # WHEN
-    decision = service.decide(event, [])
+    decision = decision_service.decide(
+        event = event, 
+        rules = []
+    )
+    
     # THEN
     assert decision.event == event
+    
     assert decision.rule is None
+    
     assert decision.outcome == "rejected"
+    
     assert decision.explanation is not None
     
