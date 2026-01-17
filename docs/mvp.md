@@ -1,6 +1,6 @@
 MVP
 
-Descissor API is a backend system that manages events, applies deterministic rules, and records decisions with full auditability.
+Decision Engine is a backend system that manages events, applies deterministic rules, and records decisions with full auditability.
 
 Entities
 
