@@ -1,4 +1,4 @@
-# descissor-api
+# decision-engine
 
 Rule-based decision engine with auditability and AI-assisted insights.
 
