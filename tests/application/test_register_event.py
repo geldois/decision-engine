@@ -20,19 +20,22 @@ def test_register_event_returns_reponse_with_status():
     rule_repository = RuleRepository()
     decision_service = DecisionService()
     register_event = RegisterEvent(
-        event_repository, 
-        rule_repository, 
-        decision_service
+        event_repository = event_repository, 
+        rule_repository = rule_repository, 
+        decision_service = decision_service
     )
     register_event_request = RegisterEventRequest(
-        event_type, 
-        payload, 
-        timestamp
+        event_type = event_type, 
+        payload = payload, 
+        timestamp = timestamp
     )
+    
     # WHEN
     register_event_response = register_event.register_event(register_event_request)
+    
     # THEN
     assert register_event_response.event_id is not None
+    
     assert register_event_response.status in (DecisionStatus.APPROVED, DecisionStatus.REJECTED)
 
 # === RULE APPLIES ===
@@ -49,27 +52,30 @@ def test_register_event_returns_approved_response_when_rule_applies():
     outcome = "approved"
     event_repository = EventRepository()
     rule = Rule(
-        name, 
-        condition, 
-        outcome
+        name = name, 
+        condition = condition, 
+        outcome = outcome
     )
     rule_repository = RuleRepository()
     rule_repository.save(rule)
     decision_service = DecisionService()
     register_event = RegisterEvent(
-        event_repository, 
-        rule_repository, 
-        decision_service
+        event_repository = event_repository, 
+        rule_repository = rule_repository, 
+        decision_service = decision_service
     )
     register_event_request = RegisterEventRequest(
-        event_type, 
-        payload, 
-        timestamp
+        event_type = event_type, 
+        payload = payload, 
+        timestamp = timestamp
     )
+    
     # WHEN
     register_event_response = register_event.register_event(register_event_request)
+    
     # THEN
     assert register_event_response.event_id is not None
+    
     assert register_event_response.status == DecisionStatus.APPROVED
 
 # === NO RULE APPLIES ===
@@ -85,22 +91,29 @@ def test_register_event_returns_rejected_response_when_no_rule_applies():
     condition = lambda event: False
     outcome = "unused"
     event_repository = EventRepository()
-    rule = Rule(name, condition, outcome)
+    rule = Rule(
+        name = name, 
+        condition = condition, 
+        outcome = outcome
+    )
     rule_repository = RuleRepository()
     rule_repository.save(rule)
     decision_service = DecisionService()
     register_event = RegisterEvent(
-        event_repository, 
-        rule_repository, 
-        decision_service
+        event_repository = event_repository, 
+        rule_repository = rule_repository, 
+        decision_service = decision_service
     )
     register_event_request = RegisterEventRequest(
-        event_type,
-        payload,
-        timestamp
+        event_type = event_type,
+        payload = payload,
+        timestamp = timestamp
     )
+    
     # WHEN
     register_event_response = register_event.register_event(register_event_request)
+    
     # THEN
     assert register_event_response.event_id is not None
+    
     assert register_event_response.status == DecisionStatus.REJECTED
