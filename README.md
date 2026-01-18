@@ -1,22 +1,39 @@
 # decision-engine
 
-Rule-based decision engine with auditability and AI-assisted insights.
+Rule-based decision engine built with Clean Architecture and strict TDD, focused on correctness, explicit boundaries, and deterministic decision-making.
 
 ## Current Status
 
-- Core domain modeled and tested (Event, Rule, Decision, AuditLog).
-- Focus is currently on domain correctness and explicit business rules.
-- API layer, persistence, and AI-assisted analysis are planned next steps.
+- Core domain fully modeled and unit tested (Event, Rule, Decision).
+- Application layer implemented with explicit use cases and DTO boundaries.
+- HTTP API exposed via FastAPI with dependency injection and composition root.
+- API contract protected by automated tests (200 / 422 / 500 cases).
+- In-memory repositories used as infrastructure placeholders.
 
 ## Design Principles
 
-- Explicit domain modeling with clear boundaries between entities and services.
-- Deterministic rule evaluation (no side effects).
-- Auditability as a first-class concern.
-- Domain logic isolated from infraestructure and frameworks.
+- Explicit domain modeling with clear boundaries between layers.
+- Deterministic rule evaluation with no side effects.
+- Domain logic isolated from frameworks and infrastructure.
+- Application behavior expressed through use cases, not controllers.
+
+## Testing Strategy
+
+- Domain and application layers developed using TDD.
+- Business logic tested independently from the HTTP layer.
+- API boundary locked with contract tests covering:
+    - successful requests (200)
+    - validation failures (422)
+    - internal failures (500)
 
 ## Non-goals
 
-- This project does not aim to provide a production-ready rule engine.
-- No persistence or external integrations are implemented yet.
-- AI components are intentionally out of scope for the current MVP.
+- This project does not aim to be production-complete at this stage.
+- Persistence and external integrations are intentionally incremental.
+- AI-assisted analysis is explicitly out of scope for the current MVP.
+
+## Roadmap
+
+- Replace in-memory repositories with real persistence.
+- Introduce application-level invariants and idempotency.
+- Implement audit logging as a secondary use case.
