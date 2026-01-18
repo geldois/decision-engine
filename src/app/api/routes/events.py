@@ -24,7 +24,7 @@ def register_event(
         )
         response = use_case.register_event(register_event_request)
         return RegisterEventHttpResponse(
-            event_id = response.event_id, 
+            event_id = str(response.event_id), 
             status = response.status.value
         )
     except Exception as exc:
