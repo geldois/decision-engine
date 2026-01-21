@@ -1,6 +1,7 @@
 from app.domain.events.event import Event
+from app.application.repositories.event_repository import EventRepository as EventRepositoryContract
 
-class EventRepository:
+class EventRepository(EventRepositoryContract):
     # constructor
     def __init__(self):
         self._next_id = 1
