@@ -1,8 +1,9 @@
 from typing import List
 
 from app.domain.rules.rule import Rule
+from app.application.repositories.rule_repository import RuleRepository as RuleRepositoryContract
 
-class RuleRepository:
+class RuleRepository(RuleRepositoryContract):
     # constructor
     def __init__(self):
         self._next_id = 1
