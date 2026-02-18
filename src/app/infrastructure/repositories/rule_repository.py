@@ -1,7 +1,7 @@
 from typing import List
 
 from app.domain.rules.rule import Rule
-from app.application.repositories.rule_repository import RuleRepository as RuleRepositoryContract
+from app.application.repositories.rule_repository_contract import RuleRepositoryContract
 
 class RuleRepository(RuleRepositoryContract):
     # constructor

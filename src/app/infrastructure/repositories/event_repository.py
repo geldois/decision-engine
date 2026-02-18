@@ -1,5 +1,5 @@
 from app.domain.events.event import Event
-from app.application.repositories.event_repository import EventRepository as EventRepositoryContract
+from app.application.repositories.event_repository_contract import EventRepositoryContract
 
 class EventRepository(EventRepositoryContract):
     # constructor

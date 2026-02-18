@@ -3,11 +3,11 @@ import json
 from sqlalchemy.orm import Session
 
 from app.domain.events.event import Event
-from app.application.repositories.event_repository import EventRepository
+from app.application.repositories.event_repository_contract import EventRepositoryContract
 from app.infrastructure.database.engine import SessionLocal
 from app.infrastructure.database.models import EventModel
 
-class SqlEventRepository(EventRepository):
+class SqlEventRepository(EventRepositoryContract):
     def save(
         self,
         event: Event

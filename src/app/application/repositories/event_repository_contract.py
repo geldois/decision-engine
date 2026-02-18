@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from app.domain.events.event import Event
 
-class EventRepository(ABC):
+class EventRepositoryContract(ABC):
     @abstractmethod
     def save(
         self, 
