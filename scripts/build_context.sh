@@ -4,7 +4,7 @@ set -euo pipefail
 OUTPUT="context.txt"
 
 {
-  printf "\nPROJECT CONTEXT SNAPSHOT\n"
+  printf "PROJECT CONTEXT SNAPSHOT\n"
   printf "Generated at: %s\n" "$(date)"
   printf "%0.s=" {1..80}
   printf "\n\n"
