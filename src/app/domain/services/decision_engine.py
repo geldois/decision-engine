@@ -2,7 +2,7 @@ from app.domain.events.event import Event
 from app.domain.rules.rule import Rule
 from app.domain.decisions.decision import Decision
 
-class DecisionService:
+class DecisionEngine:
     # methods
     def decide(
         self, 
