@@ -1,5 +1,5 @@
 from app.domain.events.event import Event
-from app.infrastructure.repositories.event_repository import EventRepository
+from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
 
 # === VALID CASE ===
 def test_event_repository_assigns_id_when_event_is_saved():
@@ -15,7 +15,7 @@ def test_event_repository_assigns_id_when_event_is_saved():
         payload = payload, 
         timestamp = timestamp
     )
-    event_repository = EventRepository()
+    event_repository = InMemoryEventRepository()
     
     # WHEN
     saved_event = event_repository.save(event)
@@ -39,7 +39,7 @@ def test_event_repository_returns_event_when_id_exists():
         payload = payload, 
         timestamp = timestamp
         )
-    event_repository = EventRepository()
+    event_repository = InMemoryEventRepository()
     saved_event = event_repository.save(event)
     
     # WHEN
