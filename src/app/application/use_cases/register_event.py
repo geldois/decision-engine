@@ -1,7 +1,7 @@
 from app.domain.events.event import Event
 from app.application.repositories.event_repository_contract import EventRepositoryContract
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
-from app.services.decision_service import DecisionService
+from app.domain.services.decision_engine import DecisionEngine
 from app.application.dto.decision_status import DecisionStatus
 from app.application.dto.register_event_request import RegisterEventRequest
 from app.application.dto.register_event_response import RegisterEventResponse
@@ -11,7 +11,7 @@ class RegisterEvent:
     def __init__(
         self, event_repository: EventRepositoryContract, 
         rule_repository: RuleRepositoryContract, 
-        decision_service: DecisionService
+        decision_service: DecisionEngine
     ):
         self.event_repository = event_repository
         self.rule_repository = rule_repository

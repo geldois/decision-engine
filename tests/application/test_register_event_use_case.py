@@ -1,7 +1,7 @@
 from app.domain.rules.rule import Rule
 from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
 from app.infrastructure.repositories.in_memory_rule_repository import InMemoryRuleRepository
-from app.services.decision_service import DecisionService
+from app.domain.services.decision_engine import DecisionEngine
 from app.application.use_cases.register_event import RegisterEvent
 from app.application.dto.decision_status import DecisionStatus
 from app.application.dto.register_event_request import RegisterEventRequest
@@ -18,7 +18,7 @@ def test_register_event_returns_reponse_with_status():
     timestamp = 1700000000
     event_repository = InMemoryEventRepository()
     rule_repository = InMemoryRuleRepository()
-    decision_service = DecisionService()
+    decision_service = DecisionEngine()
     register_event = RegisterEvent(
         event_repository = event_repository, 
         rule_repository = rule_repository, 
@@ -58,7 +58,7 @@ def test_register_event_returns_approved_response_when_rule_applies():
     )
     rule_repository = InMemoryRuleRepository()
     rule_repository.save(rule)
-    decision_service = DecisionService()
+    decision_service = DecisionEngine()
     register_event = RegisterEvent(
         event_repository = event_repository, 
         rule_repository = rule_repository, 
@@ -98,7 +98,7 @@ def test_register_event_returns_rejected_response_when_no_rule_applies():
     )
     rule_repository = InMemoryRuleRepository()
     rule_repository.save(rule)
-    decision_service = DecisionService()
+    decision_service = DecisionEngine()
     register_event = RegisterEvent(
         event_repository = event_repository, 
         rule_repository = rule_repository, 
