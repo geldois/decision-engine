@@ -3,22 +3,28 @@ set -euo pipefail
 
 OUTPUT="delta.txt"
 
+print_line() {
+  local char="$1"
+  printf "%0.s${char}" {1..80}
+  printf "\n"
+}
+
 {
-  printf "PROJECT DELTA\n"
-  printf "Date: %s\n" "$(date)"
-  printf "Branch: %s\n" "$(git rev-parse --abbrev-ref HEAD)"
-  printf "Last commit: %s\n" "$(git log -1 --pretty=format:'%h - %s')"
-  printf "%0.s=" {1..80}
-  printf "\n\n"
+  echo "PROJECT DELTA"
+  echo "Date: $(date)"
+  echo "Branch: $(git rev-parse --abbrev-ref HEAD)"
+  echo "Last commit: $(git log -1 --pretty=format:'%h - %s')"
+  print_line "="
+  echo
 
-  printf "STATUS:\n"
-  printf "%0.s-" {1..80}
-  printf "\n"
+  echo "STATUS"
+  print_line "-"
   git status -s
+  echo
 
-  printf "\n\nDIFF:\n"
-  printf "%0.s-" {1..80}
-  printf "\n"
+  echo "DIFF"
+  print_line "-"
   git diff
+  echo
 
 } > "$OUTPUT"
