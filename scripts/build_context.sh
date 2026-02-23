@@ -3,31 +3,35 @@ set -euo pipefail
 
 OUTPUT="context.txt"
 
+print_line() {
+  local char="$1"
+  printf "%0.s${char}" {1..80}
+  printf "\n"
+}
+
 {
-  printf "PROJECT CONTEXT SNAPSHOT\n"
-  printf "Generated at: %s\n" "$(date)"
-  printf "%0.s=" {1..80}
-  printf "\n\n"
+  echo "PROJECT CONTEXT SNAPSHOT"
+  echo "Date: $(date)"
+  print_line "="
+  echo
 
-  printf "FILES:\n"
-  printf "%0.s-" {1..80}
-  printf "\n"
-
+  echo "FILES"
+  print_line "-"
   git ls-files
+  echo
 
-  printf "\n\nCONTENT:\n"
-  printf "%0.s-" {1..80}
-  printf "\n"
+  echo "CONTENT"
+  print_line "-"
 
   git ls-files | while read -r file; do
     [ -f "$file" ] || continue
 
     if file "$file" | grep -q text; then
-      printf "\n[%s]\n" "$file"
-      printf "%0.s." {1..80}
-      printf "\n"
+      echo
+      echo "[$file]"
+      print_line "."
       cat "$file"
-      printf "\n"
+      echo
     fi
   done
 
