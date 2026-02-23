@@ -1,6 +1,6 @@
 from app.domain.rules.rule import Rule
-from app.infrastructure.repositories.event_repository import EventRepository
-from app.infrastructure.repositories.rule_repository import RuleRepository
+from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
+from app.infrastructure.repositories.in_memory_rule_repository import InMemoryRuleRepository
 from app.services.decision_service import DecisionService
 from app.application.use_cases.register_event import RegisterEvent
 from app.application.dto.decision_status import DecisionStatus
@@ -16,8 +16,8 @@ def test_register_event_returns_reponse_with_status():
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    event_repository = EventRepository()
-    rule_repository = RuleRepository()
+    event_repository = InMemoryEventRepository()
+    rule_repository = InMemoryRuleRepository()
     decision_service = DecisionService()
     register_event = RegisterEvent(
         event_repository = event_repository, 
@@ -50,13 +50,13 @@ def test_register_event_returns_approved_response_when_rule_applies():
     name = "ALWAYS_APPLIES"
     condition = lambda event: True
     outcome = "approved"
-    event_repository = EventRepository()
+    event_repository = InMemoryEventRepository()
     rule = Rule(
         name = name, 
         condition = condition, 
         outcome = outcome
     )
-    rule_repository = RuleRepository()
+    rule_repository = InMemoryRuleRepository()
     rule_repository.save(rule)
     decision_service = DecisionService()
     register_event = RegisterEvent(
@@ -90,13 +90,13 @@ def test_register_event_returns_rejected_response_when_no_rule_applies():
     name = "NEVER_APPLIES"
     condition = lambda event: False
     outcome = "unused"
-    event_repository = EventRepository()
+    event_repository = InMemoryEventRepository()
     rule = Rule(
         name = name, 
         condition = condition, 
         outcome = outcome
     )
-    rule_repository = RuleRepository()
+    rule_repository = InMemoryRuleRepository()
     rule_repository.save(rule)
     decision_service = DecisionService()
     register_event = RegisterEvent(
