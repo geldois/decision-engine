@@ -1,8 +1,15 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from app.infrastructure.database.engine import init_db
 from app.api.routes.events import router as events_router
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+app = FastAPI(lifespan = lifespan)
 
 @app.get("/")
 async def root():
