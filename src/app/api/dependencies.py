@@ -1,13 +1,13 @@
 from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
 from app.infrastructure.repositories.in_memory_rule_repository import InMemoryRuleRepository
-from app.services.decision_service import DecisionService
+from app.domain.services.decision_engine import DecisionEngine
 from app.application.use_cases.register_event import RegisterEvent
 from app.infrastructure.repositories.sql_event_repository import SqlEventRepository
 
 def get_register_event_use_case() -> RegisterEvent:
     event_repository = SqlEventRepository()
     rule_repository = InMemoryRuleRepository()
-    decision_service = DecisionService()
+    decision_service = DecisionEngine()
 
     return RegisterEvent(
         event_repository = event_repository,

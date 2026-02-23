@@ -1,6 +1,6 @@
 from app.domain.events.event import Event
 from app.domain.rules.rule import Rule
-from app.services.decision_service import DecisionService
+from app.domain.services.decision_engine import DecisionEngine
 
 # === VALID CASE ===
 def test_decision_service_returns_decision_when_rule_applies():
@@ -24,7 +24,7 @@ def test_decision_service_returns_decision_when_rule_applies():
         condition = condition, 
         outcome = outcome
     )
-    decision_service = DecisionService()
+    decision_service = DecisionEngine()
     
     # WHEN
     decision = decision_service.decide(
@@ -55,7 +55,7 @@ def test_decision_service_rejects_when_no_rule_applies():
         payload = payload, 
         timestamp = timestamp
     )
-    decision_service = DecisionService()
+    decision_service = DecisionEngine()
     
     # WHEN
     decision = decision_service.decide(
