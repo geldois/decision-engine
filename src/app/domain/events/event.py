@@ -1,5 +1,5 @@
 class Event:
-    # constructor
+    # initializer
     def __init__(
         self, 
         event_type: str, 
@@ -7,7 +7,7 @@ class Event:
         timestamp: int, 
         event_id: int | None = None
     ):
-        # validations
+        # invariants
         if event_type is None or not isinstance(event_type, str) or not event_type.strip():
             raise ValueError("Event type is required.")
         
@@ -20,7 +20,7 @@ class Event:
         if event_id is not None and (not isinstance(event_id, int) or event_id < 0):
             raise ValueError("Event id is invalid.")
         
-        # assignments
+        # instance attributes
         self.event_type = event_type.strip()
         self.payload = payload
         self.timestamp = timestamp

@@ -4,7 +4,7 @@ from app.domain.rules.rule import Rule
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
 
 class InMemoryRuleRepository(RuleRepositoryContract):
-    # constructor
+    # initializer
     def __init__(self):
         self._next_id = 1
         self._rules = []

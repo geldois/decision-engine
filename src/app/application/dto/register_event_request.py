@@ -5,7 +5,7 @@ class RegisterEventRequest:
         "timestamp"
     )
 
-    # constructor
+    # initializer
     def __init__(
         self, 
         event_type: str, 

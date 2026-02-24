@@ -2,7 +2,7 @@ from app.domain.events.event import Event
 from app.application.repositories.event_repository_contract import EventRepositoryContract
 
 class InMemoryEventRepository(EventRepositoryContract):
-    # constructor
+    # initializer
     def __init__(self):
         self._next_id = 1
         self._events = {}

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.dependencies import get_register_event_use_case
-from app.api.schemas.register_event_request import RegisterEventHttpRequest
-from app.api.schemas.register_event_response import RegisterEventHttpResponse
+from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
+from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
 from app.application.dto.register_event_request import RegisterEventRequest
-from app.application.use_cases.register_event import RegisterEvent
+from app.application.use_cases.register_event_use_case import RegisterEventUseCase
 
 router = APIRouter()
 
@@ -14,7 +14,7 @@ router = APIRouter()
 )
 def register_event(
     request: RegisterEventHttpRequest,
-    use_case: RegisterEvent = Depends(get_register_event_use_case)
+    use_case: RegisterEventUseCase = Depends(get_register_event_use_case)
 ) -> RegisterEventHttpResponse:
     try:
         register_event_request = RegisterEventRequest(
