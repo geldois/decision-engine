@@ -2,9 +2,8 @@ from dataclasses import fields
 
 from app.application.dto.register_event_request import RegisterEventRequest
 
-# === VALID CASE ===
+# tests
 def test_register_event_request_exposes_only_boundary_fields():
-    # GIVEN
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
@@ -12,14 +11,12 @@ def test_register_event_request_exposes_only_boundary_fields():
     }
     timestamp = 1700000000
     
-    # WHEN
     register_event_request = RegisterEventRequest(
         event_type = event_type, 
         payload = payload, 
         timestamp = timestamp
     )
     
-    # THEN
     assert isinstance(register_event_request.event_type, str)
     
     assert isinstance(register_event_request.payload, dict)

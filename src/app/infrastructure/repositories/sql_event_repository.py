@@ -8,6 +8,7 @@ from app.infrastructure.database.engine import SessionLocal
 from app.infrastructure.database.models import EventModel
 
 class SqlEventRepository(EventRepositoryContract):
+    # methods
     def save(
         self,
         event: Event
