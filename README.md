@@ -9,13 +9,15 @@ Rule-based decision engine built with Clean Architecture and strict TDD, focused
 - HTTP API exposed via FastAPI with dependency injection and composition root.
 - API contract protected by automated tests (200 / 422 / 500 cases).
 - In-memory repositories used as infrastructure placeholders.
+- Domain outcomes modeled via explicit enum (DecisionOutcome), mapped explicitly to API boundary status.
 
 ## Design Principles
 
-- Explicit domain modeling with clear boundaries between layers.
+- Explicit domain modeling with clear boundaries between layers, strong invariants and value semantics.
 - Deterministic rule evaluation with no side effects.
 - Domain logic isolated from frameworks and infrastructure.
 - Application behavior expressed through use cases, not controllers.
+- Domain-level outcome modeling decoupled from application boundary representations.
 
 ## Testing Strategy
 
