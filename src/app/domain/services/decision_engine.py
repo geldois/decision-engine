@@ -1,6 +1,7 @@
 from app.domain.events.event import Event
 from app.domain.rules.rule import Rule
 from app.domain.decisions.decision import Decision
+from app.domain.decisions.decision_outcome import DecisionOutcome
 
 class DecisionEngine:
     # methods
@@ -20,7 +21,7 @@ class DecisionEngine:
                     outcome, 
                     explanation
                 )
-        outcome = "rejected"
+        outcome = DecisionOutcome.NO_MATCH
         explanation = "No Rule applied do Event."
 
         return Decision(

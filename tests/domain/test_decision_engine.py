@@ -1,10 +1,10 @@
 from app.domain.events.event import Event
 from app.domain.rules.rule import Rule
+from app.domain.decisions.decision_outcome import DecisionOutcome
 from app.domain.services.decision_engine import DecisionEngine
 
-# === VALID CASE ===
-def test_decision_service_returns_decision_when_rule_applies():
-    # GIVEN
+# tests
+def test_decision_engine_returns_decision_when_rule_applies():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
@@ -13,7 +13,7 @@ def test_decision_service_returns_decision_when_rule_applies():
     timestamp = 1700000000
     name = "ALWAYS_APPLIES"
     condition = lambda event: True
-    outcome = "approved"
+    outcome = DecisionOutcome.APPROVED
     event = Event(
         event_type = event_type, 
         payload = payload, 
@@ -24,26 +24,22 @@ def test_decision_service_returns_decision_when_rule_applies():
         condition = condition, 
         outcome = outcome
     )
-    decision_service = DecisionEngine()
+    decision_engine = DecisionEngine()
     
-    # WHEN
-    decision = decision_service.decide(
+    decision = decision_engine.decide(
         event = event, 
         rules = [rule]
     )
     
-    # THEN
     assert decision.event == event
     
     assert decision.rule == rule
     
-    assert decision.outcome == outcome
+    assert decision.outcome is outcome
     
     assert decision.explanation is not None
 
-# === NO RULE APPLIES ===
-def test_decision_service_rejects_when_no_rule_applies():
-    # GIVEN
+def test_decision_engine_returns_decision_with_no_match_outcome_when_no_rule_applies():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
@@ -55,20 +51,18 @@ def test_decision_service_rejects_when_no_rule_applies():
         payload = payload, 
         timestamp = timestamp
     )
-    decision_service = DecisionEngine()
+    decision_engine = DecisionEngine()
     
-    # WHEN
-    decision = decision_service.decide(
+    decision = decision_engine.decide(
         event = event, 
         rules = []
     )
     
-    # THEN
     assert decision.event == event
     
     assert decision.rule is None
     
-    assert decision.outcome == "rejected"
+    assert decision.outcome is DecisionOutcome.NO_MATCH
     
     assert decision.explanation is not None
     
