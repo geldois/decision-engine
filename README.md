@@ -2,6 +2,7 @@
 
 Rule-based decision engine built with Clean Architecture and strict TDD, focused on correctness, explicit boundaries, and deterministic decision-making.
 
+---
 ## Current Status
 
 - Core domain fully modeled and unit tested (Event, Rule, Decision).
@@ -11,6 +12,7 @@ Rule-based decision engine built with Clean Architecture and strict TDD, focused
 - In-memory repositories used as infrastructure placeholders.
 - Domain outcomes modeled via explicit enum (DecisionOutcome), mapped explicitly to API boundary status.
 
+---
 ## Design Principles
 
 - Explicit domain modeling with clear boundaries between layers, strong invariants and value semantics.
@@ -19,6 +21,7 @@ Rule-based decision engine built with Clean Architecture and strict TDD, focused
 - Application behavior expressed through use cases, not controllers.
 - Domain-level outcome modeling decoupled from application boundary representations.
 
+---
 ## Testing Strategy
 
 - Domain and application layers developed using TDD.
@@ -28,14 +31,18 @@ Rule-based decision engine built with Clean Architecture and strict TDD, focused
     - validation failures (422)
     - internal failures (500)
 
+---
 ## Non-goals
 
 - This project does not aim to be production-complete at this stage.
 - Persistence and external integrations are intentionally incremental.
 - AI-assisted analysis is explicitly out of scope for the current MVP.
 
+---
 ## Roadmap
 
 - Replace in-memory repositories with real persistence.
 - Introduce application-level invariants and idempotency.
 - Implement audit logging as a secondary use case.
+
+---
