@@ -210,6 +210,9 @@ __marimo__/
 *.db
 *.sqlite
 
+# Linux
+typescript
+
 # Generated artifacts (AI context snapshots)
 context.txt
 delta.txt
