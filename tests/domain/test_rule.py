@@ -1,10 +1,9 @@
 from app.domain.events.event import Event, EventField
 from app.domain.rules.rule import Rule, RuleOperator
 from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.services.decision_engine import DecisionEngine
 
 # tests
-def test_decision_engine_returns_decision_when_rule_applies():
+def test_rule_returns_true_when_condition_is_true():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
@@ -28,45 +27,32 @@ def test_decision_engine_returns_decision_when_rule_applies():
         condition_value = condition_value, 
         outcome = outcome
     )
-    decision_engine = DecisionEngine()
-    
-    decision = decision_engine.decide(
-        event = event, 
-        rules = [rule]
-    )
-    
-    assert decision.event == event
-    
-    assert decision.rule == rule
-    
-    assert decision.outcome is outcome
-    
-    assert decision.explanation is not None
 
-def test_decision_engine_returns_decision_with_no_match_outcome_when_no_rule_applies():
+    assert rule.applies_to(event)
+    
+def test_rule_returns_false_when_condition_is_false():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
         "email": "user@email.com"
     }
     timestamp = 1700000000
+    name = "ALWAYS_APPLIES"
+    condition_field = EventField.TIMESTAMP
+    condition_operator = RuleOperator.EQUALS
+    condition_value = 1800000000
+    outcome = DecisionOutcome.APPROVED
     event = Event(
         event_type = event_type, 
         payload = payload, 
         timestamp = timestamp
     )
-    decision_engine = DecisionEngine()
-    
-    decision = decision_engine.decide(
-        event = event, 
-        rules = []
+    rule = Rule(
+        name = name, 
+        condition_field = condition_field, 
+        condition_operator = condition_operator, 
+        condition_value = condition_value, 
+        outcome = outcome
     )
-    
-    assert decision.event == event
-    
-    assert decision.rule is None
-    
-    assert decision.outcome is DecisionOutcome.NO_MATCH
-    
-    assert decision.explanation is not None
-    
+
+    assert not rule.applies_to(event)

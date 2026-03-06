@@ -2,7 +2,7 @@ from app.domain.events.event import Event
 from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
 
 # tests
-def test_event_repository_assigns_id_when_event_is_saved():
+def test_in_memory_event_repository_assigns_id_when_event_is_saved():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
@@ -18,11 +18,13 @@ def test_event_repository_assigns_id_when_event_is_saved():
     
     saved_event = event_repository.save(event)
     
+    assert saved_event is event
+
     assert saved_event.event_id is not None
     
     assert saved_event.event_id == event.event_id
 
-def test_event_repository_returns_event_when_id_exists():
+def test_in_memory_event_repository_returns_event_when_id_exists():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
@@ -39,4 +41,4 @@ def test_event_repository_returns_event_when_id_exists():
     
     returned_event = event_repository.get_by_id(saved_event.event_id)
     
-    assert returned_event == saved_event
+    assert returned_event is saved_event
