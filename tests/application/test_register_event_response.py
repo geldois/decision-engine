@@ -1,6 +1,6 @@
-import pytest
-from dataclasses import FrozenInstanceError
 from dataclasses import fields
+from dataclasses import FrozenInstanceError
+import pytest
 
 from app.application.dto.decision_status import DecisionStatus
 from app.application.dto.register_event_response import RegisterEventResponse

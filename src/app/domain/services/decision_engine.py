@@ -1,7 +1,7 @@
-from app.domain.events.event import Event
-from app.domain.rules.rule import Rule
 from app.domain.decisions.decision import Decision
 from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.events.event import Event
+from app.domain.rules.rule import Rule
 
 class DecisionEngine:
     # methods
@@ -9,7 +9,7 @@ class DecisionEngine:
         self, 
         event: Event, 
         rules: list[Rule]
-    ):
+    ) -> Decision:
         for rule in rules:
             if rule.applies_to(event):
                 outcome = rule.outcome
@@ -21,8 +21,9 @@ class DecisionEngine:
                     outcome, 
                     explanation
                 )
+            
         outcome = DecisionOutcome.NO_MATCH
-        explanation = "No Rule applied do Event."
+        explanation = "No Rule applied to Event."
 
         return Decision(
             event = event, 
@@ -30,3 +31,4 @@ class DecisionEngine:
             outcome = outcome, 
             explanation = explanation
         )
+    

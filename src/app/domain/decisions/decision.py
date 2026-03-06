@@ -1,8 +1,9 @@
+from app.domain.domain_entity import DomainEntity
 from app.domain.events.event import Event
 from app.domain.rules.rule import Rule
 from app.domain.decisions.decision_outcome import DecisionOutcome
 
-class Decision:
+class Decision(DomainEntity):
     # initializer
     def __init__(
         self, 

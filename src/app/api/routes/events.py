@@ -8,6 +8,7 @@ from app.application.use_cases.register_event_use_case import RegisterEventUseCa
 
 router = APIRouter()
 
+# routes
 @router.post(
     "/events", 
     response_model = RegisterEventHttpResponse
@@ -24,12 +25,12 @@ def register_event(
         )
         response = use_case.register_event(register_event_request)
         return RegisterEventHttpResponse(
-            event_id = str(response.event_id), 
+            event_id = response.event_id, 
             status = response.status.value
         )
-    except Exception as exc:
+    except Exception as exception:
         raise HTTPException(
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail = "Internal server error"
-        ) from exc
+        ) from exception
     

@@ -1,17 +1,18 @@
-from app.domain.events.event import Event
-from app.domain.services.decision_engine import DecisionEngine
-from app.application.repositories.event_repository_contract import EventRepositoryContract
-from app.application.repositories.rule_repository_contract import RuleRepositoryContract
 from app.application.dto.register_event_request import RegisterEventRequest
 from app.application.dto.register_event_response import RegisterEventResponse
 from app.application.mappers.decision_outcome_to_status_mapper import map_outcome_to_status
+from app.application.repositories.event_repository_contract import EventRepositoryContract
+from app.application.repositories.rule_repository_contract import RuleRepositoryContract
+from app.domain.events.event import Event
+from app.domain.services.decision_engine import DecisionEngine
 
 class RegisterEventUseCase:
     # initializer
     def __init__(
-        self, event_repository: EventRepositoryContract, 
+        self, 
+        event_repository: EventRepositoryContract, 
         rule_repository: RuleRepositoryContract, 
-        decision_engine: DecisionEngine
+        decision_engine: DecisionEngine,
     ):
         self.event_repository = event_repository
         self.rule_repository = rule_repository
@@ -40,4 +41,4 @@ class RegisterEventUseCase:
         )
 
         return register_event_response
-    
+        

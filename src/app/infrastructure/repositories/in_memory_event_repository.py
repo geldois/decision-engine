@@ -8,6 +8,8 @@ class InMemoryEventRepository(EventRepositoryContract):
         self._events = {}
 
     # methods
+
+    # interface methods
     def save(
         self, 
         event: Event

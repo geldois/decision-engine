@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from app.domain.events.event import Event
 
 class EventRepositoryContract(ABC):
+    # methods
     @abstractmethod
     def save(
         self, 

@@ -1,4 +1,21 @@
-class Event:
+from enum import Enum
+
+from app.domain.domain_entity import DomainEntity
+
+class EventField(Enum):
+    # enum members
+    EVENT_ID = "event_id"
+    EVENT_TYPE = "event_type"
+    TIMESTAMP = "timestamp"
+
+class Event(DomainEntity):
+    __slots__ = (
+        "event_id", 
+        "event_type", 
+        "payload", 
+        "timestamp"
+    )
+
     # initializer
     def __init__(
         self, 
@@ -25,3 +42,11 @@ class Event:
         self.payload = payload
         self.timestamp = timestamp
         self.event_id = event_id
+
+    # methods
+    def get_field_value(
+        self, 
+        event_field: EventField
+    ):
+        return self.__getattribute__(event_field.value)
+    
