@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from app.domain.domain_entity import DomainEntity
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.domain_entity import DomainEntity
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 
 class Decision(DomainEntity):
     __slots__ = (

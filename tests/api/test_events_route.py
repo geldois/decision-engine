@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 import pytest
 
 from app.api.dependencies import get_produce_decision_use_case
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.main import app
 
 @pytest.fixture
