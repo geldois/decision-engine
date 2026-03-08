@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Callable
+from uuid import UUID
 import operator
 
 from app.domain.domain_entity import DomainEntity
@@ -15,13 +16,13 @@ class RuleOperator(Enum):
 
 class Rule(DomainEntity):
     __slots__ = (
+        "_id", 
         "condition", 
         "condition_field", 
         "condition_operator", 
         "condition_value", 
         "name", 
-        "outcome", 
-        "rule_id"
+        "outcome"
     )
 
     _MAPPING = {
@@ -39,26 +40,26 @@ class Rule(DomainEntity):
         condition_operator: RuleOperator, 
         condition_value: int | str, 
         outcome: DecisionOutcome, 
-        rule_id: int | None = None
+        rule_id: UUID | None = None
     ):
         # invariants
-        if name is None or not isinstance(name, str) or not name.strip():
+        if not name or not isinstance(name, str) or not name.strip():
             raise ValueError("Rule name is required.")
         
-        if condition_field is None or not isinstance(condition_field, EventField):
+        if not condition_field or not isinstance(condition_field, EventField):
             raise ValueError("Rule condition field is required.")
         
-        if condition_operator is None or not isinstance(condition_operator, RuleOperator):
+        if not condition_operator or not isinstance(condition_operator, RuleOperator):
             raise ValueError("Rule condition operator is required.")
         
-        if condition_value is None or not isinstance(condition_value, int | str):
+        if not condition_value or not isinstance(condition_value, int | str):
             raise ValueError("Rule condition value is required.")
         
-        if outcome is None or not isinstance(outcome, DecisionOutcome):
+        if not outcome or not isinstance(outcome, DecisionOutcome):
             raise ValueError("Rule outcome is required.")
         
-        if rule_id is not None and (not isinstance(rule_id, int) or rule_id < 0):
-            raise ValueError("Rule id is invalid.")
+        if rule_id and not isinstance(rule_id, UUID):
+            raise ValueError("Rule ID is invalid.")
         
         # instance attributes
         self.name = name.strip()
@@ -71,7 +72,7 @@ class Rule(DomainEntity):
             condition_value = self.condition_value
         )
         self.outcome = outcome
-        self.rule_id = rule_id
+        super().__init__(rule_id)
 
     # methods
     def build_condition(

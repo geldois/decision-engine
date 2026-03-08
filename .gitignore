@@ -213,6 +213,6 @@ __marimo__/
 # Linux
 typescript
 
-# Generated artifacts (AI context snapshots)
+# Generated artifacts
 context.txt
 delta.txt

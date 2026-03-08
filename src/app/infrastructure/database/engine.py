@@ -17,6 +17,6 @@ Base = declarative_base()
 
 # functions
 def init_db():
-    from app.infrastructure.database.models import EventModel, RuleModel
+    from app.infrastructure.database.models import DecisionModel, EventModel, RuleModel
 
     Base.metadata.create_all(bind = engine)

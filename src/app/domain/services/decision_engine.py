@@ -16,18 +16,18 @@ class DecisionEngine:
                 explanation = "Rule applied to Event."
 
                 return Decision(
-                    event, 
-                    rule, 
-                    outcome, 
-                    explanation
+                    event_id = event._id, 
+                    rule_id = rule._id, 
+                    outcome = outcome, 
+                    explanation = explanation
                 )
             
         outcome = DecisionOutcome.NO_MATCH
         explanation = "No Rule applied to Event."
 
         return Decision(
-            event = event, 
-            rule = None, 
+            event_id = event._id, 
+            rule_id = None, 
             outcome = outcome, 
             explanation = explanation
         )

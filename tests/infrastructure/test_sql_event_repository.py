@@ -1,8 +1,10 @@
 from app.domain.events.event import Event
-from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
+from app.infrastructure.database.engine import SessionLocal
+from app.infrastructure.repositories.sql_event_repository import SqlEventRepository
+from utils.domain_entity_util import assert_domain_entities_equal_structurally
 
 # tests
-def test_in_memory_event_repository_assigns_correct_id_when_event_is_saved():
+def test_sql_event_repository_assigns_correct_id_when_event_is_saved():
     event = Event(
         event_type = "USER_CREATED", 
         payload = {
@@ -11,7 +13,7 @@ def test_in_memory_event_repository_assigns_correct_id_when_event_is_saved():
         }, 
         timestamp = 1700000000
     )
-    event_repository = InMemoryEventRepository()
+    event_repository = SqlEventRepository(session = SessionLocal())
     
     saved_event = event_repository.save(event = event)
     
@@ -21,7 +23,7 @@ def test_in_memory_event_repository_assigns_correct_id_when_event_is_saved():
     
     assert saved_event._id == event._id
 
-def test_in_memory_event_repository_returns_event_when_id_exists():
+def test_sql_event_repository_returns_true_when_event_is_deleted():
     event = Event(
         event_type = "USER_CREATED", 
         payload = {
@@ -30,38 +32,7 @@ def test_in_memory_event_repository_returns_event_when_id_exists():
         }, 
         timestamp = 1700000000
     )
-    event_repository = InMemoryEventRepository()
-    saved_event = event_repository.save(event = event)
-    
-    returned_event = event_repository.get_by_id(event_id = saved_event._id)
-    
-    assert returned_event is saved_event
-
-def test_in_memory_event_repository_returns_none_when_id_does_not_exist():
-    event = Event(
-        event_type = "USER_CREATED", 
-        payload = {
-            "user_id": 123,
-            "email": "user@email.com"
-        }, 
-        timestamp = 1700000000
-    )
-    event_repository = InMemoryEventRepository()
-    
-    returned_event = event_repository.get_by_id(event_id = event._id)
-    
-    assert not returned_event
-
-def test_in_memory_event_repository_returns_true_when_event_is_deleted():
-    event = Event(
-        event_type = "USER_CREATED", 
-        payload = {
-            "user_id": 123,
-            "email": "user@email.com"
-        }, 
-        timestamp = 1700000000
-    )
-    event_repository = InMemoryEventRepository()
+    event_repository = SqlEventRepository(session = SessionLocal())
     saved_event = event_repository.save(event = event)
 
     it_was_deleted = event_repository.delete(event = saved_event)
@@ -72,7 +43,7 @@ def test_in_memory_event_repository_returns_true_when_event_is_deleted():
 
     assert not returned_event
 
-def test_in_memory_event_repository_returns_false_when_event_is_not_deleted():
+def test_sql_event_repository_returns_false_when_event_is_not_deleted():
     event = Event(
         event_type = "USER_CREATED", 
         payload = {
@@ -81,13 +52,13 @@ def test_in_memory_event_repository_returns_false_when_event_is_not_deleted():
         }, 
         timestamp = 1700000000
     )
-    event_repository = InMemoryEventRepository()
+    event_repository = SqlEventRepository(session = SessionLocal())
 
     it_was_deleted = event_repository.delete(event = event)
 
     assert not it_was_deleted
 
-def test_in_memory_rule_repository_returns_a_valid_list_of_rules():
+def test_sql_event_repository_returns_event_when_id_exists():
     event = Event(
         event_type = "USER_CREATED", 
         payload = {
@@ -96,7 +67,41 @@ def test_in_memory_rule_repository_returns_a_valid_list_of_rules():
         }, 
         timestamp = 1700000000
     )
-    event_repository = InMemoryEventRepository()
+    event_repository = SqlEventRepository(session = SessionLocal())
+    saved_event = event_repository.save(event = event)
+    
+    returned_event = event_repository.get_by_id(event_id = saved_event._id)
+    
+    assert assert_domain_entities_equal_structurally(
+        a = returned_event, 
+        b = saved_event
+    )
+
+def test_sql_event_repository_returns_none_when_id_does_not_exist():
+    event = Event(
+        event_type = "USER_CREATED", 
+        payload = {
+            "user_id": 123,
+            "email": "user@email.com"
+        }, 
+        timestamp = 1700000000
+    )
+    event_repository = SqlEventRepository(session = SessionLocal())
+    
+    returned_event = event_repository.get_by_id(event_id = event._id)
+    
+    assert not returned_event
+
+def test_sql_rule_repository_returns_a_valid_list_of_rules():
+    event = Event(
+        event_type = "USER_CREATED", 
+        payload = {
+            "user_id": 123,
+            "email": "user@email.com"
+        }, 
+        timestamp = 1700000000
+    )
+    event_repository = SqlEventRepository(session = SessionLocal())
     saved_event = event_repository.save(event = event)
 
     events = event_repository.list_all()
@@ -105,5 +110,9 @@ def test_in_memory_rule_repository_returns_a_valid_list_of_rules():
 
     assert isinstance(events, list)
 
-    assert saved_event in events
-    
+    for e in events:
+        if saved_event._id == e._id:
+            assert assert_domain_entities_equal_structurally(
+                a = saved_event, 
+                b = e
+            )
