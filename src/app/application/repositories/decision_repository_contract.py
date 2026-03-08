@@ -1,30 +1,31 @@
 from abc import ABC, abstractmethod
 
-from app.domain.events.event import Event
+from app.domain.decisions.decision import Decision
 
-class EventRepositoryContract(ABC):
+class DecisionRepositoryContract(ABC):
     # interface methods
     @abstractmethod
     def save(
         self, 
-        event: Event
-    ) -> Event:
-        ...
-        
-    @abstractmethod
-    def delete(
-        self, 
-        event: Event
-    ) -> bool:
-        ...
-    
-    @abstractmethod
-    def get_by_id(
-        self, 
-        event_id: int
-    ) -> Event | None:
+        decision: Decision
+    ) -> Decision:
         ...
 
     @abstractmethod
-    def list_all(self) -> list[Event]:
+    def delete(
+        self, 
+        decision: Decision
+    ) -> bool:
         ...
+
+    @abstractmethod
+    def get_by_id(
+        self, 
+        decision_id: int
+    ) -> Decision | None:
+        ...
+
+    @abstractmethod
+    def list_all(self) -> list[Decision]:
+        ...
+        
