@@ -2,117 +2,113 @@ from app.domain.decisions.decision_outcome import DecisionOutcome
 from app.domain.events.event import EventField
 from app.domain.rules.rule import Rule, RuleOperator
 from app.infrastructure.database.engine import SessionLocal
-from app.infrastructure.database.models import RuleModel
 from app.infrastructure.repositories.sql_rule_repository import SqlRuleRepository
-from tests.utils.domain_entity_util import assert_domain_entities_equal
+from tests.utils.domain_entity_util import assert_domain_entities_equal_structurally
 
 # tests
-def test_sql_rule_repository_assigns_id_when_rule_is_saved():
-    name = "ALWAYS_APPLIES"
-    condition_field = EventField.EVENT_TYPE
-    condition_operator = RuleOperator.EQUALS
-    condition_value = "USER_CREATED"
-    outcome = DecisionOutcome.APPROVED
+def test_sql_rule_repository_assigns_correct_id_when_rule_is_saved():
     rule = Rule(
-        name = name, 
-        condition_field = condition_field, 
-        condition_operator = condition_operator, 
-        condition_value = condition_value, 
-        outcome = outcome
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
     )
-    session = SessionLocal()
-    rule_repository = SqlRuleRepository(session)
+    rule_repository = SqlRuleRepository(session = SessionLocal())
     
-    saved_rule = rule_repository.save(rule)
+    saved_rule = rule_repository.save(rule = rule)
 
     assert saved_rule is rule
 
-    assert saved_rule.rule_id is not None
+    assert saved_rule._id
     
-    assert saved_rule.rule_id == rule.rule_id
-
-def test_sql_rule_repository_returns_rule_when_id_exists():
-    name = "ALWAYS_APPLIES"
-    condition_field = EventField.EVENT_TYPE
-    condition_operator = RuleOperator.EQUALS
-    condition_value = "USER_CREATED"
-    outcome = DecisionOutcome.APPROVED
-    rule = Rule(
-        name = name, 
-        condition_field = condition_field, 
-        condition_operator = condition_operator, 
-        condition_value = condition_value, 
-        outcome = outcome
-    )
-    session = SessionLocal()
-    rule_repository = SqlRuleRepository(session)
-    saved_rule = rule_repository.save(rule)
-
-    returned_rule = rule_repository.get_by_id(saved_rule.rule_id)
-
-    assert assert_domain_entities_equal(returned_rule, saved_rule)
-
-def test_sql_rule_repository_returns_none_when_id_does_not_exist():
-    name = "ALWAYS_APPLIES"
-    condition_field = EventField.EVENT_TYPE
-    condition_operator = RuleOperator.EQUALS
-    condition_value = "USER_CREATED"
-    outcome = DecisionOutcome.APPROVED
-    rule = Rule(
-        name = name, 
-        condition_field = condition_field, 
-        condition_operator = condition_operator, 
-        condition_value = condition_value, 
-        outcome = outcome
-    )
-    session = SessionLocal()
-    rule_repository = SqlRuleRepository(session)
-
-    returned_rule = rule_repository.get_by_id(rule.rule_id)
-
-    assert returned_rule is None
+    assert saved_rule._id == rule._id
 
 def test_sql_rule_repository_returns_true_when_rule_is_deleted():
-    name = "ALWAYS_APPLIES"
-    condition_field = EventField.EVENT_TYPE
-    condition_operator = RuleOperator.EQUALS
-    condition_value = "USER_CREATED"
-    outcome = DecisionOutcome.APPROVED
     rule = Rule(
-        name = name, 
-        condition_field = condition_field, 
-        condition_operator = condition_operator, 
-        condition_value = condition_value, 
-        outcome = outcome
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
     )
-    session = SessionLocal()
-    rule_repository = SqlRuleRepository(session)
-    saved_rule = rule_repository.save(rule)
+    rule_repository = SqlRuleRepository(session = SessionLocal())
+    saved_rule = rule_repository.save(rule = rule)
 
-    it_was_deleted = rule_repository.delete(saved_rule)
+    it_was_deleted = rule_repository.delete(rule = saved_rule)
 
-    returned_rule = rule_repository.get_by_id(saved_rule.rule_id)
+    returned_rule = rule_repository.get_by_id(rule_id = saved_rule._id)
 
-    assert it_was_deleted is True
+    assert it_was_deleted
 
-    assert returned_rule is None
+    assert not returned_rule
 
 def test_sql_rule_repository_returns_false_when_rule_is_not_deleted():
-    name = "ALWAYS_APPLIES"
-    condition_field = EventField.EVENT_TYPE
-    condition_operator = RuleOperator.EQUALS
-    condition_value = "USER_CREATED"
-    outcome = DecisionOutcome.APPROVED
     rule = Rule(
-        name = name, 
-        condition_field = condition_field, 
-        condition_operator = condition_operator, 
-        condition_value = condition_value, 
-        outcome = outcome
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
     )
-    session = SessionLocal()
-    rule_repository = SqlRuleRepository(session)
+    rule_repository = SqlRuleRepository(session = SessionLocal())
 
-    it_was_deleted = rule_repository.delete(rule)
+    it_was_deleted = rule_repository.delete(rule = rule)
 
-    assert it_was_deleted is False
+    assert not it_was_deleted
+
+def test_sql_rule_repository_returns_rule_when_id_exists():
+    rule = Rule(
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
+    )
+    rule_repository = SqlRuleRepository(session = SessionLocal())
+    saved_rule = rule_repository.save(rule = rule)
+
+    returned_rule = rule_repository.get_by_id(rule_id = saved_rule._id)
+
+    assert assert_domain_entities_equal_structurally(
+        a = returned_rule, 
+        b = saved_rule
+    )
+
+def test_sql_rule_repository_returns_none_when_id_does_not_exist():
+    rule = Rule(
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
+    )
+    rule_repository = SqlRuleRepository(session = SessionLocal())
+
+    returned_rule = rule_repository.get_by_id(rule_id = rule._id)
+
+    assert not returned_rule
+
+def test_sql_rule_repository_returns_list_of_rules():
+    rule = Rule(
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
+    )
+    rule_repository = SqlRuleRepository(session = SessionLocal())
+    saved_rule = rule_repository.save(rule = rule)
+
+    rules = rule_repository.list_all()
+
+    assert rules
+
+    assert isinstance(rules, list)
+
+    for r in rules:
+        if saved_rule._id == r._id:
+            assert assert_domain_entities_equal_structurally(
+                a = saved_rule, 
+                b = r
+            )

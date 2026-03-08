@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from app.domain.rules.rule import Rule
 
 class RuleRepositoryContract(ABC):
-    # methods
+    # interface methods
     @abstractmethod
     def save(
         self, 

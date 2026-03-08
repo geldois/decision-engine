@@ -1,3 +1,4 @@
+from uuid import UUID
 import pytest
 
 from app.domain.events.event import Event, EventField
@@ -25,8 +26,10 @@ def test_event_can_be_created_with_valid_data():
     assert event.payload == payload
     
     assert event.timestamp == timestamp
+
+    assert event._id
     
-    assert event.event_id is None
+    assert isinstance(event._id, UUID)
 
 def test_event_raises_error_when_event_type_is_none():
     event_type = None
@@ -85,14 +88,14 @@ def test_event_raises_error_when_timestamp_is_negative():
             timestamp = timestamp
         )
 
-def test_event_raises_error_when_event_id_is_negative():
+def test_event_raises_error_when_event_id_is_not_uuid():
     event_type = "USER_CREATED"
     payload = {
         "user_id": 123,
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    event_id = -1
+    event_id = 1
     
     with pytest.raises(ValueError):
         Event(
@@ -109,13 +112,11 @@ def test_event_returns_valid_field_values():
         "email": "user@email.com"
     }
     timestamp = 1700000000
-    event_id = 1
     
     event = Event(
         event_type = event_type, 
         payload = payload, 
-        timestamp = timestamp, 
-        event_id = event_id
+        timestamp = timestamp
     )
 
     for member in EventField:

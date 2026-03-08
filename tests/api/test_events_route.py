@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 import pytest
 
-from app.api.dependencies import get_register_event_use_case
+from app.api.dependencies import get_produce_decision_use_case
 from app.domain.decisions.decision_outcome import DecisionOutcome
 from app.main import app
 
@@ -10,7 +10,7 @@ def client():
     return TestClient(app, raise_server_exceptions = True)
 
 # tests
-def test_register_event_api_returns_200_and_status(client):
+def test_events_route_produce_decision_returns_200_and_status(client):
     payload = {
         "event_type": "USER_CREATED", 
         "payload": {
@@ -28,7 +28,7 @@ def test_register_event_api_returns_200_and_status(client):
 
     assert DecisionOutcome(response.json()["status"])
     
-def test_register_event_api_returns_422_when_payload_is_missing(client):
+def test_events_route_produce_decision_returns_422_when_payload_is_missing(client):
     payload = {
         "event_type": "USER_CREATED",
         "timestamp": 1700000000
@@ -38,16 +38,16 @@ def test_register_event_api_returns_422_when_payload_is_missing(client):
 
     assert response.status_code == 422
     
-class BrokenRegisterEventUseCase:
+class BrokenProduceDecisionUseCase:
     # methods
-    def register_event(
+    def produce_decision(
         self, 
         *_
     ):
         raise RuntimeError("boom")
 
-def test_register_event_api_returns_500_on_internal_error(client):
-    app.dependency_overrides[get_register_event_use_case] = (lambda: BrokenRegisterEventUseCase())
+def test_events_route_produce_decision_returns_500_on_internal_error(client):
+    app.dependency_overrides[get_produce_decision_use_case] = (lambda: BrokenProduceDecisionUseCase())
     payload = {
         "event_type": "USER_CREATED",
         "payload": {

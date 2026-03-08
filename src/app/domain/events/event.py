@@ -1,16 +1,17 @@
 from enum import Enum
+from uuid import UUID
 
 from app.domain.domain_entity import DomainEntity
 
 class EventField(Enum):
     # enum members
-    EVENT_ID = "event_id"
+    EVENT_ID = "_id"
     EVENT_TYPE = "event_type"
     TIMESTAMP = "timestamp"
 
 class Event(DomainEntity):
     __slots__ = (
-        "event_id", 
+        "_id", 
         "event_type", 
         "payload", 
         "timestamp"
@@ -22,26 +23,26 @@ class Event(DomainEntity):
         event_type: str, 
         payload: dict, 
         timestamp: int, 
-        event_id: int | None = None
+        event_id: UUID | None = None
     ):
         # invariants
-        if event_type is None or not isinstance(event_type, str) or not event_type.strip():
+        if not event_type or not isinstance(event_type, str) or not event_type.strip():
             raise ValueError("Event type is required.")
         
-        if payload is None:
+        if not payload:
             raise ValueError("Event payload is required.")
         
-        if timestamp is None or not isinstance(timestamp, int) or timestamp < 0:
+        if not timestamp or not isinstance(timestamp, int) or timestamp < 0:
             raise ValueError("Event timestamp is required.")
         
-        if event_id is not None and (not isinstance(event_id, int) or event_id < 0):
-            raise ValueError("Event id is invalid.")
+        if event_id and not isinstance(event_id, UUID):
+            raise ValueError("Event ID is invalid.")
         
         # instance attributes
         self.event_type = event_type.strip()
         self.payload = payload
         self.timestamp = timestamp
-        self.event_id = event_id
+        super().__init__(event_id)
 
     # methods
     def get_field_value(

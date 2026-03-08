@@ -1,4 +1,4 @@
-class RegisterRuleRequest:
+class RegisterRuleDtoRequest:
     __slots__ = (
         "condition_field", 
         "condition_operator", 

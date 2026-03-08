@@ -1,15 +1,15 @@
 # Decision Engine – Roadmap
 
 - [x] Persist rules in SQL repository
-- [ ] Persist decisions in database
-- [ ] Add event → decision relationship
+- [x] Persist decisions in database
+- [x] Add event → decision relationship
 - [ ] Introduce transaction boundary in use case
 - [ ] Implement rollback on failure
 - [ ] Add database indexes for rule lookup
 - [ ] Replace generic API exception handling
 - [ ] Introduce domain exceptions
 - [ ] Map domain exceptions to HTTP status codes
-- [ ] Implement idempotency for RegisterEvent
+- [ ] Implement idempotency for ProduceDecision
 - [ ] Add structured logging
 - [ ] Introduce rule priority mechanism
 - [ ] Add rule versioning

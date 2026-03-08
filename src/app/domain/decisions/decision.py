@@ -1,41 +1,48 @@
+from uuid import UUID
+
 from app.domain.domain_entity import DomainEntity
-from app.domain.events.event import Event
-from app.domain.rules.rule import Rule
 from app.domain.decisions.decision_outcome import DecisionOutcome
 
 class Decision(DomainEntity):
+    __slots__ = (
+        "_id", 
+        "event_id", 
+        "explanation", 
+        "outcome", 
+        "rule_id"
+    )
+
     # initializer
     def __init__(
         self, 
-        event: Event, 
-        rule: Rule | None, 
+        event_id: UUID, 
+        rule_id: UUID | None, 
         outcome: DecisionOutcome, 
         explanation: str, 
-        decision_id: int | None = None
+        decision_id: UUID | None = None
     ):
         # invariants
-        if event is None or not isinstance(event, Event):
-            raise ValueError("Event is required.")
+        if not event_id or not isinstance(event_id, UUID):
+            raise ValueError("Event ID is required.")
         
-        if rule is not None and not isinstance(rule, Rule):
-            raise ValueError("Rule is invalid.")
+        if rule_id and not isinstance(rule_id, UUID):
+            raise ValueError("Rule ID is invalid.")
         
-        if outcome is None or not isinstance(outcome, DecisionOutcome):
+        if not rule_id and outcome is not DecisionOutcome.NO_MATCH:
+            raise ValueError("The Rule ID and outcome states are invalid.")
+        
+        if not outcome or not isinstance(outcome, DecisionOutcome):
             raise ValueError("Rule outcome is required.")
         
-        if rule is None and outcome is not DecisionOutcome.NO_MATCH:
-            raise ValueError("The Rule and outcome states are invalid.")
-        
-        if explanation is None or not isinstance(explanation, str) or not explanation.strip():
+        if not explanation or not isinstance(explanation, str) or not explanation.strip():
             raise ValueError("Decision explanation is required.")
         
-        if decision_id is not None and (not isinstance(decision_id, int) or decision_id < 0):
-            raise ValueError("Decision id is invalid.")
+        if decision_id and not isinstance(decision_id, UUID):
+            raise ValueError("Decision ID is invalid")
         
         # instance attributes
-        self.event = event
-        self.rule = rule
+        self.event_id = event_id
+        self.rule_id = rule_id
         self.outcome = outcome
         self.explanation = explanation.strip()
-        self.decision_id = decision_id
-    
+        super().__init__(decision_id)

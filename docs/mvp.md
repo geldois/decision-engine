@@ -8,7 +8,7 @@ The MVP currently includes:
 
 - Deterministic decision flow from event registration to decision outcome.
 - Core domain entities implemented and unit tested (Event, Rule, Decision).
-- Application use case (`RegisterEvent`) with explicit DTO boundaries.
+- Application use case (`ProduceDecision`) with explicit DTO boundaries.
 - HTTP API exposed via FastAPI with dependency injection and composition root.
 - API contract protected by automated tests (200 / 422 / 500 cases).
 - In-memory repositories used as infrastructure placeholders.

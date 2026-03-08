@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class RegisterEventHttpRequest(BaseModel):
+class ProduceDecisionHttpRequest(BaseModel):
     event_type: str
     payload: dict
     timestamp: int

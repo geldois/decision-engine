@@ -1,4 +1,4 @@
-class RegisterEventRequest:
+class ProduceDecisionDtoRequest:
     __slots__ = (
         "event_type",
         "payload",

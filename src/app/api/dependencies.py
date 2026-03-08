@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from app.application.use_cases.register_event_use_case import RegisterEventUseCase
+from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
 from app.domain.services.decision_engine import DecisionEngine
 from app.infrastructure.database.engine import SessionLocal
@@ -23,12 +23,12 @@ def get_session():
     finally:
         session.close()
 
-def get_register_event_use_case(session: Session = Depends(get_session)) -> RegisterEventUseCase:
+def get_produce_decision_use_case(session: Session = Depends(get_session)) -> ProduceDecisionUseCase:
     event_repository = SqlEventRepository(session)
     rule_repository = SqlRuleRepository(session)
     decision_engine = DecisionEngine()
 
-    return RegisterEventUseCase(
+    return ProduceDecisionUseCase(
         event_repository = event_repository,
         rule_repository = rule_repository,
         decision_engine = decision_engine
