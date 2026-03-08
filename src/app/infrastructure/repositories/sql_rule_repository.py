@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import EventField
-from app.domain.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.infrastructure.database.models import RuleModel
 
 class SqlRuleRepository(RuleRepositoryContract):

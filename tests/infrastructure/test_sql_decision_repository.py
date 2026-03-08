@@ -1,7 +1,7 @@
-from app.domain.decisions.decision import Decision
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import Event, EventField
-from app.domain.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision import Decision
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import Event, EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.domain.services.decision_engine import DecisionEngine
 from app.infrastructure.database.engine import SessionLocal
 from app.infrastructure.repositories.sql_decision_repository import SqlDecisionRepository

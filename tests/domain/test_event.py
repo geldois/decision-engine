@@ -1,7 +1,7 @@
 from uuid import UUID
 import pytest
 
-from app.domain.events.event import Event, EventField
+from app.domain.entities.events.event import Event, EventField
 
 # tests
 def test_event_field_enum_has_valid_field_names():

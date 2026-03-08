@@ -1,6 +1,6 @@
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import EventField
-from app.domain.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.infrastructure.database.engine import SessionLocal
 from app.infrastructure.repositories.sql_rule_repository import SqlRuleRepository
 from tests.utils.domain_entity_util import assert_domain_entities_equal_structurally

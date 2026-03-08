@@ -1,6 +1,6 @@
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import Event, EventField
-from app.domain.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import Event, EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.domain.services.decision_engine import DecisionEngine
 from app.infrastructure.repositories.in_memory_decision_repository import InMemoryDecisionRepository
 from utils.domain_entity_util import assert_domain_entities_equal_structurally

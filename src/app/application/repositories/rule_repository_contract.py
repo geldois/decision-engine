@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.domain.rules.rule import Rule
+from app.domain.entities.rules.rule import Rule
 
 class RuleRepositoryContract(ABC):
     # interface methods
