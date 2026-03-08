@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "decision-engine"
+version = "0.1.0"
+description = "Rule-based decision engine built with Clean Architecture and strict TDD"
+dependencies = [
+    "fastapi", 
+    "httpx", 
+    "pytest", 
+    "sqlalchemy", 
+    "typer", 
+    "uvicorn"
+]
+
+[project.scripts]
+decision-engine = "app.cli:cli"
