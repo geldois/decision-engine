@@ -2,9 +2,9 @@ from app.application.dto.decision_status import DecisionStatus
 from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoRequest
 from app.application.mappers.decision_outcome_to_status_mapper import map_outcome_to_status
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import EventField
-from app.domain.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.domain.services.decision_engine import DecisionEngine
 from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
 from app.infrastructure.repositories.in_memory_rule_repository import InMemoryRuleRepository

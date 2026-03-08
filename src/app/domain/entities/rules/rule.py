@@ -3,9 +3,9 @@ from typing import Callable
 from uuid import UUID
 import operator
 
-from app.domain.domain_entity import DomainEntity
-from app.domain.events.event import Event, EventField
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.domain_entity import DomainEntity
+from app.domain.entities.events.event import Event, EventField
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 
 class RuleOperator(Enum):
     # enum members

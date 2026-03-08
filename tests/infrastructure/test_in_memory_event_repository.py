@@ -1,4 +1,4 @@
-from app.domain.events.event import Event
+from app.domain.entities.events.event import Event
 from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
 
 # tests
