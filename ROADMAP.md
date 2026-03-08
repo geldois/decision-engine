@@ -1,22 +1,36 @@
 # Decision Engine – Roadmap
 
+## SQL Persistence
+
 - [x] Persist rules in SQL repository
 - [x] Persist decisions in database
 - [x] Add event → decision relationship
-- [ ] Introduce transaction boundary in use case
-- [ ] Implement rollback on failure
-- [ ] Add database indexes for rule lookup
-- [ ] Replace generic API exception handling
-- [ ] Introduce domain exceptions
-- [ ] Map domain exceptions to HTTP status codes
-- [ ] Implement idempotency for ProduceDecision
-- [ ] Add structured logging
-- [ ] Introduce rule priority mechanism
-- [ ] Add rule versioning
-- [ ] Implement audit logging
-- [ ] Add Dockerfile
-- [ ] Add docker-compose (app + db)
+
+## Public Deployment
+
+- [ ] Deploy API publicly (Render)
 - [ ] Configure environment variables
-- [ ] Add CI pipeline running tests
-- [ ] Add test coverage report
-- [ ] Add health check endpoint with database verification
+- [ ] Add health check endpoint
+
+## CI/CD
+
+- [ ] Add CI pipeline (tests)
+- [ ] Enable Continuous Deployment
+
+## Application robustness
+
+- [ ] Introduce transaction boundary
+- [ ] Implement rollback
+- [ ] Add DB indexes
+- [ ] Domain exceptions
+- [ ] HTTP mapping
+
+## Observability
+
+- [ ] Structured logging
+
+## Infrastructure
+
+- [ ] Dockerfile
+- [ ] docker-compose
+- [ ] database migrations
