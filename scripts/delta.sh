@@ -54,5 +54,4 @@ print_line() {
         fi
         echo
     done
-
 } > "$OUTPUT"

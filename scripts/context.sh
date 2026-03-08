@@ -29,7 +29,7 @@ print_line() {
         fi
         size=$(wc -c < "$file")
         echo
-        echo "[$file]"
+        echo "File: $file"
         print_line "."
 
         if [ "$size" -lt "$MAX_SIZE" ]; then
