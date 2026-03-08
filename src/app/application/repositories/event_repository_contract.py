@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.domain.events.event import Event
+from app.domain.entities.events.event import Event
 
 class EventRepositoryContract(ABC):
     # interface methods

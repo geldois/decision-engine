@@ -1,7 +1,7 @@
 from enum import Enum
 from uuid import UUID
 
-from app.domain.domain_entity import DomainEntity
+from app.domain.entities.domain_entity import DomainEntity
 
 class EventField(Enum):
     # enum members

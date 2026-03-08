@@ -1,4 +1,4 @@
-from app.domain.domain_entity import DomainEntity
+from app.domain.entities.domain_entity import DomainEntity
 
 # functions
 def assert_domain_entities_equal_structurally(

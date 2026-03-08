@@ -1,5 +1,5 @@
 from app.application.dto.decision_status import DecisionStatus
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 
 _MAPPING = {
     DecisionOutcome.APPROVED: DecisionStatus.APPROVED, 

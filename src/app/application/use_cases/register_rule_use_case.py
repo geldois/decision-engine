@@ -1,9 +1,9 @@
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.application.dto.register_rule_dto_response import RegisterRuleDtoResponse
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import EventField
-from app.domain.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
 
 class RegisterRuleUseCase:
     # initializer

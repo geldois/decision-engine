@@ -3,7 +3,7 @@ from app.application.dto.produce_decision_dto_response import ProduceDecisionDto
 from app.application.mappers.decision_outcome_to_status_mapper import map_outcome_to_status
 from app.application.repositories.event_repository_contract import EventRepositoryContract
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
-from app.domain.events.event import Event
+from app.domain.entities.events.event import Event
 from app.domain.services.decision_engine import DecisionEngine
 
 class ProduceDecisionUseCase:

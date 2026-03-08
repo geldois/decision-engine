@@ -1,7 +1,7 @@
-from app.domain.decisions.decision import Decision
-from app.domain.decisions.decision_outcome import DecisionOutcome
-from app.domain.events.event import Event
-from app.domain.rules.rule import Rule
+from app.domain.entities.decisions.decision import Decision
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import Event
+from app.domain.entities.rules.rule import Rule
 
 class DecisionEngine:
     # methods

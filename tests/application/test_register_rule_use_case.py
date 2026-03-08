@@ -1,6 +1,6 @@
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.infrastructure.repositories.in_memory_rule_repository import InMemoryRuleRepository
 
 # tests

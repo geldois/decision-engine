@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import json
 
 from app.application.repositories.event_repository_contract import EventRepositoryContract
-from app.domain.events.event import Event
+from app.domain.entities.events.event import Event
 from app.infrastructure.database.models import EventModel
 
 class SqlEventRepository(EventRepositoryContract):

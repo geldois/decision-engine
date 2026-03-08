@@ -1,4 +1,4 @@
-from app.domain.events.event import Event
+from app.domain.entities.events.event import Event
 from app.infrastructure.database.engine import SessionLocal
 from app.infrastructure.repositories.sql_event_repository import SqlEventRepository
 from utils.domain_entity_util import assert_domain_entities_equal_structurally

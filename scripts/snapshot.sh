@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-./scripts/build_context.sh
-./scripts/build_delta.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "Snapshot generated: context.txt and delta.txt"
+"$SCRIPT_DIR/context.sh"
+"$SCRIPT_DIR/delta.sh"
+
+echo "snapshot generated"

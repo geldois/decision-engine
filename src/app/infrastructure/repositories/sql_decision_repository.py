@@ -2,8 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.application.repositories.decision_repository_contract import DecisionRepositoryContract
-from app.domain.decisions.decision import Decision
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.decisions.decision import Decision
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.infrastructure.database.models import DecisionModel
 
 class SqlDecisionRepository(DecisionRepositoryContract):

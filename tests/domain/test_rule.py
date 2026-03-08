@@ -1,6 +1,6 @@
-from app.domain.events.event import Event, EventField
-from app.domain.rules.rule import Rule, RuleOperator
-from app.domain.decisions.decision_outcome import DecisionOutcome
+from app.domain.entities.events.event import Event, EventField
+from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 
 # tests
 def test_rule_returns_true_when_condition_is_true():

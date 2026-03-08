@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.domain.decisions.decision import Decision
+from app.domain.entities.decisions.decision import Decision
 
 class DecisionRepositoryContract(ABC):
     # interface methods
