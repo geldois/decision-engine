@@ -1,21 +1,24 @@
 # Decision Engine – Roadmap
 
-## SQL Persistence
+## SQL persistence
 
 - [x] Persist rules in SQL repository
 - [x] Persist decisions in database
 - [x] Add event → decision relationship
+- [x] Migrate dependencies to pyproject.toml
+- [x] Introduce CLI entrypoint
+- [x] Package project as installable module
 
-## Public Deployment
+## Public deployment
 
-- [ ] Deploy API publicly (Render)
+- [x] Deploy API publicly (Render)
 - [ ] Configure environment variables
-- [ ] Add health check endpoint
+- [x] Add health check endpoint
 
 ## CI/CD
 
-- [ ] Add CI pipeline (tests)
-- [ ] Enable Continuous Deployment
+- [x] Add CI pipeline (tests)
+- [x] Enable Continuous Deployment
 
 ## Application robustness
 

@@ -28,9 +28,9 @@ def produce_decision(
             event_id = produce_decision_dto_response.event_id, 
             status = produce_decision_dto_response.status.value
         )
-    except Exception as exception:
+    except Exception:
         raise HTTPException(
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail = "Internal server error"
-        ) from exception
+        )
     
