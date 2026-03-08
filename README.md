@@ -1,43 +1,53 @@
 # decision-engine
+[![CI](https://github.com/geldois/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/geldois/decision-engine/actions)
 
-Rule-based decision engine built with Clean Architecture and strict TDD, focused on correctness, explicit boundaries, and deterministic decision-making.
+Rule-based decision engine built with Clean Architecture and strict TDD.
 
-## Current Status
+Live API: https://decision-engine.angelitochagas.com/docs
 
-- Core domain fully modeled and unit tested (Event, Rule, Decision).
-- Application layer implemented with explicit use cases and DTO boundaries.
-- HTTP API exposed via FastAPI with dependency injection and composition root.
-- API contract protected by automated tests (200 / 422 / 500 cases).
-- In-memory repositories used in tests.
-- SQL repositories implemented for persistence.
-- Domain outcomes modeled via explicit enum (DecisionOutcome), mapped explicitly to API boundary status.
+## Design
 
-## Design Principles
+- Explicit domain modeling (Event, Rule, Decision)
+- Deterministic rule evaluation
+- Clean Architecture separation
+- Use-case driven application layer
 
-- Explicit domain modeling with clear boundaries between layers, strong invariants and value semantics.
-- Deterministic rule evaluation with no side effects.
-- Declarative rule model (field, operator, value) enabling persistence and dynamic evaluation.
-- Domain logic isolated from frameworks and infrastructure.
-- Application behavior expressed through use cases, not controllers.
-- Domain-level outcome modeling decoupled from application boundary representations.
+## Testing
 
-## Testing Strategy
+- Domain and application layers developed with TDD.  
+- API contracts validated with automated tests.
 
-- Domain and application layers developed using TDD.
-- Business logic tested independently from the HTTP layer.
-- API boundary locked with contract tests covering:
-    - successful requests (200)
-    - validation failures (422)
-    - internal failures (500)
+## Example request
 
-## Non-goals
+```bash
+curl -X POST http://localhost:8000/events \
+    -H "Content-Type: application/json" \
+    -d '{
+            "event_type": "USER_CREATED", 
+            "payload": {
+                "user_id": 123, 
+                "email": "user@email.com"
+            }, 
+            "timestamp": 1700000000
+        }'
+```
 
-- This project does not aim to be production-complete at this stage.
-- Persistence and external integrations are intentionally incremental.
-- AI-assisted analysis is explicitly out of scope for the current MVP.
+## Example response
 
-## Roadmap
+```json
+{
+    "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2", 
+    "status": "no_match"
+}
+```
 
-- Replace in-memory repositories with real persistence.
-- Introduce application-level invariants and idempotency.
-- Implement audit logging as a secondary use case.
+## Run locally
+
+```bash
+git clone https://github.com/geldois/decision-engine.git
+cd decision-engine
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+decision-engine dev
+```
