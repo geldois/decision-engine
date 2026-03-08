@@ -44,7 +44,7 @@ print_line() {
     print_line "-"
     git ls-files --others --exclude-standard | while read -r file; do
         size=$(wc -c < "$file")
-        echo "File: $file"
+        echo "[$file]"
         print_line "."
     	if [ "$size" -lt "$MAX_SIZE" ]; then
             cat "$file"
