@@ -6,8 +6,7 @@ from app.domain.rules.rule import Rule
 class InMemoryRuleRepository(RuleRepositoryContract):
     # initializer
     def __init__(self):
-        self._next_id = 1
-        self._rules = []
+        self._rules = {}
 
     # methods
 
@@ -16,10 +15,7 @@ class InMemoryRuleRepository(RuleRepositoryContract):
         self, 
         rule: Rule
     ) -> Rule:
-        if rule.rule_id is None:
-            rule.rule_id = self._next_id
-            self._next_id += 1
-            self._rules.append(rule)
+        self._rules[rule._id] = rule
         
         return rule
     
@@ -27,8 +23,8 @@ class InMemoryRuleRepository(RuleRepositoryContract):
         self, 
         rule: Rule
     ) -> bool:
-        if rule in self._rules:
-            self._rules.remove(rule)
+        if rule._id in self._rules:
+            self._rules.pop(rule._id)
             
             return True
         
@@ -38,12 +34,8 @@ class InMemoryRuleRepository(RuleRepositoryContract):
         self, 
         rule_id: int
     ) -> Rule | None:
-        for r in self._rules:
-            if r.rule_id == rule_id:
-                return r
-        
-        return None
+        return self._rules.get(rule_id, None)
 
     def list_all(self) -> List[Rule]:
-        return self._rules
+        return list(self._rules.values())
     

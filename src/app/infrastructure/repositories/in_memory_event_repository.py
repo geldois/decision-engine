@@ -4,7 +4,6 @@ from app.application.repositories.event_repository_contract import EventReposito
 class InMemoryEventRepository(EventRepositoryContract):
     # initializer
     def __init__(self):
-        self._next_id = 1
         self._events = {}
 
     # methods
@@ -14,16 +13,27 @@ class InMemoryEventRepository(EventRepositoryContract):
         self, 
         event: Event
     ) -> Event:
-        if event.event_id is None:
-            event.event_id = self._next_id
-            self._next_id += 1
-            self._events[event.event_id] = event
+        self._events[event._id] = event
 
         return event
+    
+    def delete(
+        self, 
+        event: Event
+    ) -> bool:
+        if event._id in self._events:
+            self._events.pop(event._id)
+
+            return True
+        
+        return False
     
     def get_by_id(
         self, 
         event_id: int
     ) -> Event | None:
         return self._events.get(event_id, None)
+    
+    def list_all(self) -> list[Event]:
+        return list(self._events.values())
     

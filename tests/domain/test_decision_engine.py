@@ -5,28 +5,20 @@ from app.domain.services.decision_engine import DecisionEngine
 
 # tests
 def test_decision_engine_returns_decision_when_rule_applies():
-    event_type = "USER_CREATED"
-    payload = {
-        "user_id": 123,
-        "email": "user@email.com"
-    }
-    timestamp = 1700000000
-    name = "ALWAYS_APPLIES"
-    condition_field = EventField.EVENT_TYPE
-    condition_operator = RuleOperator.EQUALS
-    condition_value = "USER_CREATED"
-    outcome = DecisionOutcome.APPROVED
     event = Event(
-        event_type = event_type, 
-        payload = payload, 
-        timestamp = timestamp
+        event_type = "USER_CREATED", 
+        payload = {
+            "user_id": 123, 
+            "email": "user@email.com"
+        }, 
+        timestamp = 1700000000
     )
     rule = Rule(
-        name = name, 
-        condition_field = condition_field, 
-        condition_operator = condition_operator, 
-        condition_value = condition_value, 
-        outcome = outcome
+        name = "ALWAYS_APPLIES", 
+        condition_field = EventField.EVENT_TYPE, 
+        condition_operator = RuleOperator.EQUALS, 
+        condition_value = "USER_CREATED", 
+        outcome = DecisionOutcome.APPROVED
     )
     decision_engine = DecisionEngine()
     
@@ -35,25 +27,22 @@ def test_decision_engine_returns_decision_when_rule_applies():
         rules = [rule]
     )
     
-    assert decision.event == event
+    assert decision.event_id == event._id
     
-    assert decision.rule == rule
+    assert decision.rule_id == rule._id
     
-    assert decision.outcome is outcome
+    assert decision.outcome is DecisionOutcome.APPROVED
     
-    assert decision.explanation is not None
+    assert decision.explanation
 
 def test_decision_engine_returns_decision_with_no_match_outcome_when_no_rule_applies():
-    event_type = "USER_CREATED"
-    payload = {
-        "user_id": 123,
-        "email": "user@email.com"
-    }
-    timestamp = 1700000000
     event = Event(
-        event_type = event_type, 
-        payload = payload, 
-        timestamp = timestamp
+        event_type = "USER_CREATED", 
+        payload = {
+            "user_id": 123, 
+            "email": "user@email.com"
+        }, 
+        timestamp = 1700000000
     )
     decision_engine = DecisionEngine()
     
@@ -62,11 +51,11 @@ def test_decision_engine_returns_decision_with_no_match_outcome_when_no_rule_app
         rules = []
     )
     
-    assert decision.event == event
+    assert decision.event_id == event._id
     
-    assert decision.rule is None
+    assert not decision.rule_id
     
     assert decision.outcome is DecisionOutcome.NO_MATCH
     
-    assert decision.explanation is not None
+    assert decision.explanation
     

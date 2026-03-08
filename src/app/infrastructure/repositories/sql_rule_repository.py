@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
 from app.domain.decisions.decision_outcome import DecisionOutcome
@@ -21,13 +22,13 @@ class SqlRuleRepository(RuleRepositoryContract):
         rule_model: RuleModel
     ) -> Rule:
         rule = Rule(
-                name = rule_model.name, 
-                condition_field = EventField(rule_model.condition_field), 
-                condition_operator = RuleOperator(rule_model.condition_operator), 
-                condition_value = rule_model.condition_value_int if rule_model.condition_value_int else rule_model.condition_value_str, 
-                outcome = DecisionOutcome(rule_model.outcome), 
-                rule_id = rule_model.rule_id
-            )
+            name = rule_model.name, 
+            condition_field = EventField(rule_model.condition_field), 
+            condition_operator = RuleOperator(rule_model.condition_operator), 
+            condition_value = rule_model.condition_value_int if rule_model.condition_value_int else rule_model.condition_value_str, 
+            outcome = DecisionOutcome(rule_model.outcome), 
+            rule_id = rule_model._id
+        )
         
         return rule
     
@@ -36,6 +37,7 @@ class SqlRuleRepository(RuleRepositoryContract):
         rule: Rule
     ) -> RuleModel:
         rule_model = RuleModel(
+            _id = rule._id, 
             name = rule.name, 
             condition_field = rule.condition_field.value, 
             condition_operator = rule.condition_operator.value, 
@@ -51,11 +53,10 @@ class SqlRuleRepository(RuleRepositoryContract):
         self, 
         rule: Rule
     ) -> Rule:
-        rule_model = self.convert_rule_to_rule_model(rule)
+        rule_model = self.convert_rule_to_rule_model(rule = rule)
         self.session.add(rule_model)
         self.session.flush()
         self.session.refresh(rule_model)
-        rule.rule_id = rule_model.rule_id
 
         return rule
 
@@ -65,7 +66,7 @@ class SqlRuleRepository(RuleRepositoryContract):
     ) -> bool:
         rule_model = (
             self.session.execute(
-                select(RuleModel).where(RuleModel.rule_id == rule.rule_id)
+                select(RuleModel).where(RuleModel._id == rule._id)
             )
             .scalars()
             .first()
@@ -80,18 +81,18 @@ class SqlRuleRepository(RuleRepositoryContract):
 
     def get_by_id(
         self, 
-        rule_id: int
+        rule_id: UUID
     ) -> Rule | None:
         rule_model = (
             self.session.execute(
-                select(RuleModel).where(RuleModel.rule_id == rule_id)
+                select(RuleModel).where(RuleModel._id == rule_id)
             )
             .scalars()
             .first()
         )
 
         if rule_model:
-            return self.convert_rule_model_to_rule(rule_model)
+            return self.convert_rule_model_to_rule(rule_model = rule_model)
         
         return None
 
@@ -100,8 +101,8 @@ class SqlRuleRepository(RuleRepositoryContract):
         rules = []
 
         for rule_model in rule_models:
-            rule = self.convert_rule_model_to_rule(rule_model)
+            rule = self.convert_rule_model_to_rule(rule_model = rule_model)
             rules.append(rule)
         
-        return []
+        return rules
     
