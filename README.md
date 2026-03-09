@@ -1,9 +1,9 @@
 # decision-engine
 [![CI](https://github.com/geldois/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/geldois/decision-engine/actions)
 
-Rule-based decision engine built with Clean Architecture and strict TDD.
+Rule-based decision engine for configurable decision workflows.
 
-Live API: https://decision-engine.angelitochagas.com/docs
+Live API: https://decision-engine.angelitochagas.com
 
 ## Design
 
@@ -17,7 +17,33 @@ Live API: https://decision-engine.angelitochagas.com/docs
 - Domain and application layers developed with TDD.  
 - API contracts validated with automated tests.
 
-## Example request
+## Run locally
+
+```bash
+git clone https://github.com/geldois/decision-engine.git
+cd decision-engine
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+decision-engine dev
+```
+
+## Examples
+
+### Example request (swagger)
+
+```json
+{
+    "event_type": "USER_CREATED", 
+    "payload": {
+        "user_id": 123, 
+        "email": "user@email.com"
+    }, 
+    "timestamp": 1700000000
+}
+```
+
+### Example request (terminal)
 
 ```bash
 curl -X POST http://localhost:8000/events \
@@ -32,22 +58,11 @@ curl -X POST http://localhost:8000/events \
         }'
 ```
 
-## Example response
+### Example response
 
 ```json
 {
     "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2", 
     "status": "no_match"
 }
-```
-
-## Run locally
-
-```bash
-git clone https://github.com/geldois/decision-engine.git
-cd decision-engine
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .
-decision-engine dev
 ```

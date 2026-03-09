@@ -8,7 +8,7 @@ where = ["src"]
 [project]
 name = "decision-engine"
 version = "0.1.0"
-description = "Rule-based decision engine built with Clean Architecture and strict TDD"
+description = "Rule-based decision engine for configurable decision workflows"
 dependencies = [
     "fastapi", 
     "httpx", 
