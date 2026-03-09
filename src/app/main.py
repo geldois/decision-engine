@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import RedirectResponse
 from sqlalchemy import text
 
 from app.infrastructure.database.engine import init_db, SessionLocal
@@ -14,9 +15,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan = lifespan)
 
-@app.get("/")
+@app.get("/", include_in_schema = False)
 async def root():
-    return {"message": "Hello World"}
+    return RedirectResponse(url = "/docs")
 
 @app.get("/health")
 async def health():
