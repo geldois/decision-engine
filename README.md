@@ -1,9 +1,10 @@
 # decision-engine
+
 [![CI](https://github.com/geldois/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/geldois/decision-engine/actions)
 
-Rule-based decision engine for configurable decision workflows.
+Backend system for deterministic rule evaluation with explicit domain modeling and controlled transaction boundaries.
 
-Live API: https://decision-engine.angelitochagas.com
+Live API: <https://decision-engine.angelitochagas.com>
 
 ## Design
 
@@ -11,11 +12,14 @@ Live API: https://decision-engine.angelitochagas.com
 - Deterministic rule evaluation
 - Clean Architecture separation
 - Use-case driven application layer
+- Unit of Work
+- Manual dependecy injection via bootstrap (composition root)
 
 ## Testing
 
 - Domain and application layers developed with TDD.  
 - API contracts validated with automated tests.
+- Test database isolated from production database
 
 ## Run locally
 
@@ -32,7 +36,7 @@ decision-engine dev
 
 ### Register an event
 
-**Request (swagger)**
+#### Request (swagger)
 
 ```json
 {
@@ -42,13 +46,13 @@ decision-engine dev
 }
 ```
 
-**Request (terminal)**
+#### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/events -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "timestamp": 1000000000}'
+curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "timestamp": 1000000000}'
 ```
 
-**Response**
+#### Response
 
 ```json
 {
@@ -61,7 +65,7 @@ curl -v -X POST http://localhost:8000/events -H "Content-Type: application/json"
 
 ### Register a rule
 
-**Request (swagger)**
+#### Request (swagger)
 
 ```json
 {
@@ -73,13 +77,13 @@ curl -v -X POST http://localhost:8000/events -H "Content-Type: application/json"
 }
 ```
 
-**Request (terminal)**
+#### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/rules -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved"}'
+curl -v -X POST http://localhost:8000/rules/ -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved"}'
 ```
 
-**Response**
+#### Response
 
 ```json
 {
@@ -93,7 +97,7 @@ curl -v -X POST http://localhost:8000/rules -H "Content-Type: application/json" 
 
 Replace the "event_id" in the /decisions request with the ID returned when registering the event.
 
-**Request (swagger)**
+#### Request (swagger)
 
 ```json
 {
@@ -101,13 +105,13 @@ Replace the "event_id" in the /decisions request with the ID returned when regis
 }
 ```
 
-**Request (terminal)**
+#### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/decisions -H "Content-Type: application/json" -d '{"event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"}'
+curl -v -X POST http://localhost:8000/decisions/ -H "Content-Type: application/json" -d '{"event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"}'
 ```
 
-**Response**
+#### Response
 
 ```json
 {
