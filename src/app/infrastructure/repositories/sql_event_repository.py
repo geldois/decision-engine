@@ -22,8 +22,9 @@ class SqlEventRepository(EventRepositoryContract):
     ) -> Event:
         event = Event(
             event_type = event_model.event_type, 
-            payload = {"payload": event_model.payload}, 
-            timestamp = event_model.timestamp
+            payload = json.loads(event_model.payload), 
+            timestamp = event_model.timestamp, 
+            event_id = event_model._id
         )
         
         return event

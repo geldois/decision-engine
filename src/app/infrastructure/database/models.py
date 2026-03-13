@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import CheckConstraint, ForeignKey, Integer, String, UUID
+from sqlalchemy import CheckConstraint, ForeignKey, Integer, JSON, String, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infrastructure.database.engine import Base
@@ -10,7 +10,7 @@ class EventModel(Base):
 
     _id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key = True)
     event_type: Mapped[str] = mapped_column(String, nullable = False)
-    payload: Mapped[str] = mapped_column(String, nullable = False)
+    payload: Mapped[str] = mapped_column(JSON, nullable = False)
     timestamp: Mapped[int] = mapped_column(Integer, nullable = False)
 
 class RuleModel(Base):

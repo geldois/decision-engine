@@ -32,17 +32,20 @@ decision-engine dev
 
 ### Register an event
 
-**POST /events**
+**Request (swagger)**
 
 ```json
 {
-    "event_type": "USER_CREATED", 
-    "payload": {
-        "user_id": 123, 
-        "email": "user@email.com"
-    }, 
-    "timestamp": 1700000000
+    "event_type": "EVENT_TEST", 
+    "payload": {"test": true}, 
+    "timestamp": 1000000000
 }
+```
+
+**Request (terminal)**
+
+```bash
+curl -v -X POST http://localhost:8000/events -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "timestamp": 1000000000}'
 ```
 
 **Response**
@@ -50,34 +53,37 @@ decision-engine dev
 ```json
 {
     "event_type": "USER_CREATED", 
-    "payload": {
-        "user_id": 123, 
-        "email": "user@email.com"
-    }, 
-    "timestamp": 1700000000, 
+    "payload": {"test": true}, 
+    "timestamp": 1000000000, 
     "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"
 }
 ```
 
 ### Register a rule
 
-**POST /rules**
+**Request (swagger)**
 
 ```json
 {
-    "name": "ALWAYS_APPLIES", 
+    "name": "RULE_TEST", 
     "condition_field": "event_type", 
     "condition_operator": "==", 
-    "condition_value": "USER_CREATED", 
+    "condition_value": "EVENT_TEST", 
     "outcome": "approved"
 }
+```
+
+**Request (terminal)**
+
+```bash
+curl -v -X POST http://localhost:8000/rules -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved"}'
 ```
 
 **Response**
 
 ```json
 {
-    "name": "ALWAYS_APPLIES", 
+    "name": "RULE_TEST", 
     "outcome": "approved", 
     "rule_id": "6d2d3e6c-21ef-4a0c-91b5-1a8bb0b8e3c1"
 }
@@ -85,12 +91,20 @@ decision-engine dev
 
 ### Produce a decision
 
-**POST /decisions**
+Replace the "event_id" in the /decisions request with the ID returned when registering the event.
+
+**Request (swagger)**
 
 ```json
 {
     "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"
 }
+```
+
+**Request (terminal)**
+
+```bash
+curl -v -X POST http://localhost:8000/decisions -H "Content-Type: application/json" -d '{"event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"}'
 ```
 
 **Response**

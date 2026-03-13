@@ -44,3 +44,9 @@
 - [ ] Dockerfile
 - [ ] docker-compose
 - [ ] database migrations
+
+## System behavior
+
+- [ ] Load test API
+- [ ] Concurrent rule evaluation
+- [ ] Failure scenarios
