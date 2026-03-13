@@ -27,6 +27,8 @@ class ProduceDecisionUseCase:
     ) -> ProduceDecisionDtoResponse:
         event = self.event_repository.get_by_id(event_id = produce_decision_dto_request.event_id)
         rules = self.rule_repository.list_all()
+        if not event:
+            raise ValueError("Event not found in ProduceDecisionUseCase")
         decision = self.decision_engine.decide(
             event = event, 
             rules = rules
