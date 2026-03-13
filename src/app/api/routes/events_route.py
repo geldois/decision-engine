@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_register_event_use_case
+from app.bootstrap.container import get_register_event_use_case
 from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
 from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
 from app.application.dto.register_event_dto_request import RegisterEventDtoRequest

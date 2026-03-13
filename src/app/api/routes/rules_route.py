@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_register_rule_use_case
+from app.bootstrap.container import get_register_rule_use_case
 from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
 from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest

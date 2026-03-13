@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 import pytest
 
-from app.api.dependencies import get_event_repository, get_produce_decision_use_case
+from app.bootstrap.container import get_event_repository, get_produce_decision_use_case
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.domain.entities.events.event import Event
 from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository

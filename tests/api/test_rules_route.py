@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 import pytest
 
-from app.api.dependencies import get_register_rule_use_case
+from app.bootstrap.container import get_register_rule_use_case
 from app.main import app
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_produce_decision_use_case
+from app.bootstrap.container import get_produce_decision_use_case
 from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpRequest
 from app.api.schemas.produce_decision_http_response import ProduceDecisionHttpResponse
 from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoRequest
