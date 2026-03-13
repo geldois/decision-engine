@@ -1,6 +1,9 @@
+from uuid import UUID
+
+from app.application.repositories.decision_repository_contract import DecisionRepositoryContract
 from app.domain.entities.decisions.decision import Decision
 
-class InMemoryDecisionRepository:
+class InMemoryDecisionRepository(DecisionRepositoryContract):
     # initializer
     def __init__(self):
         self._decisions = {}
@@ -29,7 +32,7 @@ class InMemoryDecisionRepository:
 
     def get_by_id(
         self, 
-        decision_id: int
+        decision_id: UUID
     ) -> Decision | None:
         return self._decisions.get(decision_id, None)
 

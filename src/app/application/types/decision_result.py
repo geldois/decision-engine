@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-class DecisionStatus(StrEnum):
+class DecisionResult(StrEnum):
     # enum members
     APPROVED = "approved"
     NO_MATCH = "no_match"
