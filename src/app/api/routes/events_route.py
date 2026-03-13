@@ -1,36 +1,39 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_produce_decision_use_case
-from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpRequest
-from app.api.schemas.produce_decision_http_response import ProduceDecisionHttpResponse
-from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoRequest
-from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
+from app.api.dependencies import get_register_event_use_case
+from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
+from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
+from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
+from app.application.use_cases.register_event_use_case import RegisterEventUseCase
 
 router = APIRouter()
 
 # routes
 @router.post(
     "/events", 
-    response_model = ProduceDecisionHttpResponse
+    response_model = RegisterEventHttpResponse
 )
-def produce_decision(
-    produce_decision_http_request: ProduceDecisionHttpRequest,
-    produce_decision_use_case: ProduceDecisionUseCase = Depends(get_produce_decision_use_case)
-) -> ProduceDecisionHttpResponse:
+def register_event(
+    register_event_http_request: RegisterEventHttpRequest, 
+    register_event_use_case: RegisterEventUseCase = Depends(get_register_event_use_case)
+) -> RegisterEventHttpResponse:
     try:
-        produce_decision_dto_request = ProduceDecisionDtoRequest(
-            event_type = produce_decision_http_request.event_type,
-            payload = produce_decision_http_request.payload,
-            timestamp = produce_decision_http_request.timestamp
+        register_event_dto_request = RegisterEventDtoRequest(
+            event_type = register_event_http_request.event_type, 
+            payload = register_event_http_request.payload, 
+            timestamp = register_event_http_request.timestamp
         )
-        produce_decision_dto_response = produce_decision_use_case.produce_decision(produce_decision_dto_request = produce_decision_dto_request)
-        return ProduceDecisionHttpResponse(
-            event_id = produce_decision_dto_response.event_id, 
-            status = produce_decision_dto_response.status.value
+        register_event_dto_response = register_event_use_case.register_event(register_event_dto_request = register_event_dto_request)
+
+        return RegisterEventHttpResponse(
+            event_type = register_event_dto_response.event_type, 
+            payload = register_event_dto_response.payload, 
+            timestamp = register_event_dto_response.timestamp, 
+            event_id = register_event_dto_response.event_id
         )
     except Exception:
         raise HTTPException(
-            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR, 
             detail = "Internal server error"
         )
     

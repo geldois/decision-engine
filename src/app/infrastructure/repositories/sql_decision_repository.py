@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from app.application.repositories.decision_repository_contract import DecisionRepositoryContract
 from app.domain.entities.decisions.decision import Decision
@@ -76,7 +77,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
 
     def get_by_id(
         self, 
-        decision_id: int
+        decision_id: UUID
     ) -> Decision | None:
         decision_model = (
             self.session.execute(

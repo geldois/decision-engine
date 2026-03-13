@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from app.domain.entities.events.event import Event
 from app.application.repositories.event_repository_contract import EventRepositoryContract
 
@@ -30,7 +32,7 @@ class InMemoryEventRepository(EventRepositoryContract):
     
     def get_by_id(
         self, 
-        event_id: int
+        event_id: UUID
     ) -> Event | None:
         return self._events.get(event_id, None)
     

@@ -13,7 +13,7 @@ class DecisionEngine:
         for rule in rules:
             if rule.applies_to(event):
                 outcome = rule.outcome
-                explanation = "Rule applied to Event."
+                explanation = "Event <ID: " + str(event._id) + "> " + str(outcome.value)
 
                 return Decision(
                     event_id = event._id, 
@@ -23,7 +23,7 @@ class DecisionEngine:
                 )
             
         outcome = DecisionOutcome.NO_MATCH
-        explanation = "No Rule applied to Event."
+        explanation = "Event <ID: " + str(event._id) + "> " + str(outcome.value)
 
         return Decision(
             event_id = event._id, 
