@@ -1,5 +1,12 @@
 # Decision Engine – Roadmap
 
+## API evolution
+
+- [x] Split event ingestion and decision evaluation
+- [x] Introduce /events endpoint
+- [x] Introduce /rules endpoint
+- [x] Introduce /decisions endpoint
+
 ## SQL persistence
 
 - [x] Persist rules in SQL repository
@@ -12,7 +19,7 @@
 ## Public deployment
 
 - [x] Deploy API publicly (Render)
-- [ ] Configure environment variables
+- [x] Configure environment variables
 - [x] Add health check endpoint
 
 ## CI/CD

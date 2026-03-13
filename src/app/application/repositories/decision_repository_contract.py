@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 
 from app.domain.entities.decisions.decision import Decision
 
@@ -21,7 +22,7 @@ class DecisionRepositoryContract(ABC):
     @abstractmethod
     def get_by_id(
         self, 
-        decision_id: int
+        decision_id: UUID
     ) -> Decision | None:
         ...
 

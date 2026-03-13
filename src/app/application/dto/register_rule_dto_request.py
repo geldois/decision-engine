@@ -1,3 +1,7 @@
+from app.application.types.decision_result import DecisionResult
+from app.application.types.event_field import EventField
+from app.application.types.rule_operator import RuleOperator
+
 class RegisterRuleDtoRequest:
     __slots__ = (
         "condition_field", 
@@ -12,7 +16,7 @@ class RegisterRuleDtoRequest:
         self, 
         name: str, 
         condition_field: str, 
-        condition_operator: str,
+        condition_operator: str, 
         condition_value: int | str, 
         outcome: str
     ):

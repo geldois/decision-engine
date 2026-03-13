@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 
 from app.domain.entities.rules.rule import Rule
 
@@ -21,7 +22,7 @@ class RuleRepositoryContract(ABC):
     @abstractmethod
     def get_by_id(
         self, 
-        rule_id: int
+        rule_id: UUID
     ) -> Rule | None:
         ...
 

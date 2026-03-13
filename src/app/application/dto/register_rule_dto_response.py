@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.application.types.decision_result import DecisionResult
 
 @dataclass(frozen = True)
 class RegisterRuleDtoResponse:
+    name: str
+    outcome: DecisionResult
     rule_id: UUID
-    outcome: DecisionOutcome
     
