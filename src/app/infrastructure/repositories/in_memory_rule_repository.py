@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from app.application.repositories.rule_repository_contract import RuleRepositoryContract
 from app.domain.entities.rules.rule import Rule
@@ -32,7 +33,7 @@ class InMemoryRuleRepository(RuleRepositoryContract):
     
     def get_by_id(
         self, 
-        rule_id: int
+        rule_id: UUID
     ) -> Rule | None:
         return self._rules.get(rule_id, None)
 

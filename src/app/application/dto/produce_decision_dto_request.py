@@ -1,17 +1,13 @@
+from uuid import UUID
+
 class ProduceDecisionDtoRequest:
     __slots__ = (
-        "event_type",
-        "payload",
-        "timestamp"
+        "event_id", 
     )
 
     # initializer
     def __init__(
         self, 
-        event_type: str, 
-        payload: dict, 
-        timestamp: int
+        event_id: UUID
     ):
-        self.event_type = event_type
-        self.payload = payload
-        self.timestamp = timestamp
+        self.event_id = event_id

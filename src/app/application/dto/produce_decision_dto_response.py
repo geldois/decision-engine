@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from app.application.dto.decision_status import DecisionStatus
+from app.application.types.decision_result import DecisionResult
 
 @dataclass(frozen = True)
 class ProduceDecisionDtoResponse:
     event_id: UUID
-    status: DecisionStatus
-    
+    rule_id: UUID | None
+    status: DecisionResult
+    explanation: str
+    decision_id: UUID

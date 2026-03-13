@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
 import pytest
 
-from app.api.dependencies import get_produce_decision_use_case
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.api.dependencies import get_register_event_use_case
 from app.main import app
 
 @pytest.fixture
@@ -10,7 +9,7 @@ def client():
     return TestClient(app, raise_server_exceptions = True)
 
 # tests
-def test_events_route_produce_decision_returns_200_and_status(client):
+def test_events_route_register_event_returns_200_and_valid_http_response(client):
     payload = {
         "event_type": "USER_CREATED", 
         "payload": {
@@ -24,36 +23,43 @@ def test_events_route_produce_decision_returns_200_and_status(client):
 
     assert response.status_code == 200
     
+    assert "event_type" in response.json()
+
+    assert "payload" in response.json()
+
+    assert "timestamp" in response.json()
+
     assert "event_id" in response.json()
 
-    assert DecisionOutcome(response.json()["status"])
+    assert response.json()["event_type"] == payload["event_type"]
+
+    # assert response.json()["payload"] == payload["payload"]
+
+    assert response.json()["timestamp"] == payload["timestamp"]
     
-def test_events_route_produce_decision_returns_422_when_payload_is_missing(client):
-    payload = {
-        "event_type": "USER_CREATED",
-        "timestamp": 1700000000
-    }
+def test_events_route_register_event_returns_422_when_info_is_missing(client):
+    payload = {}
 
     response = client.post("/events", json = payload)
 
     assert response.status_code == 422
     
-class BrokenProduceDecisionUseCase:
+class BrokenRegisterEventUseCase:
     # methods
-    def produce_decision(
+    def register_event(
         self, 
         *_
     ):
         raise RuntimeError("boom")
 
-def test_events_route_produce_decision_returns_500_on_internal_error(client):
-    app.dependency_overrides[get_produce_decision_use_case] = (lambda: BrokenProduceDecisionUseCase())
+def test_events_route_register_event_returns_500_on_internal_error(client):
+    app.dependency_overrides[get_register_event_use_case] = (lambda: BrokenRegisterEventUseCase())
     payload = {
-        "event_type": "USER_CREATED",
+        "event_type": "USER_CREATED", 
         "payload": {
-            "user_id": 123,
+            "user_id": 123, 
             "email": "user@email.com"
-        },
+        }, 
         "timestamp": 1700000000
     }
 

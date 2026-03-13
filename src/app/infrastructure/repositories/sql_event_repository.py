@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from uuid import UUID
 import json
 
 from app.application.repositories.event_repository_contract import EventRepositoryContract
@@ -73,7 +74,7 @@ class SqlEventRepository(EventRepositoryContract):
     
     def get_by_id(
         self, 
-        event_id: int
+        event_id: UUID
     ) -> Event | None:
         event_model = (
             self.session.execute(

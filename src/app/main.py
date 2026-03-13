@@ -4,7 +4,9 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy import text
 
 from app.infrastructure.database.engine import init_db, SessionLocal
+from app.api.routes.decisions_route import router as decisions_router
 from app.api.routes.events_route import router as events_router
+from app.api.routes.rules_route import router as rules_router
 
 # tmp
 init_db()
@@ -35,3 +37,5 @@ async def health():
         session.close()
 
 app.include_router(events_router)
+app.include_router(rules_router)
+app.include_router(decisions_router)
