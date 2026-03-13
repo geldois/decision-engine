@@ -1,5 +1,26 @@
 {
+  "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[shellscript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
   "python.analysis.extraPaths": [
-    "./src"
-  ]
+    "src"
+  ],
+  "python.terminal.activateEnvironment": false,
+  "python.analysis.typeCheckingMode": "strict"
 }

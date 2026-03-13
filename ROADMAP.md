@@ -3,9 +3,9 @@
 ## API evolution
 
 - [x] Split event ingestion and decision evaluation
-- [x] Introduce /events endpoint
-- [x] Introduce /rules endpoint
-- [x] Introduce /decisions endpoint
+- [x] Introduce /events/ endpoint
+- [x] Introduce /rules/ endpoint
+- [x] Introduce /decisions/ endpoint
 
 ## SQL persistence
 
@@ -29,8 +29,8 @@
 
 ## Application robustness
 
-- [ ] Introduce transaction boundary
-- [ ] Implement rollback
+- [x] Introduce transaction boundary
+- [x] Implement rollback
 - [ ] Add DB indexes
 - [ ] Domain exceptions
 - [ ] HTTP mapping
