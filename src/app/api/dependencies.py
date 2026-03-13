@@ -9,6 +9,9 @@ from app.application.use_cases.register_event_use_case import RegisterEventUseCa
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
 from app.domain.services.decision_engine import DecisionEngine
 from app.infrastructure.database.engine import SessionLocal
+from app.infrastructure.repositories.in_memory_decision_repository import InMemoryDecisionRepository
+from app.infrastructure.repositories.in_memory_event_repository import InMemoryEventRepository
+from app.infrastructure.repositories.in_memory_rule_repository import InMemoryRuleRepository
 from app.infrastructure.repositories.sql_decision_repository import SqlDecisionRepository
 from app.infrastructure.repositories.sql_event_repository import SqlEventRepository
 from app.infrastructure.repositories.sql_rule_repository import SqlRuleRepository
