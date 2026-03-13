@@ -1,18 +1,9 @@
+from dataclasses import dataclass
+from typing import Any, Dict
+
+
+@dataclass(frozen=True)
 class RegisterEventDtoRequest:
-    __slots__ = (
-        "event_type", 
-        "payload", 
-        "timestamp"
-    )
-    
-    # initializer
-    def __init__(
-        self, 
-        event_type: str, 
-        payload: dict, 
-        timestamp: int
-    ):
-        self.event_type = event_type
-        self.payload = payload
-        self.timestamp = timestamp
-        
+    event_type: str
+    payload: Dict[str, Any]
+    timestamp = int

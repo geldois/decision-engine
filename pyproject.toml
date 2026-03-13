@@ -2,21 +2,35 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [project]
 name = "decision-engine"
 version = "0.1.0"
 description = "Rule-based decision engine for configurable decision workflows"
 dependencies = [
-    "fastapi", 
-    "httpx", 
-    "pytest", 
-    "sqlalchemy", 
-    "typer", 
+    "fastapi",
+    "httpx",
+    "pyright",
+    "pytest",
+    "ruff",
+    "sqlalchemy",
+    "typer",
     "uvicorn"
 ]
 
 [project.scripts]
 decision-engine = "app.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
