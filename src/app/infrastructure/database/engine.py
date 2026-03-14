@@ -1,22 +1,27 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy.pool import StaticPool
-import os
+import sqlalchemy, sqlalchemy.orm
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "sqlite:///:memory:"
-)
-engine = create_engine(
-    DATABASE_URL, 
-    connect_args = {"check_same_thread": False},
-    poolclass = StaticPool
-)
-SessionLocal = sessionmaker(bind = engine)
-Base = declarative_base()
+from app.bootstrap.config import DATABASE_URL, DEV_DATABASE_URL, TEST_DATABASE_URL
+
+Base = sqlalchemy.orm.declarative_base()
 
 # functions
-def init_db():
+def create_engine(
+    database_url: str, 
+    check_same_thread: bool, 
+    staticpool: bool
+) -> sqlalchemy.Engine:
+    engine = sqlalchemy.create_engine(
+        url = database_url, 
+        connect_args = {"check_same_thread": check_same_thread}, 
+        poolclass = sqlalchemy.StaticPool if staticpool else None
+    )
+
+    return engine
+
+def create_session(engine: sqlalchemy.Engine) -> sqlalchemy.orm.sessionmaker[sqlalchemy.orm.Session]:
+    return sqlalchemy.orm.sessionmaker(bind = engine)
+
+def create_database(engine: sqlalchemy.Engine):
     from app.infrastructure.database.models import DecisionModel, EventModel, RuleModel
 
     Base.metadata.create_all(bind = engine)
