@@ -1,5 +1,13 @@
 {
   "python.analysis.extraPaths": [
-    "./src"
-  ]
+    "src"
+  ],
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": false,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  }
 }

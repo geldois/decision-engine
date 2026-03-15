@@ -1,5 +1,7 @@
-from pydantic import BaseModel
 from uuid import UUID
+
+from pydantic import BaseModel
+
 
 class ProduceDecisionHttpResponse(BaseModel):
     event_id: UUID
@@ -7,4 +9,3 @@ class ProduceDecisionHttpResponse(BaseModel):
     status: str
     explanation: str
     decision_id: UUID
-    
