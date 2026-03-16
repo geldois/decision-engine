@@ -9,6 +9,7 @@ description = "Rule-based decision engine for configurable decision workflows"
 dependencies = [
     "fastapi",
     "httpx",
+    "pyright",
     "pytest",
     "ruff",
     "sqlalchemy",
