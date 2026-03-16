@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUTPUT="scripts/output/context.txt"
+MODE="${1:-all}"
+
+if [ "$MODE" = "core" ]; then
+  FILES=$(git ls-files ':!tests')
+elif [ "$MODE" = "tests" ]; then
+  FILES=$(git ls-files 'tests/**')
+else
+  FILES=$(git ls-files)
+fi
+
+OUTPUT="scripts/output/context-$MODE.txt"
 MAX_SIZE=20000
 
 print_line() {
@@ -17,12 +27,12 @@ print_line() {
 
   echo "PROJECT TREE"
   print_line "-"
-  git ls-files
+  echo "$FILES"
   echo
 
   echo "FILE CONTENT"
   print_line "-"
-  git ls-files | while read -r file; do
+  echo "$FILES" | while read -r file; do
     [ -f "$file" ] || continue
     if ! file "$file" | grep -q text; then
       continue

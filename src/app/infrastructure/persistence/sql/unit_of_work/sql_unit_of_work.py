@@ -2,14 +2,18 @@ from typing import Callable
 
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.application.repositories.decision_repository_contract import (
+from app.application.contracts.repositories.decision_repository_contract import (
     DecisionRepositoryContract,
 )
-from app.application.repositories.event_repository_contract import (
+from app.application.contracts.repositories.event_repository_contract import (
     EventRepositoryContract,
 )
-from app.application.repositories.rule_repository_contract import RuleRepositoryContract
-from app.application.unit_of_works.unit_of_work_contract import UnitOfWorkContract
+from app.application.contracts.repositories.rule_repository_contract import (
+    RuleRepositoryContract,
+)
+from app.application.contracts.unit_of_works.unit_of_work_contract import (
+    UnitOfWorkContract,
+)
 
 
 class SqlUnitOfWork(UnitOfWorkContract):
@@ -33,8 +37,8 @@ class SqlUnitOfWork(UnitOfWorkContract):
 
         return super().__enter__()
 
-    def commit(self):
+    def commit(self) -> None:
         self.session.commit()
 
-    def rollback(self):
+    def rollback(self) -> None:
         self.session.rollback()

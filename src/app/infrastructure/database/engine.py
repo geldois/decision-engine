@@ -1,11 +1,8 @@
 from sqlalchemy import Engine, StaticPool, create_engine
-from sqlalchemy.orm import Session, declarative_base, sessionmaker
-
-Base = declarative_base()
 
 
 def create_database_engine(
-    database_url: str, check_same_thread: bool, staticpool: bool
+    database_url: str, check_same_thread: bool = True, staticpool: bool = False
 ) -> Engine:
     engine = create_engine(
         url=database_url,
@@ -14,14 +11,3 @@ def create_database_engine(
     )
 
     return engine
-
-
-def create_session_factory(
-    engine: Engine,
-) -> sessionmaker[Session]:
-    return sessionmaker(bind=engine)
-
-
-def create_database(engine: Engine):
-
-    Base.metadata.create_all(bind=engine)

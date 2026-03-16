@@ -1,13 +1,16 @@
+from typing import List
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.application.repositories.rule_repository_contract import RuleRepositoryContract
+from app.application.contracts.repositories.rule_repository_contract import (
+    RuleRepositoryContract,
+)
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.domain.entities.events.event import EventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
-from app.infrastructure.database.models import RuleModel
+from app.infrastructure.database.models.rule_model import RuleModel
 
 
 class SqlRuleRepository(RuleRepositoryContract):
@@ -23,14 +26,14 @@ class SqlRuleRepository(RuleRepositoryContract):
             if rule_model.condition_value_int
             else rule_model.condition_value_str,
             outcome=DecisionOutcome(rule_model.outcome),
-            rule_id=rule_model._id,
+            rule_id=rule_model.id,
         )
 
         return rule
 
     def convert_rule_to_rule_model(self, rule: Rule) -> RuleModel:
         rule_model = RuleModel(
-            _id=rule._id,
+            _id=rule.id,
             name=rule.name,
             condition_field=rule.condition_field.value,
             condition_operator=rule.condition_operator.value,
@@ -55,7 +58,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
     def delete(self, rule: Rule) -> bool:
         rule_model = (
-            self.session.execute(select(RuleModel).where(RuleModel._id == rule._id))
+            self.session.execute(select(RuleModel).where(RuleModel.id == rule.id))
             .scalars()
             .first()
         )
@@ -69,7 +72,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
     def get_by_id(self, rule_id: UUID) -> Rule | None:
         rule_model = (
-            self.session.execute(select(RuleModel).where(RuleModel._id == rule_id))
+            self.session.execute(select(RuleModel).where(RuleModel.id == rule_id))
             .scalars()
             .first()
         )
@@ -81,7 +84,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
     def list_all(self) -> list[Rule]:
         rule_models = self.session.query(RuleModel).all()
-        rules = []
+        rules: List[Rule] = []
 
         for rule_model in rule_models:
             rule = self.convert_rule_model_to_rule(rule_model=rule_model)

@@ -17,7 +17,7 @@ class RuleOperator(Enum):
 
 class Rule(DomainEntity):
     __slots__ = (
-        "_id",
+        "id",
         "condition",
         "condition_field",
         "condition_operator",

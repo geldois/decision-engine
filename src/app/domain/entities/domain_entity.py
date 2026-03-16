@@ -5,4 +5,4 @@ class DomainEntity:
     __slots__: tuple[str, ...]
 
     def __init__(self, entity_id: UUID | None):
-        self._id = entity_id if entity_id else uuid4()
+        self.id = entity_id if entity_id else uuid4()

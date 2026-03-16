@@ -1,14 +1,15 @@
+from typing import List
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.application.repositories.decision_repository_contract import (
+from app.application.contracts.repositories.decision_repository_contract import (
     DecisionRepositoryContract,
 )
 from app.domain.entities.decisions.decision import Decision
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.infrastructure.database.models import DecisionModel
+from app.infrastructure.database.models.decision_model import DecisionModel
 
 
 class SqlDecisionRepository(DecisionRepositoryContract):
@@ -23,14 +24,14 @@ class SqlDecisionRepository(DecisionRepositoryContract):
             rule_id=decision_model.rule_id,
             outcome=DecisionOutcome(decision_model.outcome),
             explanation=decision_model.explanation,
-            decision_id=decision_model._id,
+            decision_id=decision_model.id,
         )
 
         return decision
 
     def convert_decision_to_decision_model(self, decision: Decision) -> DecisionModel:
         decision_model = DecisionModel(
-            _id=decision._id,
+            _id=decision.id,
             event_id=decision.event_id,
             rule_id=decision.rule_id,
             outcome=decision.outcome.value,
@@ -50,7 +51,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
     def delete(self, decision: Decision) -> bool:
         decision_model = (
             self.session.execute(
-                select(DecisionModel).where(DecisionModel._id == decision._id)
+                select(DecisionModel).where(DecisionModel.id == decision.id)
             )
             .scalars()
             .first()
@@ -66,7 +67,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
     def get_by_id(self, decision_id: UUID) -> Decision | None:
         decision_model = (
             self.session.execute(
-                select(DecisionModel).where(DecisionModel._id == decision_id)
+                select(DecisionModel).where(DecisionModel.id == decision_id)
             )
             .scalars()
             .first()
@@ -81,7 +82,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
 
     def list_all(self) -> list[Decision]:
         decision_models = self.session.query(DecisionModel).all()
-        decisions = []
+        decisions: List[Decision] = []
 
         for decision_model in decision_models:
             decision = self.convert_decision_model_to_decision(

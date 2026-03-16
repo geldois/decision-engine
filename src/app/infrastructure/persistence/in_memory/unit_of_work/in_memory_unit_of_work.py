@@ -1,14 +1,18 @@
 from copy import deepcopy
 from typing import Callable
 
-from app.application.repositories.decision_repository_contract import (
+from app.application.contracts.repositories.decision_repository_contract import (
     DecisionRepositoryContract,
 )
-from app.application.repositories.event_repository_contract import (
+from app.application.contracts.repositories.event_repository_contract import (
     EventRepositoryContract,
 )
-from app.application.repositories.rule_repository_contract import RuleRepositoryContract
-from app.application.unit_of_works.unit_of_work_contract import UnitOfWorkContract
+from app.application.contracts.repositories.rule_repository_contract import (
+    RuleRepositoryContract,
+)
+from app.application.contracts.unit_of_works.unit_of_work_contract import (
+    UnitOfWorkContract,
+)
 from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
     InMemoryStorage,
 )
@@ -17,10 +21,12 @@ from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
 class InMemoryUnitOfWork(UnitOfWorkContract):
     def __init__(
         self,
-        in_memory_storage_factory: Callable[..., InMemoryStorage],
-        decision_repository_factory: Callable[..., DecisionRepositoryContract],
-        event_repository_factory: Callable[..., EventRepositoryContract],
-        rule_repository_factory: Callable[..., RuleRepositoryContract],
+        in_memory_storage_factory: Callable[[], InMemoryStorage],
+        decision_repository_factory: Callable[
+            [InMemoryStorage], DecisionRepositoryContract
+        ],
+        event_repository_factory: Callable[[InMemoryStorage], EventRepositoryContract],
+        rule_repository_factory: Callable[[InMemoryStorage], RuleRepositoryContract],
     ):
         self.in_memory_storage_factory = in_memory_storage_factory
         self.decision_repository_factory = decision_repository_factory
@@ -40,8 +46,13 @@ class InMemoryUnitOfWork(UnitOfWorkContract):
 
         return super().__enter__()
 
-    def commit(self):
-        self.in_memory_storage = self.in_memory_storage_copy
+    def commit(self) -> None:
+        self.in_memory_storage.decisions.clear()
+        self.in_memory_storage.decisions.update(deepcopy(self.in_memory_storage_copy.decisions))
+        self.in_memory_storage.events.clear()
+        self.in_memory_storage.events.update(deepcopy(self.in_memory_storage_copy.events))
+        self.in_memory_storage.rules.clear()
+        self.in_memory_storage.rules.update(deepcopy(self.in_memory_storage_copy.rules))
 
-    def rollback(self):
+    def rollback(self) -> None:
         del self.in_memory_storage_copy

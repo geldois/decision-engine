@@ -39,7 +39,7 @@ print_line() {
   print_line "-"
   git diff --unified=5
   echo
-  
+
   echo "UNTRACKED FILES"
   print_line "-"
   git ls-files --others --exclude-standard | while read -r file; do

@@ -5,7 +5,7 @@ from app.domain.entities.domain_entity import DomainEntity
 
 
 class Decision(DomainEntity):
-    __slots__ = ("_id", "event_id", "explanation", "outcome", "rule_id")
+    __slots__ = ("id", "event_id", "explanation", "outcome", "rule_id")
 
     def __init__(
         self,

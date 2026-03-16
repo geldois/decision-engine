@@ -9,10 +9,10 @@ from app.domain.entities.rules.rule import Rule
 class InMemoryStorage:
     def __init__(
         self,
-        _decisions: Dict[UUID, Decision],
-        _events: Dict[UUID, Event],
-        _rules: Dict[UUID, Rule],
+        decisions: Dict[UUID, Decision] | None = None,
+        events: Dict[UUID, Event] | None = None,
+        rules: Dict[UUID, Rule] | None = None,
     ):
-        self._decisions = _decisions
-        self._events = _events
-        self._rules = _rules
+        self.decisions: Dict[UUID, Decision] = {}
+        self.events: Dict[UUID, Event] = {}
+        self.rules: Dict[UUID, Rule] = {}

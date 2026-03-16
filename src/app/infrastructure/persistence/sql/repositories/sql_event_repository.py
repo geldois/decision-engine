@@ -1,14 +1,15 @@
 from json import dumps, loads
+from typing import List
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.application.repositories.event_repository_contract import (
+from app.application.contracts.repositories.event_repository_contract import (
     EventRepositoryContract,
 )
 from app.domain.entities.events.event import Event
-from app.infrastructure.database.models import EventModel
+from app.infrastructure.database.models.event_model import EventModel
 
 
 class SqlEventRepository(EventRepositoryContract):
@@ -20,14 +21,14 @@ class SqlEventRepository(EventRepositoryContract):
             event_type=event_model.event_type,
             payload=loads(event_model.payload),
             timestamp=event_model.timestamp,
-            event_id=event_model._id,
+            event_id=event_model.id,
         )
 
         return event
 
     def convert_event_to_event_model(self, event: Event) -> EventModel:
         event_model = EventModel(
-            _id=event._id,
+            _id=event.id,
             event_type=event.event_type,
             payload=dumps(event.payload),
             timestamp=event.timestamp,
@@ -45,7 +46,7 @@ class SqlEventRepository(EventRepositoryContract):
 
     def delete(self, event: Event) -> bool:
         event_model = (
-            self.session.execute(select(EventModel).where(EventModel._id == event._id))
+            self.session.execute(select(EventModel).where(EventModel.id == event.id))
             .scalars()
             .first()
         )
@@ -59,7 +60,7 @@ class SqlEventRepository(EventRepositoryContract):
 
     def get_by_id(self, event_id: UUID) -> Event | None:
         event_model = (
-            self.session.execute(select(EventModel).where(EventModel._id == event_id))
+            self.session.execute(select(EventModel).where(EventModel.id == event_id))
             .scalars()
             .first()
         )
@@ -71,7 +72,7 @@ class SqlEventRepository(EventRepositoryContract):
 
     def list_all(self) -> list[Event]:
         event_models = self.session.query(EventModel).all()
-        events = []
+        events: List[Event] = []
 
         for event_model in event_models:
             event = self.convert_event_model_to_event(event_model=event_model)

@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Any, Dict
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
@@ -11,12 +12,12 @@ class EventField(Enum):
 
 
 class Event(DomainEntity):
-    __slots__ = ("_id", "event_type", "payload", "timestamp")
+    __slots__ = ("id", "event_type", "payload", "timestamp")
 
     def __init__(
         self,
         event_type: str,
-        payload: dict,
+        payload: Dict[str, Any],
         timestamp: int,
         event_id: UUID | None = None,
     ):

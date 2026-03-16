@@ -9,18 +9,18 @@ class DecisionEngine:
         for rule in rules:
             if rule.applies_to(event):
                 outcome = rule.outcome
-                explanation = "Event <ID: " + str(event._id) + "> " + str(outcome.value)
+                explanation = "Event <ID: " + str(event.id) + "> " + str(outcome.value)
 
                 return Decision(
-                    event_id=event._id,
-                    rule_id=rule._id,
+                    event_id=event.id,
+                    rule_id=rule.id,
                     outcome=outcome,
                     explanation=explanation,
                 )
 
         outcome = DecisionOutcome.NO_MATCH
-        explanation = "Event <ID: " + str(event._id) + "> " + str(outcome.value)
+        explanation = "Event <ID: " + str(event.id) + "> " + str(outcome.value)
 
         return Decision(
-            event_id=event._id, rule_id=None, outcome=outcome, explanation=explanation
+            event_id=event.id, rule_id=None, outcome=outcome, explanation=explanation
         )
