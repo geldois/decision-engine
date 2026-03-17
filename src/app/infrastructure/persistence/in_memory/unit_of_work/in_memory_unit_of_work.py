@@ -48,11 +48,17 @@ class InMemoryUnitOfWork(UnitOfWorkContract):
 
     def commit(self) -> None:
         self.in_memory_storage.decisions.clear()
-        self.in_memory_storage.decisions.update(deepcopy(self.in_memory_storage_copy.decisions))
+        self.in_memory_storage.decisions.update(
+            deepcopy(self.in_memory_storage_copy.decisions)
+        )
         self.in_memory_storage.events.clear()
-        self.in_memory_storage.events.update(deepcopy(self.in_memory_storage_copy.events))
+        self.in_memory_storage.events.update(
+            deepcopy(self.in_memory_storage_copy.events)
+        )
         self.in_memory_storage.rules.clear()
         self.in_memory_storage.rules.update(deepcopy(self.in_memory_storage_copy.rules))
+        
+        del self.in_memory_storage_copy
 
     def rollback(self) -> None:
         del self.in_memory_storage_copy

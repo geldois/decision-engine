@@ -1,3 +1,4 @@
+from functools import partial
 from uuid import UUID
 
 from app.application.contracts.repositories.event_repository_contract import (
@@ -31,3 +32,6 @@ class InMemoryEventRepository(EventRepositoryContract):
 
     def list_all(self) -> list[Event]:
         return list(self._events.values())
+
+
+in_memory_event_repository_factory = partial(InMemoryEventRepository)

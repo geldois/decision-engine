@@ -8,5 +8,5 @@ class Base(DeclarativeBase):
     id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
 
 
-def create_base(engine: Engine):
+def base_factory(engine: Engine):
     Base.metadata.create_all(bind=engine)

@@ -1,45 +1,41 @@
-from sqlalchemy.orm import Session
+from functools import partial
 
-from app.application.contracts.repositories.decision_repository_contract import (
-    DecisionRepositoryContract,
+from app.application.use_cases.produce_decision_use_case import (
+    produce_decision_use_case_factory,
 )
-from app.application.contracts.repositories.event_repository_contract import (
-    EventRepositoryContract,
+from app.application.use_cases.register_event_use_case import (
+    register_event_use_case_factory,
 )
-from app.application.contracts.repositories.rule_repository_contract import (
-    RuleRepositoryContract,
+from app.application.use_cases.register_rule_use_case import (
+    register_rule_use_case_factory,
 )
-from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
-from app.application.use_cases.register_event_use_case import RegisterEventUseCase
-from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
 from app.bootstrap.config import Config
-from app.domain.services.decision_engine import DecisionEngine
-from app.infrastructure.database.base import create_base
-from app.infrastructure.database.engine import create_database_engine
-from app.infrastructure.database.session import create_session_factory
+from app.infrastructure.database.base import base_factory
+from app.infrastructure.database.engine import engine_factory
+from app.infrastructure.database.session import get_session_factory
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
-    InMemoryDecisionRepository,
+    in_memory_decision_repository_factory,
 )
 from app.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
-    InMemoryEventRepository,
+    in_memory_event_repository_factory,
 )
 from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
-    InMemoryRuleRepository,
+    in_memory_rule_repository_factory,
 )
 from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
-    InMemoryStorage,
+    in_memory_storage_factory,
 )
 from app.infrastructure.persistence.in_memory.unit_of_work.in_memory_unit_of_work import (
     InMemoryUnitOfWork,
 )
 from app.infrastructure.persistence.sql.repositories.sql_decision_repository import (
-    SqlDecisionRepository,
+    sql_decision_repository_factory,
 )
 from app.infrastructure.persistence.sql.repositories.sql_event_repository import (
-    SqlEventRepository,
+    sql_event_repository_factory,
 )
 from app.infrastructure.persistence.sql.repositories.sql_rule_repository import (
-    SqlRuleRepository,
+    sql_rule_repository_factory,
 )
 from app.infrastructure.persistence.sql.unit_of_work.sql_unit_of_work import (
     SqlUnitOfWork,
@@ -52,80 +48,60 @@ class Container:
 
     def build(self):
         self.database_url = self.settings.get_env()
-        self.decision_engine = DecisionEngine()
-
-        def decision_repository_factory(
-            s: Session | InMemoryStorage,
-        ) -> DecisionRepositoryContract:
-            if isinstance(s, Session):
-                return SqlDecisionRepository(session=s)
-            else:
-                return InMemoryDecisionRepository(in_memory_storage=s)
-
-        def event_repository_factory(
-            s: Session | InMemoryStorage,
-        ) -> EventRepositoryContract:
-            if isinstance(s, Session):
-                return SqlEventRepository(session=s)
-            else:
-                return InMemoryEventRepository(in_memory_storage=s)
-
-        def rule_repository_factory(
-            s: Session | InMemoryStorage,
-        ) -> RuleRepositoryContract:
-            if isinstance(s, Session):
-                return SqlRuleRepository(session=s)
-            else:
-                return InMemoryRuleRepository(in_memory_storage=s)
-
-        self.decision_repository_factory = decision_repository_factory
-        self.event_repository_factory = event_repository_factory
-        self.rule_repository_factory = rule_repository_factory
 
         if self.database_url:
-            self.engine = create_database_engine(
+            self.engine = engine_factory(
                 database_url=self.database_url,
                 check_same_thread=False
                 if self.database_url == "sqlite:///:memory:"
                 else True,
-                staticpool=True
-                if self.database_url == "sqlite:///:memory:"
-                else False,
+                staticpool=True if self.database_url == "sqlite:///:memory:" else False,
             )
+            base_factory(engine=self.engine)
+            self.session_factory = get_session_factory(engine=self.engine)
 
-            create_base(engine=self.engine)
+            self.decision_repository_factory = sql_decision_repository_factory
+            self.event_repository_factory = sql_event_repository_factory
+            self.rule_repository_factory = sql_rule_repository_factory
 
-            self.session_factory = create_session_factory(engine=self.engine)
-            self.unit_of_work = SqlUnitOfWork(
+            self.unit_of_work_factory = partial(
+                SqlUnitOfWork,
                 session_factory=self.session_factory,
                 decision_repository_factory=self.decision_repository_factory,
                 event_repository_factory=self.event_repository_factory,
                 rule_repository_factory=self.rule_repository_factory,
             )
+
+            self.produce_decision_use_case = produce_decision_use_case_factory(
+                unit_of_work_factory=self.unit_of_work_factory
+            )
+            self.register_event_use_case = register_event_use_case_factory(
+                unit_of_work_factory=self.unit_of_work_factory
+            )
+            self.register_rule_use_case = register_rule_use_case_factory(
+                unit_of_work_factory=self.unit_of_work_factory
+            )
         else:
-
-            def in_memory_storage_factory() -> InMemoryStorage:
-                return InMemoryStorage()
-
             self.in_memory_storage_factory = in_memory_storage_factory
-            self.unit_of_work = InMemoryUnitOfWork(
+
+            self.decision_repository_factory = in_memory_decision_repository_factory
+            self.event_repository_factory = in_memory_event_repository_factory
+            self.rule_repository_factory = in_memory_rule_repository_factory
+
+            self.unit_of_work_factory = partial(
+                InMemoryUnitOfWork,
                 in_memory_storage_factory=self.in_memory_storage_factory,
                 decision_repository_factory=self.decision_repository_factory,
                 event_repository_factory=self.event_repository_factory,
                 rule_repository_factory=self.rule_repository_factory,
             )
 
-        def get_produce_decision_use_case() -> ProduceDecisionUseCase:
-            return ProduceDecisionUseCase(
-                unit_of_work=self.unit_of_work, decision_engine=self.decision_engine
+            self.produce_decision_use_case = produce_decision_use_case_factory(
+                unit_of_work_factory=self.unit_of_work_factory
             )
-
-        def get_register_event_use_case() -> RegisterEventUseCase:
-            return RegisterEventUseCase(unit_of_work=self.unit_of_work)
-
-        def get_register_rule_use_case() -> RegisterRuleUseCase:
-            return RegisterRuleUseCase(unit_of_work=self.unit_of_work)
-
-        self.get_produce_decision_use_case = get_produce_decision_use_case
-        self.get_register_event_use_case = get_register_event_use_case
-        self.get_register_rule_use_case = get_register_rule_use_case
+            self.register_event_use_case = register_event_use_case_factory(
+                unit_of_work_factory=self.unit_of_work_factory
+            )
+            self.register_rule_use_case = register_rule_use_case_factory(
+                unit_of_work_factory=self.unit_of_work_factory
+            )

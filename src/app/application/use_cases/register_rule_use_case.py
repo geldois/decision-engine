@@ -1,3 +1,6 @@
+from functools import partial
+from typing import Callable
+
 from app.application.contracts.unit_of_works.unit_of_work_contract import (
     UnitOfWorkContract,
 )
@@ -13,13 +16,15 @@ from app.domain.entities.rules.rule import Rule
 
 
 class RegisterRuleUseCase:
-    def __init__(self, unit_of_work: UnitOfWorkContract):
-        self.unit_of_work = unit_of_work
+    def __init__(self, unit_of_work_factory: Callable[..., UnitOfWorkContract]):
+        self.unit_of_work_factory = unit_of_work_factory
 
     def register_rule(
         self, register_rule_dto_request: RegisterRuleDtoRequest
     ) -> RegisterRuleDtoResponse:
-        with self.unit_of_work:
+        unit_of_work = self.unit_of_work_factory()
+
+        with unit_of_work:
             rule = Rule(
                 name=register_rule_dto_request.name,
                 condition_field=map_event_field_to_domain(
@@ -31,10 +36,13 @@ class RegisterRuleUseCase:
                 condition_value=register_rule_dto_request.condition_value,
                 outcome=map_result_to_outcome(register_rule_dto_request.outcome),
             )
-            saved_rule = self.unit_of_work.rule_repository.save(rule)
+            saved_rule = unit_of_work.rule_repository.save(rule)
 
             return RegisterRuleDtoResponse(
                 name=saved_rule.name,
                 outcome=map_outcome_to_result(saved_rule.outcome),
                 rule_id=saved_rule.id,
             )
+
+
+register_rule_use_case_factory = partial(RegisterRuleUseCase)

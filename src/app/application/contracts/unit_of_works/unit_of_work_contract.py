@@ -26,7 +26,7 @@ class UnitOfWorkContract(ABC):
         self,
         exc_type: type[BaseException] | None,
         exc_value: BaseException | None,
-        traceback: TracebackType | None,
+        exc_traceback: TracebackType | None,
     ):
         if exc_type:
             self.rollback()

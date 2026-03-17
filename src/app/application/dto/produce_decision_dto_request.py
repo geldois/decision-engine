@@ -1,7 +1,9 @@
 from uuid import UUID
 
+from app.application.contracts.dto.dto_request import DtoRequest
 
-class ProduceDecisionDtoRequest:
+
+class ProduceDecisionDtoRequest(DtoRequest):
     __slots__ = ("event_id",)
 
     def __init__(self, event_id: UUID):

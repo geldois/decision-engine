@@ -1,7 +1,7 @@
 from sqlalchemy import Engine, StaticPool, create_engine
 
 
-def create_database_engine(
+def engine_factory(
     database_url: str, check_same_thread: bool = True, staticpool: bool = False
 ) -> Engine:
     engine = create_engine(

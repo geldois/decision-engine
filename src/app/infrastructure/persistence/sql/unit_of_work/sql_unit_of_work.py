@@ -34,11 +34,13 @@ class SqlUnitOfWork(UnitOfWorkContract):
         self.decision_repository = self.decision_repository_factory(self.session)
         self.event_repository = self.event_repository_factory(self.session)
         self.rule_repository = self.rule_repository_factory(self.session)
-
+        
         return super().__enter__()
 
     def commit(self) -> None:
         self.session.commit()
+        self.session.close()
 
     def rollback(self) -> None:
         self.session.rollback()
+        self.session.close()
