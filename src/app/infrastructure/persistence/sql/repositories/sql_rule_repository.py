@@ -1,4 +1,3 @@
-from functools import partial
 from typing import List
 from uuid import UUID
 
@@ -92,6 +91,3 @@ class SqlRuleRepository(RuleRepositoryContract):
             rules.append(rule)
 
         return rules
-
-
-sql_rule_repository_factory = partial(SqlRuleRepository)

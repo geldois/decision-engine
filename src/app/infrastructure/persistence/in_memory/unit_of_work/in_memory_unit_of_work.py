@@ -21,20 +21,19 @@ from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
 class InMemoryUnitOfWork(UnitOfWorkContract):
     def __init__(
         self,
-        in_memory_storage_factory: Callable[[], InMemoryStorage],
+        in_memory_storage: InMemoryStorage,
         decision_repository_factory: Callable[
             [InMemoryStorage], DecisionRepositoryContract
         ],
         event_repository_factory: Callable[[InMemoryStorage], EventRepositoryContract],
         rule_repository_factory: Callable[[InMemoryStorage], RuleRepositoryContract],
     ):
-        self.in_memory_storage_factory = in_memory_storage_factory
+        self.in_memory_storage = in_memory_storage
         self.decision_repository_factory = decision_repository_factory
         self.event_repository_factory = event_repository_factory
         self.rule_repository_factory = rule_repository_factory
 
     def __enter__(self) -> UnitOfWorkContract:
-        self.in_memory_storage = self.in_memory_storage_factory()
         self.in_memory_storage_copy = deepcopy(self.in_memory_storage)
         self.decision_repository = self.decision_repository_factory(
             self.in_memory_storage_copy

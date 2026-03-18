@@ -1,4 +1,3 @@
-from functools import partial
 from typing import Callable
 
 from app.application.contracts.unit_of_works.unit_of_work_contract import (
@@ -15,7 +14,7 @@ class ProduceDecisionUseCase(UseCaseContract):
     def __init__(
         self,
         unit_of_work_factory: Callable[..., UnitOfWorkContract],
-        decision_engine: DecisionEngine,
+        decision_engine: DecisionEngine = DecisionEngine(),
     ) -> None:
         super().__init__(unit_of_work_factory=unit_of_work_factory)
         self.decision_engine = decision_engine
@@ -27,9 +26,9 @@ class ProduceDecisionUseCase(UseCaseContract):
             event = unit_of_work.event_repository.get_by_id(
                 event_id=dto_request.event_id
             )
-            rules = unit_of_work.rule_repository.list_all()
             if not event:
-                raise ValueError("Event not found in ProduceDecisionUseCase")
+                raise
+            rules = unit_of_work.rule_repository.list_all()
             decision = self.decision_engine.decide(event=event, rules=rules)
             saved_decision = unit_of_work.decision_repository.save(decision=decision)
 
@@ -40,8 +39,3 @@ class ProduceDecisionUseCase(UseCaseContract):
                 explanation=saved_decision.explanation,
                 decision_id=saved_decision.id,
             )
-
-
-produce_decision_use_case_factory = partial(
-    ProduceDecisionUseCase, decision_engine=DecisionEngine()
-)

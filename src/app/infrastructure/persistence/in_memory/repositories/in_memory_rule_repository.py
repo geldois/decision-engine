@@ -1,4 +1,3 @@
-from functools import partial
 from uuid import UUID
 
 from app.application.contracts.repositories.rule_repository_contract import (
@@ -32,6 +31,3 @@ class InMemoryRuleRepository(RuleRepositoryContract):
 
     def list_all(self) -> list[Rule]:
         return list(self.rules.values())
-
-
-in_memory_rule_repository_factory = partial(InMemoryRuleRepository)

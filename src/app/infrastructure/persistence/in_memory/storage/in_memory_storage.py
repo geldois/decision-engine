@@ -1,4 +1,3 @@
-from functools import partial
 from typing import Dict
 from uuid import UUID
 
@@ -17,6 +16,3 @@ class InMemoryStorage:
         self.decisions: Dict[UUID, Decision] = {}
         self.events: Dict[UUID, Event] = {}
         self.rules: Dict[UUID, Rule] = {}
-
-
-in_memory_storage_factory = partial(InMemoryStorage)

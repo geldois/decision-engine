@@ -1,5 +1,3 @@
-from functools import partial
-
 from app.application.contracts.use_cases.use_case_contract import UseCaseContract
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.application.dto.register_rule_dto_response import RegisterRuleDtoResponse
@@ -35,6 +33,3 @@ class RegisterRuleUseCase(UseCaseContract):
                 outcome=map_outcome_to_result(saved_rule.outcome),
                 rule_id=saved_rule.id,
             )
-
-
-register_rule_use_case_factory = partial(RegisterRuleUseCase)

@@ -1,7 +1,7 @@
-from app.api.contracts.schemas.http_contract import HttpContract
+from pydantic import BaseModel
 
 
-class RegisterRuleHttpRequest(HttpContract):
+class RegisterRuleHttpRequest(BaseModel):
     name: str
     condition_field: str
     condition_operator: str

@@ -46,7 +46,7 @@ decision-engine dev
 #### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/events -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "timestamp": 1000000000}'
+curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "timestamp": 1000000000}'
 ```
 
 #### Response
@@ -77,7 +77,7 @@ curl -v -X POST http://localhost:8000/events -H "Content-Type: application/json"
 #### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/rules -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved"}'
+curl -v -X POST http://localhost:8000/rules/ -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved"}'
 ```
 
 #### Response
@@ -105,7 +105,7 @@ Replace the "event_id" in the /decisions request with the ID returned when regis
 #### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/decisions -H "Content-Type: application/json" -d '{"event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"}'
+curl -v -X POST http://localhost:8000/decisions/ -H "Content-Type: application/json" -d '{"event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"}'
 ```
 
 #### Response

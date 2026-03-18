@@ -1,4 +1,3 @@
-from functools import partial
 from typing import List
 from uuid import UUID
 
@@ -92,6 +91,3 @@ class SqlDecisionRepository(DecisionRepositoryContract):
             decisions.append(decision)
 
         return decisions
-
-
-sql_decision_repository_factory = partial(SqlDecisionRepository)

@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from app.api.contracts.schemas.http_contract import HttpContract
+from pydantic import BaseModel
 
 
-class ProduceDecisionHttpRequest(HttpContract):
+class ProduceDecisionHttpRequest(BaseModel):
     event_id: UUID

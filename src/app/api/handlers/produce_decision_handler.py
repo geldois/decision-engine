@@ -1,3 +1,5 @@
+from typing import Callable
+
 from fastapi import HTTPException, status
 
 from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpRequest
@@ -6,18 +8,17 @@ from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoR
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
 
 
-class ProduceDecisionHandler:
-    def __init__(self, produce_decision_use_case: ProduceDecisionUseCase) -> None:
-        self.produce_decision_use_case = produce_decision_use_case
-
-    def __call__(
-        self, produce_decision_http_request: ProduceDecisionHttpRequest
+def build_produce_decision_handler(
+    produce_decision_use_case: ProduceDecisionUseCase,
+) -> Callable[[ProduceDecisionHttpRequest], ProduceDecisionHttpResponse]:
+    def produce_decision_handler(
+        produce_decision_http_request: ProduceDecisionHttpRequest,
     ) -> ProduceDecisionHttpResponse:
         try:
             produce_decision_dto_request = ProduceDecisionDtoRequest(
                 event_id=produce_decision_http_request.event_id
             )
-            produce_decision_dto_response = self.produce_decision_use_case.execute(
+            produce_decision_dto_response = produce_decision_use_case.execute(
                 dto_request=produce_decision_dto_request
             )
 
@@ -33,3 +34,5 @@ class ProduceDecisionHandler:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal server error",
             )
+
+    return produce_decision_handler

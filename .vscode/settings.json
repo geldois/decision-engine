@@ -21,5 +21,6 @@
   "python.analysis.extraPaths": [
     "src"
   ],
+  "python.terminal.activateEnvironment": false,
   "python.analysis.typeCheckingMode": "strict"
 }

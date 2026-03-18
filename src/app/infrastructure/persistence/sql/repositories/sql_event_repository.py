@@ -1,4 +1,3 @@
-from functools import partial
 from json import dumps, loads
 from typing import List
 from uuid import UUID
@@ -80,6 +79,3 @@ class SqlEventRepository(EventRepositoryContract):
             events.append(event)
 
         return events
-
-
-sql_event_repository_factory = partial(SqlEventRepository)
