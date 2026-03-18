@@ -1,9 +1,9 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from app.api.contracts.schemas.http_contract import HttpContract
 
 
-class ProduceDecisionHttpResponse(BaseModel):
+class ProduceDecisionHttpResponse(HttpContract):
     event_id: UUID
     rule_id: UUID | None
     status: str

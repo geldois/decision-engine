@@ -1,5 +1,8 @@
 from functools import partial
 
+from app.api.handlers.produce_decision_handler import ProduceDecisionHandler
+from app.api.handlers.register_event_handler import RegisterEventHandler
+from app.api.handlers.register_rule_handler import RegisterRuleHandler
 from app.application.use_cases.produce_decision_use_case import (
     produce_decision_use_case_factory,
 )
@@ -71,16 +74,6 @@ class Container:
                 event_repository_factory=self.event_repository_factory,
                 rule_repository_factory=self.rule_repository_factory,
             )
-
-            self.produce_decision_use_case = produce_decision_use_case_factory(
-                unit_of_work_factory=self.unit_of_work_factory
-            )
-            self.register_event_use_case = register_event_use_case_factory(
-                unit_of_work_factory=self.unit_of_work_factory
-            )
-            self.register_rule_use_case = register_rule_use_case_factory(
-                unit_of_work_factory=self.unit_of_work_factory
-            )
         else:
             self.in_memory_storage_factory = in_memory_storage_factory
 
@@ -96,12 +89,24 @@ class Container:
                 rule_repository_factory=self.rule_repository_factory,
             )
 
-            self.produce_decision_use_case = produce_decision_use_case_factory(
-                unit_of_work_factory=self.unit_of_work_factory
-            )
-            self.register_event_use_case = register_event_use_case_factory(
-                unit_of_work_factory=self.unit_of_work_factory
-            )
-            self.register_rule_use_case = register_rule_use_case_factory(
-                unit_of_work_factory=self.unit_of_work_factory
-            )
+        # use cases
+        self.produce_decision_use_case = produce_decision_use_case_factory(
+            unit_of_work_factory=self.unit_of_work_factory
+        )
+        self.register_event_use_case = register_event_use_case_factory(
+            unit_of_work_factory=self.unit_of_work_factory
+        )
+        self.register_rule_use_case = register_rule_use_case_factory(
+            unit_of_work_factory=self.unit_of_work_factory
+        )
+
+        # handlers
+        self.produce_decision_handler = ProduceDecisionHandler(
+            produce_decision_use_case=self.produce_decision_use_case
+        )
+        self.register_event_handler = RegisterEventHandler(
+            register_event_use_case=self.register_event_use_case
+        )
+        self.register_rule_handler = RegisterRuleHandler(
+            register_rule_use_case=self.register_rule_use_case
+        )

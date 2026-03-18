@@ -1,10 +1,10 @@
 from typing import Any, Dict
 from uuid import UUID
 
-from pydantic import BaseModel
+from app.api.contracts.schemas.http_contract import HttpContract
 
 
-class RegisterEventHttpResponse(BaseModel):
+class RegisterEventHttpResponse(HttpContract):
     event_type: str
     payload: Dict[str, Any]
     timestamp: int

@@ -1,9 +1,7 @@
 from typing import Any, Dict
 
-from app.application.contracts.dto.dto_request import DtoRequest
 
-
-class RegisterEventDtoRequest(DtoRequest):
+class RegisterEventDtoRequest:
     __slots__ = ("event_type", "payload", "timestamp")
 
     def __init__(self, event_type: str, payload: Dict[str, Any], timestamp: int):

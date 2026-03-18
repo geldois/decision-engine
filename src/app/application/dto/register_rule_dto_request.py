@@ -1,7 +1,4 @@
-from app.application.contracts.dto.dto_request import DtoRequest
-
-
-class RegisterRuleDtoRequest(DtoRequest):
+class RegisterRuleDtoRequest:
     __slots__ = (
         "condition_field",
         "condition_operator",

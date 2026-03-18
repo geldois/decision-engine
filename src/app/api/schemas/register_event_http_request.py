@@ -1,9 +1,9 @@
 from typing import Any, Dict
 
-from pydantic import BaseModel
+from app.api.contracts.schemas.http_contract import HttpContract
 
 
-class RegisterEventHttpRequest(BaseModel):
+class RegisterEventHttpRequest(HttpContract):
     event_type: str
     payload: Dict[str, Any]
     timestamp: int

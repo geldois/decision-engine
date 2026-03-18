@@ -2,11 +2,9 @@ from dataclasses import dataclass
 from typing import Any, Dict
 from uuid import UUID
 
-from app.application.contracts.dto.dto_response import DtoResponse
-
 
 @dataclass(frozen=True)
-class RegisterEventDtoResponse(DtoResponse):
+class RegisterEventDtoResponse:
     event_type: str
     payload: Dict[str, Any]
     timestamp: int

@@ -23,9 +23,7 @@ class ProduceDecisionUseCase(UseCaseContract):
     def execute(
         self, dto_request: ProduceDecisionDtoRequest
     ) -> ProduceDecisionDtoResponse:
-        unit_of_work = self.unit_of_work_factory()
-
-        with unit_of_work:
+        with self.unit_of_work_factory() as unit_of_work:
             event = unit_of_work.event_repository.get_by_id(
                 event_id=dto_request.event_id
             )

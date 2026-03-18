@@ -1,35 +1,21 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
+from app.api.handlers.register_event_handler import RegisterEventHandler
 from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
 from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
-from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
-from app.application.use_cases.register_event_use_case import RegisterEventUseCase
 
-events_router = APIRouter()
 
-@events_router.post("/events", response_model=RegisterEventHttpResponse)
-def register_event(
-    register_event_http_request: RegisterEventHttpRequest,
-    register_event_use_case: RegisterEventUseCase
-) -> RegisterEventHttpResponse:
-    try:
-        register_event_dto_request = RegisterEventDtoRequest(
-            event_type=register_event_http_request.event_type,
-            payload=register_event_http_request.payload,
-            timestamp=register_event_http_request.timestamp,
-        )
-        register_event_dto_response = register_event_use_case.register_event(
-            register_event_dto_request=register_event_dto_request
+def events_router_factory(
+    register_event_handler: RegisterEventHandler,
+) -> APIRouter:
+    events_router = APIRouter(prefix="/events")
+
+    @events_router.post("/", response_model=RegisterEventHttpResponse)
+    def route(
+        register_event_http_request: RegisterEventHttpRequest,
+    ) -> RegisterEventHttpResponse:
+        return register_event_handler(
+            register_event_http_request=register_event_http_request
         )
 
-        return RegisterEventHttpResponse(
-            event_type=register_event_dto_response.event_type,
-            payload=register_event_dto_response.payload,
-            timestamp=register_event_dto_response.timestamp,
-            event_id=register_event_dto_response.event_id,
-        )
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error",
-        )
+    return events_router

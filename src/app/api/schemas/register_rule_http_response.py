@@ -1,9 +1,9 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from app.api.contracts.schemas.http_contract import HttpContract
 
 
-class RegisterRuleHttpResponse(BaseModel):
+class RegisterRuleHttpResponse(HttpContract):
     name: str
     outcome: str
     rule_id: UUID
