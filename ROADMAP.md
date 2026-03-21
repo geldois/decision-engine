@@ -29,8 +29,8 @@
 
 ## Application robustness
 
-- [ ] Introduce transaction boundary
-- [ ] Implement rollback
+- [x] Introduce transaction boundary
+- [x] Implement rollback
 - [ ] Add DB indexes
 - [ ] Domain exceptions
 - [ ] HTTP mapping

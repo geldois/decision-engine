@@ -12,11 +12,14 @@ Live API: <https://decision-engine.angelitochagas.com>
 - Deterministic rule evaluation
 - Clean Architecture separation
 - Use-case driven application layer
+- Unit of Work
+- Manual dependecy injection via bootstrap (composition root)
 
 ## Testing
 
 - Domain and application layers developed with TDD.  
 - API contracts validated with automated tests.
+- Test database isolated from production database
 
 ## Run locally
 

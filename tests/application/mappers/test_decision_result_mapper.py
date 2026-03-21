@@ -6,6 +6,9 @@ from app.application.types.decision_result import DecisionResult
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 
 
+# ==========
+# valid
+# ==========
 def test_map_outcome_to_result_always_returns_correct_results():
     for member in DecisionOutcome:
         assert map_outcome_to_result(member) is DecisionResult[member.name]
