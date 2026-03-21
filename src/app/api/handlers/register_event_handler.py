@@ -21,7 +21,7 @@ def build_register_event_handler(
                 timestamp=register_event_http_request.timestamp,
             )
             register_event_dto_response = register_event_use_case.execute(
-                register_event_dto_request=register_event_dto_request
+                dto_request=register_event_dto_request
             )
 
             return RegisterEventHttpResponse(
@@ -30,10 +30,10 @@ def build_register_event_handler(
                 timestamp=register_event_dto_response.timestamp,
                 event_id=register_event_dto_response.event_id,
             )
-        except Exception as exception:
+        except Exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=exception,
+                detail="Internal server error",
             )
 
     return register_event_handler

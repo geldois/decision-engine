@@ -6,4 +6,4 @@ from typing import Any, Dict
 class RegisterEventDtoRequest:
     event_type: str
     payload: Dict[str, Any]
-    timestamp = int
+    timestamp: int

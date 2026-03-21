@@ -132,3 +132,5 @@ def test_sql_unit_of_work_rolls_back():
     assert not next(session.execute(select(RuleModel).limit(1)), None)
 
     assert not next(session.execute(select(DecisionModel).limit(1)), None)
+
+    session.close()

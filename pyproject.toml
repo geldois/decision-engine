@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "decision-engine"
 version = "0.1.0"
-description = "Rule-based decision engine for configurable decision workflows"
+description = "Backend system for deterministic rule evaluation with explicit domain modeling and controlled transaction boundaries"
 dependencies = [
     "fastapi",
     "httpx",

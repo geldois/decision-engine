@@ -23,7 +23,7 @@ def build_register_rule_handler(
                 outcome=register_rule_http_request.outcome,
             )
             register_rule_dto_response = register_rule_use_case.execute(
-                register_rule_dto_request=register_rule_dto_request
+                dto_request=register_rule_dto_request
             )
 
             return RegisterRuleHttpResponse(
@@ -31,10 +31,10 @@ def build_register_rule_handler(
                 outcome=register_rule_dto_response.outcome.value,
                 rule_id=register_rule_dto_response.rule_id,
             )
-        except Exception as exception:
+        except Exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=exception,
+                detail="Internal server error",
             )
 
     return register_rule_handler
