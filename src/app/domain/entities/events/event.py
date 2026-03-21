@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict
+from typing import Any
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
@@ -15,7 +15,7 @@ class Event(DomainEntity):
     def __init__(
         self,
         event_type: str,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         timestamp: int,
         event_id: UUID | None = None,
     ) -> None:

@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from sqlalchemy import select
@@ -85,7 +84,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
     def list_all(self) -> list[Rule]:
         rule_models = self.session.query(RuleModel).all()
-        rules: List[Rule] = []
+        rules: list[Rule] = []
 
         for rule_model in rule_models:
             rule = self.convert_rule_model_to_rule(rule_model=rule_model)

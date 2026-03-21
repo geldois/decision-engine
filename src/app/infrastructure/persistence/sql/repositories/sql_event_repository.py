@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from sqlalchemy import select
@@ -72,7 +71,7 @@ class SqlEventRepository(EventRepositoryContract):
 
     def list_all(self) -> list[Event]:
         event_models = self.session.query(EventModel).all()
-        events: List[Event] = []
+        events: list[Event] = []
 
         for event_model in event_models:
             event = self.convert_event_model_to_event(event_model=event_model)

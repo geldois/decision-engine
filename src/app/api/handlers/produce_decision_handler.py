@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 from fastapi import HTTPException, status
 
@@ -29,10 +29,10 @@ def build_produce_decision_handler(
                 explanation=produce_decision_dto_response.explanation,
                 decision_id=produce_decision_dto_response.decision_id,
             )
-        except Exception as exception:
+        except Exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=exception,
+                detail="Internal server error",
             )
 
     return produce_decision_handler

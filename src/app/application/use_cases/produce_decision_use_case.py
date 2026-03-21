@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 from app.application.contracts.unit_of_works.unit_of_work_contract import (
     UnitOfWorkContract,

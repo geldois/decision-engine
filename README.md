@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/geldois/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/geldois/decision-engine/actions)
 
-Rule-based decision engine for configurable decision workflows.
+Backend system for deterministic rule evaluation with explicit domain modeling and controlled transaction boundaries.
 
 Live API: <https://decision-engine.angelitochagas.com>
 
@@ -12,11 +12,14 @@ Live API: <https://decision-engine.angelitochagas.com>
 - Deterministic rule evaluation
 - Clean Architecture separation
 - Use-case driven application layer
+- Unit of Work
+- Manual dependecy injection via bootstrap (composition root)
 
 ## Testing
 
 - Domain and application layers developed with TDD.  
 - API contracts validated with automated tests.
+- Test database isolated from production database
 
 ## Run locally
 

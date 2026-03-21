@@ -5,14 +5,12 @@ from app.domain.entities.events.event import Event
 
 
 class RegisterEventUseCase(UseCaseContract):
-    def execute(
-        self, register_event_dto_request: RegisterEventDtoRequest
-    ) -> RegisterEventDtoResponse:
+    def execute(self, dto_request: RegisterEventDtoRequest) -> RegisterEventDtoResponse:
         with self.unit_of_work_factory() as unit_of_work:
             event = Event(
-                event_type=register_event_dto_request.event_type,
-                payload=register_event_dto_request.payload,
-                timestamp=register_event_dto_request.timestamp,
+                event_type=dto_request.event_type,
+                payload=dto_request.payload,
+                timestamp=dto_request.timestamp,
             )
             saved_event = unit_of_work.events.save(event=event)
 

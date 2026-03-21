@@ -1,9 +1,9 @@
-from typing import Any, Dict
+from typing import Any
 
 from pydantic import BaseModel
 
 
 class RegisterEventHttpRequest(BaseModel):
     event_type: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     timestamp: int

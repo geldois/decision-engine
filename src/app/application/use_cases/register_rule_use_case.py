@@ -13,20 +13,18 @@ from app.domain.entities.rules.rule import Rule
 
 
 class RegisterRuleUseCase(UseCaseContract):
-    def execute(
-        self, register_rule_dto_request: RegisterRuleDtoRequest
-    ) -> RegisterRuleDtoResponse:
+    def execute(self, dto_request: RegisterRuleDtoRequest) -> RegisterRuleDtoResponse:
         with self.unit_of_work_factory() as unit_of_work:
             rule = Rule(
-                name=register_rule_dto_request.name,
+                name=dto_request.name,
                 condition_field=map_exposible_event_field_to_domain(
-                    register_rule_dto_request.condition_field
+                    dto_request.condition_field
                 ),
                 condition_operator=map_rule_operator_to_domain(
-                    register_rule_dto_request.condition_operator
+                    dto_request.condition_operator
                 ),
-                condition_value=register_rule_dto_request.condition_value,
-                outcome=map_result_to_outcome(register_rule_dto_request.outcome),
+                condition_value=dto_request.condition_value,
+                outcome=map_result_to_outcome(dto_request.outcome),
             )
             saved_rule = unit_of_work.rules.save(rule)
 

@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from sqlalchemy import select
@@ -83,7 +82,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
 
     def list_all(self) -> list[Decision]:
         decision_models = self.session.query(DecisionModel).all()
-        decisions: List[Decision] = []
+        decisions: list[Decision] = []
 
         for decision_model in decision_models:
             decision = self.convert_decision_model_to_decision(

@@ -1,15 +1,13 @@
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
-from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
-    InMemoryRuleRepository,
-)
+from app.application.types.decision_result import DecisionResult
+from app.bootstrap.bootstrap import bootstrap
 
 
-def test_register_rule_use_case_returns_correct_dto_response():
-    register_rule_use_case = RegisterRuleUseCase(
-        rule_repository=InMemoryRuleRepository()
-    )
+# ==========
+# valid
+# ==========
+def test_register_rule_use_case_returns_valid_dto_response():
+    container = bootstrap(env="test")
     register_rule_dto_request = RegisterRuleDtoRequest(
         name="ALWAYS_APPLIES",
         condition_field="event_type",
@@ -18,12 +16,14 @@ def test_register_rule_use_case_returns_correct_dto_response():
         outcome="approved",
     )
 
-    register_rule_dto_response = register_rule_use_case.register_rule(
-        register_rule_dto_request=register_rule_dto_request
+    register_rule_dto_response = container.register_rule_use_case.execute(
+        dto_request=register_rule_dto_request
     )
 
     assert register_rule_dto_response.rule_id
 
     assert register_rule_dto_response.name == register_rule_dto_request.name
 
-    assert DecisionOutcome(register_rule_dto_response.outcome)
+    assert register_rule_dto_response.outcome is DecisionResult(
+        register_rule_dto_request.outcome
+    )

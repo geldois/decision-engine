@@ -1,6 +1,6 @@
+from collections.abc import Callable
 from enum import Enum
 from operator import eq, gt, lt, ne
-from typing import Callable
 from uuid import UUID
 
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome

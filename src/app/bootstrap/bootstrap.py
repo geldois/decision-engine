@@ -1,8 +1,10 @@
+from collections.abc import Callable
 from functools import partial
-from typing import Callable
+from typing import Any
 
-from fastapi import FastAPI
-from sqlalchemy import create_engine, StaticPool
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import RedirectResponse
+from sqlalchemy import StaticPool, create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.api.handlers.produce_decision_handler import build_produce_decision_handler
@@ -69,7 +71,7 @@ def build_in_memory_unit_of_work_factory(
 
 def build_prod_session_factory() -> Callable[[], Session]:
     engine = create_engine(
-        url="sqlite:///./db-prod.db", connect_args={"check_same_thread": True}
+        url="sqlite:///./db-prod.db", connect_args={"check_same_thread": False}
     )
     Base.metadata.create_all(bind=engine)
 
@@ -99,8 +101,10 @@ def build_sql_unit_of_work_factory(
     )
 
 
-def bootstrap(env: str) -> Container:
-    if env in "prod" or env == "dev":
+def bootstrap(env: str, overrides: dict[str, Any] | None = None) -> Container:
+    overrides = overrides or {}
+
+    if env in ("prod", "dev"):
         in_memory_storage = None
         session_factory = (
             build_prod_session_factory()
@@ -112,32 +116,25 @@ def bootstrap(env: str) -> Container:
         )
     elif env == "test":
         in_memory_storage = InMemoryStorage()
-        session_factory = build_dev_session_factory()
+        session_factory = None
         unit_of_work_factory = build_in_memory_unit_of_work_factory(
             in_memory_storage=in_memory_storage
         )
     else:
         raise ValueError("invalid env")
 
-    return Container(
-        in_memory_storage=in_memory_storage,
-        session_factory=session_factory,
-        unit_of_work_factory=unit_of_work_factory,
-    )
-
-
-def create_app(container: Container) -> FastAPI:
-    app = FastAPI()
-
     # use cases
-    produce_decision_use_case = ProduceDecisionUseCase(
-        unit_of_work_factory=container.unit_of_work_factory
+    produce_decision_use_case = overrides.get(
+        "produce_decision_use_case",
+        ProduceDecisionUseCase(unit_of_work_factory=unit_of_work_factory),
     )
-    register_event_use_case = RegisterEventUseCase(
-        unit_of_work_factory=container.unit_of_work_factory
+    register_event_use_case = overrides.get(
+        "register_event_use_case",
+        RegisterEventUseCase(unit_of_work_factory=unit_of_work_factory),
     )
-    register_rule_use_case = RegisterRuleUseCase(
-        unit_of_work_factory=container.unit_of_work_factory
+    register_rule_use_case = overrides.get(
+        "register_rule_use_case",
+        RegisterRuleUseCase(unit_of_work_factory=unit_of_work_factory),
     )
 
     # handlers
@@ -158,9 +155,47 @@ def create_app(container: Container) -> FastAPI:
     events_router = build_events_router(register_event_handler=register_event_handler)
     rules_router = build_rules_router(register_rule_handler=register_rule_handler)
 
+    return Container(
+        in_memory_storage=in_memory_storage,
+        session_factory=session_factory,
+        unit_of_work_factory=unit_of_work_factory,
+        produce_decision_use_case=produce_decision_use_case,
+        register_event_use_case=register_event_use_case,
+        register_rule_use_case=register_rule_use_case,
+        produce_decision_handler=produce_decision_handler,
+        register_event_handler=register_event_handler,
+        register_rule_handler=register_rule_handler,
+        decisions_router=decisions_router,
+        events_router=events_router,
+        rules_router=rules_router,
+    )
+
+
+def create_app(container: Container) -> FastAPI:
+    app = FastAPI()
+
     # app config
-    app.include_router(decisions_router)
-    app.include_router(events_router)
-    app.include_router(rules_router)
+    app.include_router(container.decisions_router)
+    app.include_router(container.events_router)
+    app.include_router(container.rules_router)
+
+    @app.get("/", include_in_schema=False)
+    async def root():
+        return RedirectResponse(url="/docs")
+
+    @app.get("/health")
+    async def health():
+        try:
+            session = container.session_factory()
+            session.execute(text("SELECT 1"))
+
+            return {"status": "ok"}
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Service unavailable",
+            )
+        finally:
+            session.close()
 
     return app
