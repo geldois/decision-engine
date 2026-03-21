@@ -23,14 +23,12 @@ class ProduceDecisionUseCase(UseCaseContract):
         self, dto_request: ProduceDecisionDtoRequest
     ) -> ProduceDecisionDtoResponse:
         with self.unit_of_work_factory() as unit_of_work:
-            event = unit_of_work.event_repository.get_by_id(
-                event_id=dto_request.event_id
-            )
+            event = unit_of_work.events.get_by_id(event_id=dto_request.event_id)
             if not event:
                 raise
-            rules = unit_of_work.rule_repository.list_all()
+            rules = unit_of_work.rules.list_all()
             decision = self.decision_engine.decide(event=event, rules=rules)
-            saved_decision = unit_of_work.decision_repository.save(decision=decision)
+            saved_decision = unit_of_work.decisions.save(decision=decision)
 
             return ProduceDecisionDtoResponse(
                 event_id=saved_decision.event_id,

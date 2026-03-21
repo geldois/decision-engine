@@ -31,10 +31,10 @@ def build_register_rule_handler(
                 outcome=register_rule_dto_response.outcome.value,
                 rule_id=register_rule_dto_response.rule_id,
             )
-        except Exception:
+        except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal server error",
+                detail=exception,
             )
 
     return register_rule_handler

@@ -14,7 +14,7 @@ class RegisterEventUseCase(UseCaseContract):
                 payload=register_event_dto_request.payload,
                 timestamp=register_event_dto_request.timestamp,
             )
-            saved_event = unit_of_work.event_repository.save(event=event)
+            saved_event = unit_of_work.events.save(event=event)
 
             return RegisterEventDtoResponse(
                 event_type=saved_event.event_type,

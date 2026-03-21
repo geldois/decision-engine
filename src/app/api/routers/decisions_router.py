@@ -14,7 +14,7 @@ def build_decisions_router(
     decisions_router = APIRouter(prefix="/decisions")
 
     @decisions_router.post("/", response_model=ProduceDecisionHttpResponse)
-    def route(http_request: ProduceDecisionHttpRequest) -> ProduceDecisionHttpResponse:
+    def produce_decision(http_request: ProduceDecisionHttpRequest) -> ProduceDecisionHttpResponse:
         return produce_decision_handler(http_request)
 
     return decisions_router

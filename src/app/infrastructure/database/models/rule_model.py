@@ -1,6 +1,4 @@
-import uuid
-
-from sqlalchemy import UUID, CheckConstraint, Integer, String
+from sqlalchemy import CheckConstraint, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.infrastructure.database.base import Base
@@ -9,7 +7,6 @@ from app.infrastructure.database.base import Base
 class RuleModel(Base):
     __tablename__ = "rules"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     condition_field: Mapped[str] = mapped_column(String, nullable=False)
     condition_operator: Mapped[str] = mapped_column(String, nullable=False)

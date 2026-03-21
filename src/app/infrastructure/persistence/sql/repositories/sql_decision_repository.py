@@ -13,7 +13,7 @@ from app.infrastructure.database.models.decision_model import DecisionModel
 
 
 class SqlDecisionRepository(DecisionRepositoryContract):
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
     def convert_decision_model_to_decision(
@@ -31,7 +31,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
 
     def convert_decision_to_decision_model(self, decision: Decision) -> DecisionModel:
         decision_model = DecisionModel(
-            _id=decision.id,
+            id=decision.id,
             event_id=decision.event_id,
             rule_id=decision.rule_id,
             outcome=decision.outcome.value,
@@ -59,6 +59,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
 
         if decision_model:
             self.session.delete(decision_model)
+            self.session.flush()
 
             return True
 

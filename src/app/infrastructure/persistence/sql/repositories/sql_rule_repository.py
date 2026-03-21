@@ -8,19 +8,19 @@ from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import EventField
+from app.domain.entities.events.event import ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.infrastructure.database.models.rule_model import RuleModel
 
 
 class SqlRuleRepository(RuleRepositoryContract):
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
     def convert_rule_model_to_rule(self, rule_model: RuleModel) -> Rule:
         rule = Rule(
             name=rule_model.name,
-            condition_field=EventField(rule_model.condition_field),
+            condition_field=ExposibleEventField(rule_model.condition_field),
             condition_operator=RuleOperator(rule_model.condition_operator),
             condition_value=rule_model.condition_value_int
             if rule_model.condition_value_int
@@ -33,7 +33,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
     def convert_rule_to_rule_model(self, rule: Rule) -> RuleModel:
         rule_model = RuleModel(
-            _id=rule.id,
+            id=rule.id,
             name=rule.name,
             condition_field=rule.condition_field.value,
             condition_operator=rule.condition_operator.value,
@@ -65,6 +65,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
         if rule_model:
             self.session.delete(rule_model)
+            self.session.flush()
 
             return True
 

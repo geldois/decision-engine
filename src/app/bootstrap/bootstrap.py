@@ -1,10 +1,9 @@
-from contextlib import asynccontextmanager
 from functools import partial
-from os import getenv
+from typing import Callable
 
 from fastapi import FastAPI
-from sqlalchemy import StaticPool, create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, StaticPool
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.api.handlers.produce_decision_handler import build_produce_decision_handler
 from app.api.handlers.register_event_handler import build_register_event_handler
@@ -21,6 +20,7 @@ from app.application.use_cases.register_event_use_case import (
 from app.application.use_cases.register_rule_use_case import (
     RegisterRuleUseCase,
 )
+from app.bootstrap.container import Container
 from app.infrastructure.database.base import Base
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
     InMemoryDecisionRepository,
@@ -51,79 +51,93 @@ from app.infrastructure.persistence.sql.unit_of_work.sql_unit_of_work import (
 )
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    yield
+def build_in_memory_storage() -> InMemoryStorage:
+    return InMemoryStorage()
 
 
-def create_app(env: str) -> FastAPI:
-    app = FastAPI(lifespan=lifespan)
+def build_in_memory_unit_of_work_factory(
+    in_memory_storage: InMemoryStorage,
+) -> Callable[[], InMemoryUnitOfWork]:
+    return partial(
+        InMemoryUnitOfWork,
+        in_memory_storage=in_memory_storage,
+        decision_repository_factory=InMemoryDecisionRepository,
+        event_repository_factory=InMemoryEventRepository,
+        rule_repository_factory=InMemoryRuleRepository,
+    )
 
-    if env == "dev":
-        engine = create_engine(
-            url=getenv("TEST_DATABASE_URL", "sqlite:///:memory:"),
-            connect_args={"check_same_thread": False},
-            poolclass=StaticPool,
+
+def build_prod_session_factory() -> Callable[[], Session]:
+    engine = create_engine(
+        url="sqlite:///./db-prod.db", connect_args={"check_same_thread": True}
+    )
+    Base.metadata.create_all(bind=engine)
+
+    return sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+def build_dev_session_factory() -> Callable[[], Session]:
+    engine = create_engine(
+        url="sqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(bind=engine)
+
+    return sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+def build_sql_unit_of_work_factory(
+    session_factory: Callable[[], Session],
+) -> Callable[[], SqlUnitOfWork]:
+    return partial(
+        SqlUnitOfWork,
+        session_factory=session_factory,
+        decision_repository_factory=SqlDecisionRepository,
+        event_repository_factory=SqlEventRepository,
+        rule_repository_factory=SqlRuleRepository,
+    )
+
+
+def bootstrap(env: str) -> Container:
+    if env in "prod" or env == "dev":
+        in_memory_storage = None
+        session_factory = (
+            build_prod_session_factory()
+            if env == "prod"
+            else build_dev_session_factory()
         )
-        
-        session_factory = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
-        sql_decision_repository_factory = partial(SqlDecisionRepository)
-        sql_event_repository_factory = partial(SqlEventRepository)
-        sql_rule_repository_factory = partial(SqlRuleRepository)
-
-        unit_of_work_factory = partial(
-            SqlUnitOfWork,
-            session_factory=session_factory,
-            decision_repository_factory=sql_decision_repository_factory,
-            event_repository_factory=sql_event_repository_factory,
-            rule_repository_factory=sql_rule_repository_factory,
-        )
-    elif env == "prod":
-        engine = create_engine(
-            url=getenv("PROD_DATABASE_URL", "sqlite:///./db-prod.db"),
-            connect_args={"check_same_thread": True},
-        )
-        
-        session_factory = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
-        sql_decision_repository_factory = partial(SqlDecisionRepository)
-        sql_event_repository_factory = partial(SqlEventRepository)
-        sql_rule_repository_factory = partial(SqlRuleRepository)
-
-        unit_of_work_factory = partial(
-            SqlUnitOfWork,
-            session_factory=session_factory,
-            decision_repository_factory=sql_decision_repository_factory,
-            event_repository_factory=sql_event_repository_factory,
-            rule_repository_factory=sql_rule_repository_factory,
+        unit_of_work_factory = build_sql_unit_of_work_factory(
+            session_factory=session_factory
         )
     elif env == "test":
         in_memory_storage = InMemoryStorage()
-
-        in_memory_decision_repository_factory = partial(InMemoryDecisionRepository)
-        in_memory_event_repository_factory = partial(InMemoryEventRepository)
-        in_memory_rule_repository_factory = partial(InMemoryRuleRepository)
-
-        unit_of_work_factory = partial(
-            InMemoryUnitOfWork,
-            in_memory_storage=in_memory_storage,
-            decision_repository_factory=in_memory_decision_repository_factory,
-            event_repository_factory=in_memory_event_repository_factory,
-            rule_repository_factory=in_memory_rule_repository_factory,
+        session_factory = build_dev_session_factory()
+        unit_of_work_factory = build_in_memory_unit_of_work_factory(
+            in_memory_storage=in_memory_storage
         )
     else:
-        raise ValueError("env is invalid.")
+        raise ValueError("invalid env")
+
+    return Container(
+        in_memory_storage=in_memory_storage,
+        session_factory=session_factory,
+        unit_of_work_factory=unit_of_work_factory,
+    )
+
+
+def create_app(container: Container) -> FastAPI:
+    app = FastAPI()
 
     # use cases
     produce_decision_use_case = ProduceDecisionUseCase(
-        unit_of_work_factory=unit_of_work_factory
+        unit_of_work_factory=container.unit_of_work_factory
     )
     register_event_use_case = RegisterEventUseCase(
-        unit_of_work_factory=unit_of_work_factory
+        unit_of_work_factory=container.unit_of_work_factory
     )
     register_rule_use_case = RegisterRuleUseCase(
-        unit_of_work_factory=unit_of_work_factory
+        unit_of_work_factory=container.unit_of_work_factory
     )
 
     # handlers
@@ -143,6 +157,8 @@ def create_app(env: str) -> FastAPI:
     )
     events_router = build_events_router(register_event_handler=register_event_handler)
     rules_router = build_rules_router(register_rule_handler=register_rule_handler)
+
+    # app config
     app.include_router(decisions_router)
     app.include_router(events_router)
     app.include_router(rules_router)

@@ -1,4 +1,3 @@
-from json import dumps, loads
 from typing import List
 from uuid import UUID
 
@@ -13,13 +12,13 @@ from app.infrastructure.database.models.event_model import EventModel
 
 
 class SqlEventRepository(EventRepositoryContract):
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
     def convert_event_model_to_event(self, event_model: EventModel) -> Event:
         event = Event(
             event_type=event_model.event_type,
-            payload=loads(event_model.payload),
+            payload=event_model.payload,
             timestamp=event_model.timestamp,
             event_id=event_model.id,
         )
@@ -28,9 +27,9 @@ class SqlEventRepository(EventRepositoryContract):
 
     def convert_event_to_event_model(self, event: Event) -> EventModel:
         event_model = EventModel(
-            _id=event.id,
+            id=event.id,
             event_type=event.event_type,
-            payload=dumps(event.payload),
+            payload=event.payload,
             timestamp=event.timestamp,
         )
 
@@ -53,6 +52,7 @@ class SqlEventRepository(EventRepositoryContract):
 
         if event_model:
             self.session.delete(event_model)
+            self.session.flush()
 
             return True
 

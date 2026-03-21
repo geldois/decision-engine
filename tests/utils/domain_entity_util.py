@@ -1,7 +1,5 @@
 from app.domain.entities.domain_entity import DomainEntity
 
 
-def assert_domain_entities_equal_structurally(a: DomainEntity, b: DomainEntity) -> bool:
-    return tuple(not callable(getattr(a, slot)) for slot in type(a).__slots__) == tuple(
-        not callable(getattr(b, slot)) for slot in type(b).__slots__
-    )
+def compare_domain_entities(a: DomainEntity, b: DomainEntity) -> bool:
+    return a.__dict__ == b.__dict__

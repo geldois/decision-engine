@@ -10,7 +10,7 @@ from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
 
 
 class InMemoryRuleRepository(RuleRepositoryContract):
-    def __init__(self, in_memory_storage: InMemoryStorage):
+    def __init__(self, in_memory_storage: InMemoryStorage) -> None:
         self.rules = in_memory_storage.rules
 
     def save(self, rule: Rule) -> Rule:

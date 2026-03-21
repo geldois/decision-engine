@@ -29,10 +29,10 @@ def build_produce_decision_handler(
                 explanation=produce_decision_dto_response.explanation,
                 decision_id=produce_decision_dto_response.decision_id,
             )
-        except Exception:
+        except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal server error",
+                detail=exception,
             )
 
     return produce_decision_handler

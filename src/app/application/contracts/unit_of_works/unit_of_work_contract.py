@@ -15,9 +15,9 @@ from app.application.contracts.repositories.rule_repository_contract import (
 
 
 class UnitOfWorkContract(ABC):
-    decision_repository: DecisionRepositoryContract
-    event_repository: EventRepositoryContract
-    rule_repository: RuleRepositoryContract
+    decisions: DecisionRepositoryContract
+    events: EventRepositoryContract
+    rules: RuleRepositoryContract
 
     def __enter__(self) -> UnitOfWorkContract:
         return self

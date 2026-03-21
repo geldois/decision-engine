@@ -14,7 +14,7 @@ def build_rules_router(
     rules_router = APIRouter(prefix="/rules")
 
     @rules_router.post("/", response_model=RegisterRuleHttpResponse)
-    def route(
+    def register_rule(
         http_request: RegisterRuleHttpRequest,
     ) -> RegisterRuleHttpResponse:
         return register_rule_handler(http_request)

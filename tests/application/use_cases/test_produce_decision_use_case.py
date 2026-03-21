@@ -3,7 +3,7 @@ from app.application.mappers.decision_result_mapper import map_outcome_to_result
 from app.application.types.decision_result import DecisionResult
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, EventField
+from app.domain.entities.events.event import Event, ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.domain.services.decision_engine import DecisionEngine
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (

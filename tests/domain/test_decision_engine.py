@@ -1,10 +1,13 @@
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, EventField
+from app.domain.entities.events.event import Event, ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.domain.services.decision_engine import DecisionEngine
 
 
-def test_decision_engine_returns_decision_when_rule_applies():
+# ==========
+# valid
+# ==========
+def test_decision_engine_returns_valid_decision_when_rule_applies():
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -12,7 +15,7 @@ def test_decision_engine_returns_decision_when_rule_applies():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
+        condition_field=ExposibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -21,16 +24,16 @@ def test_decision_engine_returns_decision_when_rule_applies():
 
     decision = decision_engine.decide(event=event, rules=[rule])
 
-    assert decision.event_id == event._id
+    assert decision.event_id == event.id
 
-    assert decision.rule_id == rule._id
+    assert decision.rule_id == rule.id
 
-    assert decision.outcome is DecisionOutcome.APPROVED
+    assert decision.outcome is rule.outcome
 
     assert decision.explanation
 
 
-def test_decision_engine_returns_decision_with_no_match_outcome_when_no_rule_applies():
+def test_decision_engine_returns_valid_decision_when_no_rule_applies():
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -40,7 +43,7 @@ def test_decision_engine_returns_decision_with_no_match_outcome_when_no_rule_app
 
     decision = decision_engine.decide(event=event, rules=[])
 
-    assert decision.event_id == event._id
+    assert decision.event_id == event.id
 
     assert not decision.rule_id
 

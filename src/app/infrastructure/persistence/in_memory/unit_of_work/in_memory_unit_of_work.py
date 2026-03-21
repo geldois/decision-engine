@@ -27,7 +27,7 @@ class InMemoryUnitOfWork(UnitOfWorkContract):
         ],
         event_repository_factory: Callable[[InMemoryStorage], EventRepositoryContract],
         rule_repository_factory: Callable[[InMemoryStorage], RuleRepositoryContract],
-    ):
+    ) -> None:
         self.in_memory_storage = in_memory_storage
         self.decision_repository_factory = decision_repository_factory
         self.event_repository_factory = event_repository_factory
@@ -35,13 +35,9 @@ class InMemoryUnitOfWork(UnitOfWorkContract):
 
     def __enter__(self) -> UnitOfWorkContract:
         self.in_memory_storage_copy = deepcopy(self.in_memory_storage)
-        self.decision_repository = self.decision_repository_factory(
-            self.in_memory_storage_copy
-        )
-        self.event_repository = self.event_repository_factory(
-            self.in_memory_storage_copy
-        )
-        self.rule_repository = self.rule_repository_factory(self.in_memory_storage_copy)
+        self.decisions = self.decision_repository_factory(self.in_memory_storage_copy)
+        self.events = self.event_repository_factory(self.in_memory_storage_copy)
+        self.rules = self.rule_repository_factory(self.in_memory_storage_copy)
 
         return super().__enter__()
 
@@ -56,7 +52,7 @@ class InMemoryUnitOfWork(UnitOfWorkContract):
         )
         self.in_memory_storage.rules.clear()
         self.in_memory_storage.rules.update(deepcopy(self.in_memory_storage_copy.rules))
-        
+
         del self.in_memory_storage_copy
 
     def rollback(self) -> None:

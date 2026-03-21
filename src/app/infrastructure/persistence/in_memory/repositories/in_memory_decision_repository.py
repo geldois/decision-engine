@@ -10,7 +10,7 @@ from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
 
 
 class InMemoryDecisionRepository(DecisionRepositoryContract):
-    def __init__(self, in_memory_storage: InMemoryStorage):
+    def __init__(self, in_memory_storage: InMemoryStorage) -> None:
         self.decisions = in_memory_storage.decisions
 
     def save(self, decision: Decision) -> Decision:

@@ -2,9 +2,10 @@ from fastapi import HTTPException, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy import text
 
-from app.bootstrap.bootstrap import create_app
+from app.bootstrap.bootstrap import bootstrap, create_app
 
-app = create_app("test")
+container = bootstrap(env="prod")
+app = create_app(container=container)
 
 
 @app.get("/", include_in_schema=False)

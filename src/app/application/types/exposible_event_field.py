@@ -1,7 +1,7 @@
 from enum import StrEnum
 
 
-class EventField(StrEnum):
-    EVENT_ID = "_id"
+class ExposibleEventField(StrEnum):
+    EVENT_ID = "id"
     EVENT_TYPE = "event_type"
     TIMESTAMP = "timestamp"

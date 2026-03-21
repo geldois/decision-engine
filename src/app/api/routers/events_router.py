@@ -14,7 +14,7 @@ def build_events_router(
     events_router = APIRouter(prefix="/events")
 
     @events_router.post("/", response_model=RegisterEventHttpResponse)
-    def route(
+    def register_event(
         http_request: RegisterEventHttpRequest,
     ) -> RegisterEventHttpResponse:
         return register_event_handler(http_request)
