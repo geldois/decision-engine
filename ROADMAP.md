@@ -1,5 +1,15 @@
 # Decision Engine – Roadmap
 
+## Domain refinement (hardening)
+
+- [ ] Replace ValueError with domain-specific exceptions
+- [ ] Define explicit error taxonomy (EventError, RuleError, DecisionError)
+- [ ] Remove silent failures (no try/except returning False)
+- [ ] Make rule evaluation explicit (priority / order)
+- [ ] Strengthen invariants across entities
+- [ ] Validate event payload structure (even minimally)
+- [ ] Ensure use cases never raise generic exceptions
+
 ## API evolution
 
 - [x] Split event ingestion and decision evaluation

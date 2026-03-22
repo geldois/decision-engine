@@ -1,10 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+mkdir -p scripts/output
+
 MODE="${1:-all}"
 
-if [ "$MODE" = "core" ]; then
-  FILES=$(git ls-files ':!tests')
+if [ "$MODE" = "all-root" ]; then
+  FILES=$(git ls-files '*' ':!*/*' || true)
+elif [ "$MODE" = "docs" ]; then
+  FILES=$(git ls-files 'docs/**')
+elif [ "$MODE" = "scripts" ]; then
+  FILES=$(git ls-files 'scripts/**')
+elif [ "$MODE" = "app" ]; then
+  FILES=$(git ls-files 'src/app/**')
+elif [ "$MODE" = "app-root" ]; then
+  FILES=$(git ls-files 'src/app/**' ':!src/app/*/*' || true)
+elif [ "$MODE" = "app-api" ]; then
+  FILES=$(git ls-files 'src/app/api/**')
+elif [ "$MODE" = "app-application" ]; then
+  FILES=$(git ls-files 'src/app/application/**')
+elif [ "$MODE" = "app-bootstrap" ]; then
+  FILES=$(git ls-files 'src/app/bootstrap/**')
+elif [ "$MODE" = "app-domain" ]; then
+  FILES=$(git ls-files 'src/app/domain/**')
+elif [ "$MODE" = "app-infrastructure" ]; then
+  FILES=$(git ls-files 'src/app/infrastructure/**')
 elif [ "$MODE" = "tests" ]; then
   FILES=$(git ls-files 'tests/**')
 else
@@ -21,7 +41,7 @@ print_line() {
 }
 
 {
-  echo "PROJECT CONTEXT"
+  echo "PROJECT CONTEXT ($MODE)"
   echo "Date: $(date)"
   print_line "="
 
