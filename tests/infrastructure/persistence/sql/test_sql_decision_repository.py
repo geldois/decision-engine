@@ -1,19 +1,21 @@
 from utils.domain_entity_util import compare_domain_entities
 
 from app.bootstrap.bootstrap import build_dev_session_factory
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, ExposibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.event import Event
+from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.persistence.sql.repositories.sql_decision_repository import (
     SqlDecisionRepository,
 )
 
 
 # ==========
-# valid
+# valid cases
 # ==========
-def test_sql_decision_repository_returns_saved_decision():
+def test_sql_decision_repository_returns_saved_decision() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -21,7 +23,7 @@ def test_sql_decision_repository_returns_saved_decision():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -36,7 +38,7 @@ def test_sql_decision_repository_returns_saved_decision():
     assert saved_decision is decision
 
 
-def test_sql_decision_repository_returns_decision_when_id_exists():
+def test_sql_decision_repository_returns_decision_when_id_exists() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -44,7 +46,7 @@ def test_sql_decision_repository_returns_decision_when_id_exists():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -60,7 +62,7 @@ def test_sql_decision_repository_returns_decision_when_id_exists():
     assert compare_domain_entities(a=returned_decision, b=decision)
 
 
-def test_sql_decision_repository_returns_none_when_id_does_not_exist():
+def test_sql_decision_repository_returns_none_when_id_does_not_exist() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -68,7 +70,7 @@ def test_sql_decision_repository_returns_none_when_id_does_not_exist():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -83,7 +85,7 @@ def test_sql_decision_repository_returns_none_when_id_does_not_exist():
     assert not returned_decision
 
 
-def test_sql_decision_repository_returns_true_when_decision_is_deleted():
+def test_sql_decision_repository_returns_true_when_decision_is_deleted() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -91,7 +93,7 @@ def test_sql_decision_repository_returns_true_when_decision_is_deleted():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -111,7 +113,7 @@ def test_sql_decision_repository_returns_true_when_decision_is_deleted():
     assert not returned_decision
 
 
-def test_sql_decision_repository_returns_false_when_decision_is_not_deleted():
+def test_sql_decision_repository_returns_false_when_decision_is_not_deleted() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -119,7 +121,7 @@ def test_sql_decision_repository_returns_false_when_decision_is_not_deleted():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -134,7 +136,7 @@ def test_sql_decision_repository_returns_false_when_decision_is_not_deleted():
     assert not it_was_deleted
 
 
-def test_sql_decision_repository_returns_list_of_decisions():
+def test_sql_decision_repository_returns_list_of_decisions() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -142,7 +144,7 @@ def test_sql_decision_repository_returns_list_of_decisions():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,

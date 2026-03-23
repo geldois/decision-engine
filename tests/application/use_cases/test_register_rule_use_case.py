@@ -1,14 +1,14 @@
-from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
-from app.application.types.decision_result import DecisionResult
+from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
 from app.bootstrap.bootstrap import bootstrap
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 # ==========
-# valid
+# valid cases
 # ==========
-def test_register_rule_use_case_returns_valid_dto_response():
+def test_register_rule_use_case_returns_valid_dto_response() -> None:
     container = bootstrap(env="test")
-    register_rule_dto_request = RegisterRuleDtoRequest(
+    dto_register_rule_request = DTORegisterRuleRequest(
         name="ALWAYS_APPLIES",
         condition_field="event_type",
         condition_operator="==",
@@ -16,14 +16,14 @@ def test_register_rule_use_case_returns_valid_dto_response():
         outcome="approved",
     )
 
-    register_rule_dto_response = container.register_rule_use_case.execute(
-        dto_request=register_rule_dto_request
+    dto_register_rule_response = container.register_rule_use_case.execute(
+        dto_request=dto_register_rule_request
     )
 
-    assert register_rule_dto_response.rule_id
+    assert dto_register_rule_response.rule_id
 
-    assert register_rule_dto_response.name == register_rule_dto_request.name
+    assert dto_register_rule_response.name == dto_register_rule_request.name
 
-    assert register_rule_dto_response.outcome is DecisionResult(
-        register_rule_dto_request.outcome
+    assert dto_register_rule_response.outcome is DecisionOutcome(
+        dto_register_rule_request.outcome
     )

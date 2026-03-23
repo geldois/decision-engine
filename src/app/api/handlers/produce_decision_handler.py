@@ -1,38 +1,40 @@
 from collections.abc import Callable
 
-from fastapi import HTTPException, status
-
-from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpRequest
-from app.api.schemas.produce_decision_http_response import ProduceDecisionHttpResponse
-from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoRequest
+from app.api.mappers.http_error_code_mapper import (
+    map_exception_to_http_exception,
+)
+from app.api.schemas.use_cases.http_produce_decision_request import (
+    HTTPProduceDecisionRequest,
+)
+from app.api.schemas.use_cases.http_produce_decision_response import (
+    HTTPProduceDecisionResponse,
+)
+from app.application.dto.dto_produce_decision_request import DTOProduceDecisionRequest
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
 
 
 def build_produce_decision_handler(
     produce_decision_use_case: ProduceDecisionUseCase,
-) -> Callable[[ProduceDecisionHttpRequest], ProduceDecisionHttpResponse]:
+) -> Callable[[HTTPProduceDecisionRequest], HTTPProduceDecisionResponse]:
     def produce_decision_handler(
-        produce_decision_http_request: ProduceDecisionHttpRequest,
-    ) -> ProduceDecisionHttpResponse:
+        http_produce_decision_request: HTTPProduceDecisionRequest,
+    ) -> HTTPProduceDecisionResponse:
         try:
-            produce_decision_dto_request = ProduceDecisionDtoRequest(
-                event_id=produce_decision_http_request.event_id
+            dto_produce_decision_request = DTOProduceDecisionRequest(
+                event_id=http_produce_decision_request.event_id
             )
-            produce_decision_dto_response = produce_decision_use_case.execute(
-                dto_request=produce_decision_dto_request
+            dto_produce_decision_response = produce_decision_use_case.execute(
+                dto_request=dto_produce_decision_request
             )
 
-            return ProduceDecisionHttpResponse(
-                event_id=produce_decision_dto_response.event_id,
-                rule_id=produce_decision_dto_response.rule_id,
-                status=produce_decision_dto_response.status.value,
-                explanation=produce_decision_dto_response.explanation,
-                decision_id=produce_decision_dto_response.decision_id,
+            return HTTPProduceDecisionResponse(
+                event_id=dto_produce_decision_response.event_id,
+                rule_id=dto_produce_decision_response.rule_id,
+                status=dto_produce_decision_response.status.value,
+                explanation=dto_produce_decision_response.explanation,
+                decision_id=dto_produce_decision_response.decision_id,
             )
-        except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal server error",
-            )
+        except Exception as exception:
+            raise map_exception_to_http_exception(exception=exception) from exception
 
     return produce_decision_handler

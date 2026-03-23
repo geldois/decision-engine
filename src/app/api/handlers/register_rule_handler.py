@@ -1,40 +1,40 @@
 from collections.abc import Callable
 
-from fastapi import HTTPException, status
-
-from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
-from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
-from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
+from app.api.mappers.http_error_code_mapper import (
+    map_exception_to_http_exception,
+)
+from app.api.schemas.use_cases.http_register_rule_request import HTTPRegisterRuleRequest
+from app.api.schemas.use_cases.http_register_rule_response import (
+    HTTPRegisterRuleResponse,
+)
+from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
 
 
 def build_register_rule_handler(
     register_rule_use_case: RegisterRuleUseCase,
-) -> Callable[[RegisterRuleHttpRequest], RegisterRuleHttpResponse]:
+) -> Callable[[HTTPRegisterRuleRequest], HTTPRegisterRuleResponse]:
     def register_rule_handler(
-        register_rule_http_request: RegisterRuleHttpRequest,
-    ) -> RegisterRuleHttpResponse:
+        http_register_rule_request: HTTPRegisterRuleRequest,
+    ) -> HTTPRegisterRuleResponse:
         try:
-            register_rule_dto_request = RegisterRuleDtoRequest(
-                name=register_rule_http_request.name,
-                condition_field=register_rule_http_request.condition_field,
-                condition_operator=register_rule_http_request.condition_operator,
-                condition_value=register_rule_http_request.condition_value,
-                outcome=register_rule_http_request.outcome,
+            dto_register_rule_request = DTORegisterRuleRequest(
+                name=http_register_rule_request.name,
+                condition_field=http_register_rule_request.condition_field,
+                condition_operator=http_register_rule_request.condition_operator,
+                condition_value=http_register_rule_request.condition_value,
+                outcome=http_register_rule_request.outcome,
             )
-            register_rule_dto_response = register_rule_use_case.execute(
-                dto_request=register_rule_dto_request
+            dto_register_rule_response = register_rule_use_case.execute(
+                dto_request=dto_register_rule_request
             )
 
-            return RegisterRuleHttpResponse(
-                name=register_rule_dto_response.name,
-                outcome=register_rule_dto_response.outcome.value,
-                rule_id=register_rule_dto_response.rule_id,
+            return HTTPRegisterRuleResponse(
+                name=dto_register_rule_response.name,
+                outcome=dto_register_rule_response.outcome.value,
+                rule_id=dto_register_rule_response.rule_id,
             )
-        except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal server error",
-            )
+        except Exception as exception:
+            raise map_exception_to_http_exception(exception=exception) from exception
 
     return register_rule_handler

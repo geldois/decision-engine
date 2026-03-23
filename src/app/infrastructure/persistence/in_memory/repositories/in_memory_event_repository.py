@@ -3,7 +3,7 @@ from uuid import UUID
 from app.application.contracts.repositories.event_repository_contract import (
     EventRepositoryContract,
 )
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
     InMemoryStorage,
 )

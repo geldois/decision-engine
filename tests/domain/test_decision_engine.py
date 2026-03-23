@@ -1,7 +1,9 @@
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, ExposibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.event import Event
+from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.rule_operator import RuleOperator
 
 
 # ==========
@@ -15,7 +17,7 @@ def test_decision_engine_returns_valid_decision_when_rule_applies():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,

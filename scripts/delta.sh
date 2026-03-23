@@ -54,6 +54,7 @@ print_line() {
   else
     git status -s -- $PATHS
   fi
+  echo
 
   echo "STAGED DIFF"
   print_line "-"

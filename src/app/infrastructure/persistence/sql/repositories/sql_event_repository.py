@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.application.contracts.repositories.event_repository_contract import (
     EventRepositoryContract,
 )
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 from app.infrastructure.database.models.event_model import EventModel
 
 

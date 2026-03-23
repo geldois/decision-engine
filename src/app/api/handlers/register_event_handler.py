@@ -1,39 +1,41 @@
 from collections.abc import Callable
 
-from fastapi import HTTPException, status
-
-from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
-from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
-from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
+from app.api.mappers.http_error_code_mapper import (
+    map_exception_to_http_exception,
+)
+from app.api.schemas.use_cases.http_register_event_request import (
+    HTTPRegisterEventRequest,
+)
+from app.api.schemas.use_cases.http_register_event_response import (
+    HTTPRegisterEventResponse,
+)
+from app.application.dto.dto_register_event_request import DTORegisterEventRequest
 from app.application.use_cases.register_event_use_case import RegisterEventUseCase
 
 
 def build_register_event_handler(
     register_event_use_case: RegisterEventUseCase,
-) -> Callable[[RegisterEventHttpRequest], RegisterEventHttpResponse]:
+) -> Callable[[HTTPRegisterEventRequest], HTTPRegisterEventResponse]:
     def register_event_handler(
-        register_event_http_request: RegisterEventHttpRequest,
-    ) -> RegisterEventHttpResponse:
+        http_register_event_request: HTTPRegisterEventRequest,
+    ) -> HTTPRegisterEventResponse:
         try:
-            register_event_dto_request = RegisterEventDtoRequest(
-                event_type=register_event_http_request.event_type,
-                payload=register_event_http_request.payload,
-                timestamp=register_event_http_request.timestamp,
+            dto_register_event_request = DTORegisterEventRequest(
+                event_type=http_register_event_request.event_type,
+                payload=http_register_event_request.payload,
+                timestamp=http_register_event_request.timestamp,
             )
-            register_event_dto_response = register_event_use_case.execute(
-                dto_request=register_event_dto_request
+            dto_register_event_response = register_event_use_case.execute(
+                dto_request=dto_register_event_request
             )
 
-            return RegisterEventHttpResponse(
-                event_type=register_event_dto_response.event_type,
-                payload=register_event_dto_response.payload,
-                timestamp=register_event_dto_response.timestamp,
-                event_id=register_event_dto_response.event_id,
+            return HTTPRegisterEventResponse(
+                event_type=dto_register_event_response.event_type,
+                payload=dto_register_event_response.payload,
+                timestamp=dto_register_event_response.timestamp,
+                event_id=dto_register_event_response.event_id,
             )
-        except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal server error",
-            )
+        except Exception as exception:
+            raise map_exception_to_http_exception(exception=exception) from exception
 
     return register_event_handler

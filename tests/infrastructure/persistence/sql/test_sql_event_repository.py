@@ -1,16 +1,16 @@
 from utils.domain_entity_util import compare_domain_entities
 
 from app.bootstrap.bootstrap import build_dev_session_factory
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 from app.infrastructure.persistence.sql.repositories.sql_event_repository import (
     SqlEventRepository,
 )
 
 
 # ==========
-# valid
+# valid cases
 # ==========
-def test_sql_event_repository_returns_saved_event():
+def test_sql_event_repository_returns_saved_event() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -24,7 +24,7 @@ def test_sql_event_repository_returns_saved_event():
     assert saved_event is event
 
 
-def test_sql_event_repository_returns_event_when_id_exists():
+def test_sql_event_repository_returns_event_when_id_exists() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -39,7 +39,7 @@ def test_sql_event_repository_returns_event_when_id_exists():
     assert compare_domain_entities(a=returned_event, b=event)
 
 
-def test_sql_event_repository_returns_none_when_id_does_not_exist():
+def test_sql_event_repository_returns_none_when_id_does_not_exist() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -53,7 +53,7 @@ def test_sql_event_repository_returns_none_when_id_does_not_exist():
     assert not returned_event
 
 
-def test_sql_event_repository_returns_true_when_event_is_deleted():
+def test_sql_event_repository_returns_true_when_event_is_deleted() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -72,7 +72,7 @@ def test_sql_event_repository_returns_true_when_event_is_deleted():
     assert not returned_event
 
 
-def test_sql_event_repository_returns_false_when_event_is_not_deleted():
+def test_sql_event_repository_returns_false_when_event_is_not_deleted() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -86,7 +86,7 @@ def test_sql_event_repository_returns_false_when_event_is_not_deleted():
     assert not it_was_deleted
 
 
-def test_sql_event_repository_returns_list_of_rules():
+def test_sql_event_repository_returns_list_of_rules() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
