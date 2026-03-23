@@ -1,7 +1,9 @@
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, ExposibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.event import Event
+from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
     InMemoryDecisionRepository,
 )
@@ -20,9 +22,9 @@ from app.infrastructure.persistence.in_memory.unit_of_work.in_memory_unit_of_wor
 
 
 # ==========
-# valid
+# valid cases
 # ==========
-def test_in_memory_unit_of_work_commits():
+def test_in_memory_unit_of_work_commits() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -30,7 +32,7 @@ def test_in_memory_unit_of_work_commits():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -67,9 +69,9 @@ def test_in_memory_unit_of_work_commits():
 
 
 # ==========
-# invalid
+# invalid cases
 # ==========
-def test_in_memory_unit_of_work_rolls_back():
+def test_in_memory_unit_of_work_rolls_back() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -77,7 +79,7 @@ def test_in_memory_unit_of_work_rolls_back():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=EventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,

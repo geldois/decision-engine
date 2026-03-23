@@ -21,7 +21,7 @@ Live API: <https://decision-engine.angelitochagas.com>
 - API contracts validated with automated tests.
 - Test database isolated from production database
 
-## Run locally
+## Run
 
 ```bash
 git clone https://github.com/geldois/decision-engine.git

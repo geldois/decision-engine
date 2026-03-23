@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from app.domain.entities.decisions.decision import Decision
+from app.domain.entities.decision import Decision
 
 
 class DecisionRepositoryContract(ABC):

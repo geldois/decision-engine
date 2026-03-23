@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from app.domain.entities.rules.rule import Rule
+from app.domain.entities.rule import Rule
 
 
 class RuleRepositoryContract(ABC):

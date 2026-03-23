@@ -3,7 +3,7 @@ from uuid import UUID
 from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
-from app.domain.entities.rules.rule import Rule
+from app.domain.entities.rule import Rule
 from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
     InMemoryStorage,
 )

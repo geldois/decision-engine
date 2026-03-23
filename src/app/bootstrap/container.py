@@ -4,13 +4,23 @@ from dataclasses import dataclass
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 
-from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpRequest
-from app.api.schemas.produce_decision_http_response import ProduceDecisionHttpResponse
-from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
-from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
-from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
-from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
-from app.application.contracts.unit_of_works.unit_of_work_contract import (
+from app.api.schemas.use_cases.http_produce_decision_request import (
+    HTTPProduceDecisionRequest,
+)
+from app.api.schemas.use_cases.http_produce_decision_response import (
+    HTTPProduceDecisionResponse,
+)
+from app.api.schemas.use_cases.http_register_event_request import (
+    HTTPRegisterEventRequest,
+)
+from app.api.schemas.use_cases.http_register_event_response import (
+    HTTPRegisterEventResponse,
+)
+from app.api.schemas.use_cases.http_register_rule_request import HTTPRegisterRuleRequest
+from app.api.schemas.use_cases.http_register_rule_response import (
+    HTTPRegisterRuleResponse,
+)
+from app.application.contracts.unit_of_work_contract import (
     UnitOfWorkContract,
 )
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
@@ -34,12 +44,12 @@ class Container:
 
     # handlers
     produce_decision_handler: Callable[
-        [ProduceDecisionHttpRequest], ProduceDecisionHttpResponse
+        [HTTPProduceDecisionRequest], HTTPProduceDecisionResponse
     ]
     register_event_handler: Callable[
-        [RegisterEventHttpRequest], RegisterEventHttpResponse
+        [HTTPRegisterEventRequest], HTTPRegisterEventResponse
     ]
-    register_rule_handler: Callable[[RegisterRuleHttpRequest], RegisterRuleHttpResponse]
+    register_rule_handler: Callable[[HTTPRegisterRuleRequest], HTTPRegisterRuleResponse]
 
     # routers
     decisions_router: APIRouter

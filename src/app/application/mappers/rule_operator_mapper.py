@@ -1,20 +1,20 @@
-from app.application.types.rule_operator import RuleOperator as DtoRuleOperator
-from app.domain.entities.rules.rule import RuleOperator
-
-_MAPPING = {
-    RuleOperator.EQUALS: DtoRuleOperator.EQUALS,
-    RuleOperator.NOT_EQUALS: DtoRuleOperator.NOT_EQUALS,
-    RuleOperator.LESS_THAN: DtoRuleOperator.LESS_THAN,
-    RuleOperator.GREATER_THAN: DtoRuleOperator.GREATER_THAN,
-}
+from app.domain.exceptions.rule_exception import RuleException
+from app.domain.value_objects.rule_operator import RuleOperator
 
 
-def map_rule_operator_to_dto(rule_operator: RuleOperator) -> DtoRuleOperator:
-    return _MAPPING[rule_operator]
+def map_rule_operator_by_name(rule_operator_name: str) -> RuleOperator:
+    return RuleOperator[rule_operator_name]
 
 
-def map_rule_operator_to_domain(rule_operator: DtoRuleOperator | str) -> RuleOperator:
-    if isinstance(rule_operator, DtoRuleOperator):
-        return RuleOperator(rule_operator.value)
+def map_rule_operator_by_value(rule_operator_value: str) -> RuleOperator:
+    if not rule_operator_value.strip():
+        raise RuleException.rule_condition_operator_cannot_be_empty(
+            details={"condition_operator": rule_operator_value}
+        )
 
-    return RuleOperator(rule_operator)
+    try:
+        return RuleOperator(rule_operator_value)
+    except ValueError as exception:
+        raise RuleException.rule_condition_operator_is_invalid(
+            details={"condition_operator": rule_operator_value}
+        ) from exception
