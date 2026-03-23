@@ -190,11 +190,11 @@ def create_app(container: Container) -> FastAPI:
             session.execute(text("SELECT 1"))
 
             return {"status": "ok"}
-        except Exception:
+        except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Service unavailable",
-            )
+            ) from exception
         finally:
             session.close()
 

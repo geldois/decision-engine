@@ -1,11 +1,11 @@
-from app.application.contracts.use_cases.use_case_contract import UseCaseContract
-from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
-from app.application.dto.register_event_dto_response import RegisterEventDtoResponse
-from app.domain.entities.events.event import Event
+from app.application.contracts.use_case_contract import UseCaseContract
+from app.application.dto.dto_register_event_request import DTORegisterEventRequest
+from app.application.dto.dto_register_event_response import DTORegisterEventResponse
+from app.domain.entities.event import Event
 
 
 class RegisterEventUseCase(UseCaseContract):
-    def execute(self, dto_request: RegisterEventDtoRequest) -> RegisterEventDtoResponse:
+    def execute(self, dto_request: DTORegisterEventRequest) -> DTORegisterEventResponse:
         with self.unit_of_work_factory() as unit_of_work:
             event = Event(
                 event_type=dto_request.event_type,
@@ -14,7 +14,7 @@ class RegisterEventUseCase(UseCaseContract):
             )
             saved_event = unit_of_work.events.save(event=event)
 
-            return RegisterEventDtoResponse(
+            return DTORegisterEventResponse(
                 event_type=saved_event.event_type,
                 payload=saved_event.payload,
                 timestamp=saved_event.timestamp,

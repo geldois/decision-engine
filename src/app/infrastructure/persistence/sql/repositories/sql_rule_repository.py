@@ -6,9 +6,10 @@ from sqlalchemy.orm import Session
 from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import ExposibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.rule import Rule
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.database.models.rule_model import RuleModel
 
 
@@ -19,7 +20,7 @@ class SqlRuleRepository(RuleRepositoryContract):
     def convert_rule_model_to_rule(self, rule_model: RuleModel) -> Rule:
         rule = Rule(
             name=rule_model.name,
-            condition_field=ExposibleEventField(rule_model.condition_field),
+            condition_field=EventField(rule_model.condition_field),
             condition_operator=RuleOperator(rule_model.condition_operator),
             condition_value=rule_model.condition_value_int
             if rule_model.condition_value_int
