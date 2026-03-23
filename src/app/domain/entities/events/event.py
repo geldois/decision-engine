@@ -3,6 +3,7 @@ from typing import Any
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
+from app.domain.exceptions.events.event_exception import EventException
 
 
 class ExposibleEventField(Enum):
@@ -21,13 +22,16 @@ class Event(DomainEntity):
     ) -> None:
 
         if not event_type.strip():
-            raise ValueError("invalid event_type")
+            raise EventException.event_type_cannot_be_empty()
 
         if not payload:
-            raise ValueError("invalid event payload")
+            raise EventException.event_payload_cannot_be_empty()
 
-        if not timestamp or timestamp < 0:
-            raise ValueError("invalid event timestamp")
+        if not timestamp:
+            raise EventException.event_timestamp_cannot_be_zero(timestamp=timestamp)
+
+        if timestamp < 0:
+            raise EventException.event_timestamp_cannot_be_negative(timestamp=timestamp)
 
         self.event_type = event_type.strip()
         self.payload = payload

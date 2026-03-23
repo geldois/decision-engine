@@ -6,6 +6,7 @@ from uuid import UUID
 from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.entities.events.event import Event, ExposibleEventField
+from app.domain.exceptions.rules.rule_exception import RuleException
 
 
 class RuleOperator(Enum):
@@ -35,13 +36,13 @@ class Rule(DomainEntity):
     ) -> None:
 
         if not name.strip():
-            raise ValueError("invalid rule name")
+            raise RuleException.rule_name_cannot_be_empty()
 
         if isinstance(condition_value, str) and not condition_value.strip():
-            raise ValueError("invalid condition value")
+            raise RuleException.rule_condition_value_cannot_be_empty()
 
         if not condition_value:
-            raise ValueError("invalid condition value")
+            raise RuleException.rule_condition_value_cannot_be_empty()
 
         self.name = name.strip()
         self.condition_field = condition_field
@@ -56,15 +57,20 @@ class Rule(DomainEntity):
         condition_operator: RuleOperator,
         condition_value: str | int,
     ) -> Callable[[Event], bool]:
-        def condition(event: Event) -> bool:
-            try:
+        try:
+
+            def condition(event: Event) -> bool:
                 operator_function = _MAPPING[condition_operator]
 
                 return operator_function(
                     event.get_field_value(condition_field), condition_value
                 )
-            except Exception:
-                return False
+        except Exception as exception:
+            raise RuleException.rule_condition_cannot_be_builded(
+                condition_field=condition_field,
+                condition_operator=condition_operator,
+                condition_value=condition_value,
+            ) from exception
 
         return condition
 
