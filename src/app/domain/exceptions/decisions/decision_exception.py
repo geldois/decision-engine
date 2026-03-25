@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.domain.exceptions.domain_exception import DomainException
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 class DecisionException(DomainException):

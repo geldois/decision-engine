@@ -1,19 +1,13 @@
 from collections.abc import Callable
-from enum import Enum
 from operator import eq, gt, lt, ne
 from uuid import UUID
 
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.domain.entities.domain_entity import DomainEntity
-from app.domain.entities.events.event import Event, ExposibleEventField
+from app.domain.entities.events.event import Event
 from app.domain.exceptions.rules.rule_exception import RuleException
-
-
-class RuleOperator(Enum):
-    EQUALS = "=="
-    NOT_EQUALS = "!="
-    LESS_THAN = "<"
-    GREATER_THAN = ">"
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
+from app.domain.value_objects.rule_operator import RuleOperator
 
 
 _MAPPING = {
@@ -28,7 +22,7 @@ class Rule(DomainEntity):
     def __init__(
         self,
         name: str,
-        condition_field: ExposibleEventField,
+        condition_field: ExponibleEventField,
         condition_operator: RuleOperator,
         condition_value: int | str,
         outcome: DecisionOutcome,
@@ -53,7 +47,7 @@ class Rule(DomainEntity):
 
     def build_condition(
         self,
-        condition_field: ExposibleEventField,
+        condition_field: ExponibleEventField,
         condition_operator: RuleOperator,
         condition_value: str | int,
     ) -> Callable[[Event], bool]:

@@ -7,7 +7,7 @@ from app.application.contracts.repositories.decision_repository_contract import 
     DecisionRepositoryContract,
 )
 from app.domain.entities.decisions.decision import Decision
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.infrastructure.database.models.decision_model import DecisionModel
 
 

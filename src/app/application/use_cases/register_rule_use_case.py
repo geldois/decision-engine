@@ -5,7 +5,7 @@ from app.application.mappers.decision_result_mapper import (
     map_outcome_to_result,
     map_result_to_outcome,
 )
-from app.application.mappers.exposible_event_field_mapper import (
+from app.application.mappers.exponible_event_field_mapper import (
     map_exposible_event_field_to_domain,
 )
 from app.application.mappers.rule_operator_mapper import map_rule_operator_to_domain

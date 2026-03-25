@@ -1,7 +1,7 @@
 from utils.domain_entity_util import compare_domain_entities
 
 from app.bootstrap.bootstrap import build_dev_session_factory
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.entities.events.event import Event, ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.domain.services.decision_engine import DecisionEngine

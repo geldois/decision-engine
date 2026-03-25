@@ -1,15 +1,9 @@
-from enum import Enum
 from typing import Any
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.exceptions.events.event_exception import EventException
-
-
-class ExposibleEventField(Enum):
-    EVENT_ID = "id"
-    EVENT_TYPE = "event_type"
-    TIMESTAMP = "timestamp"
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
 
 
 class Event(DomainEntity):
@@ -38,5 +32,5 @@ class Event(DomainEntity):
         self.timestamp = timestamp
         super().__init__(event_id)
 
-    def get_field_value(self, exposible_event_field: ExposibleEventField) -> str:
+    def get_field_value(self, exposible_event_field: ExponibleEventField) -> str:
         return self.__getattribute__(exposible_event_field.value)

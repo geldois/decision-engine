@@ -1,4 +1,4 @@
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.entities.events.event import ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (

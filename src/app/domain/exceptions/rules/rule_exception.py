@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-from app.domain.entities.events.event import ExposibleEventField
-from app.domain.entities.rules.rule import RuleOperator
 from app.domain.exceptions.domain_exception import DomainException
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
+from app.domain.value_objects.rule_operator import RuleOperator
 
 
 class RuleException(DomainException):
     @classmethod
     def rule_condition_cannot_be_builded(
         cls,
-        condition_field: ExposibleEventField,
+        condition_field: ExponibleEventField,
         condition_operator: RuleOperator,
         condition_value: int | str,
     ) -> RuleException:

@@ -1,7 +1,7 @@
 from utils.domain_entity_util import compare_domain_entities
 
 from app.bootstrap.bootstrap import build_dev_session_factory
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.entities.events.event import ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 from app.infrastructure.persistence.sql.repositories.sql_rule_repository import (

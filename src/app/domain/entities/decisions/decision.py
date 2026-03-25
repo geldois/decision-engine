@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.exceptions.decisions.decision_exception import DecisionException
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 class Decision(DomainEntity):

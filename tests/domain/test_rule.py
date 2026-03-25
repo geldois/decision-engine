@@ -1,6 +1,6 @@
 import pytest
 
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.entities.events.event import Event, ExposibleEventField
 from app.domain.entities.rules.rule import Rule, RuleOperator
 

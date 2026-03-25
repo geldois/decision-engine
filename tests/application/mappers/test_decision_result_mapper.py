@@ -3,7 +3,7 @@ from app.application.mappers.decision_result_mapper import (
     map_result_to_outcome,
 )
 from app.application.types.decision_result import DecisionResult
-from app.domain.entities.decisions.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 # ==========
