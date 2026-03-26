@@ -2,7 +2,7 @@ from typing import Any
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
-from app.domain.exceptions.events.event_exception import EventException
+from app.domain.exceptions.event_exception import EventException
 from app.domain.value_objects.exponible_event_field import ExponibleEventField
 
 

@@ -1,7 +1,7 @@
 from utils.domain_entity_util import compare_domain_entities
 
 from app.bootstrap.bootstrap import build_dev_session_factory
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 from app.infrastructure.persistence.sql.repositories.sql_event_repository import (
     SqlEventRepository,
 )

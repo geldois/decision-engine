@@ -3,8 +3,8 @@ from operator import eq, gt, lt, ne
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
-from app.domain.entities.events.event import Event
-from app.domain.exceptions.rules.rule_exception import RuleException
+from app.domain.entities.event import Event
+from app.domain.exceptions.rule_exception import RuleException
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.exponible_event_field import ExponibleEventField
 from app.domain.value_objects.rule_operator import RuleOperator

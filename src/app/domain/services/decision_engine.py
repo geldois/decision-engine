@@ -1,6 +1,6 @@
-from app.domain.entities.decisions.decision import Decision
-from app.domain.entities.events.event import Event
-from app.domain.entities.rules.rule import Rule
+from app.domain.entities.decision import Decision
+from app.domain.entities.event import Event
+from app.domain.entities.rule import Rule
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 

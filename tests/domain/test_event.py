@@ -1,7 +1,7 @@
 import pytest
 
-from app.domain.entities.events.event import Event
-from app.domain.exceptions.events.event_exception import EventException
+from app.domain.entities.event import Event
+from app.domain.exceptions.event_exception import EventException
 from app.domain.value_objects.exponible_event_field import ExponibleEventField
 
 

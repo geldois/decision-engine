@@ -1,7 +1,7 @@
 from app.application.contracts.use_cases.use_case_contract import UseCaseContract
 from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
 from app.application.dto.register_event_dto_response import RegisterEventDtoResponse
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 
 
 class RegisterEventUseCase(UseCaseContract):

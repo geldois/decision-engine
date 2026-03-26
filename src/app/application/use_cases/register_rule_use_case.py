@@ -9,7 +9,7 @@ from app.application.mappers.exponible_event_field_mapper import (
     map_exponible_event_field_to_domain,
 )
 from app.application.mappers.rule_operator_mapper import map_rule_operator_to_domain
-from app.domain.entities.rules.rule import Rule
+from app.domain.entities.rule import Rule
 
 
 class RegisterRuleUseCase(UseCaseContract):

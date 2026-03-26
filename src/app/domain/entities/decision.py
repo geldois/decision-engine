@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
-from app.domain.exceptions.decisions.decision_exception import DecisionException
+from app.domain.exceptions.decision_exception import DecisionException
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 

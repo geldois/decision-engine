@@ -1,5 +1,5 @@
-from app.domain.entities.events.event import Event
-from app.domain.entities.rules.rule import Rule
+from app.domain.entities.event import Event
+from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.exponible_event_field import ExponibleEventField

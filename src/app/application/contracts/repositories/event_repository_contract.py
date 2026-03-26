@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 
 
 class EventRepositoryContract(ABC):

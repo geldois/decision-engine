@@ -1,4 +1,4 @@
-from app.domain.entities.rules.rule import Rule
+from app.domain.entities.rule import Rule
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.exponible_event_field import ExponibleEventField
 from app.domain.value_objects.rule_operator import RuleOperator

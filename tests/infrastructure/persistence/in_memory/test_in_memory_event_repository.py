@@ -1,4 +1,4 @@
-from app.domain.entities.events.event import Event
+from app.domain.entities.event import Event
 from app.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
     InMemoryEventRepository,
 )
