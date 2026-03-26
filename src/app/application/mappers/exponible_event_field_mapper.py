@@ -1,25 +1,25 @@
-from app.application.types.exposible_event_field import (
-    ExposibleEventField as DtoExposibleEventField,
+from app.application.types.exponible_event_field import (
+    ExponibleEventField as DtoExponibleEventField,
 )
-from app.domain.entities.events.event import ExponibleEventField
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
 
 _MAPPING = {
-    ExponibleEventField.EVENT_ID: DtoExposibleEventField.EVENT_ID,
-    ExponibleEventField.EVENT_TYPE: DtoExposibleEventField.EVENT_TYPE,
-    ExponibleEventField.TIMESTAMP: DtoExposibleEventField.TIMESTAMP,
+    ExponibleEventField.EVENT_ID: DtoExponibleEventField.EVENT_ID,
+    ExponibleEventField.EVENT_TYPE: DtoExponibleEventField.EVENT_TYPE,
+    ExponibleEventField.TIMESTAMP: DtoExponibleEventField.TIMESTAMP,
 }
 
 
-def map_exposible_event_field_to_dto(
+def map_exponible_event_field_to_dto(
     event_field: ExponibleEventField,
-) -> DtoExposibleEventField:
+) -> DtoExponibleEventField:
     return _MAPPING[event_field]
 
 
-def map_exposible_event_field_to_domain(
-    event_field: DtoExposibleEventField | str,
+def map_exponible_event_field_to_domain(
+    event_field: DtoExponibleEventField | str,
 ) -> ExponibleEventField:
-    if isinstance(event_field, DtoExposibleEventField):
+    if isinstance(event_field, DtoExponibleEventField):
         return ExponibleEventField(event_field.value)
 
     return ExponibleEventField(event_field)

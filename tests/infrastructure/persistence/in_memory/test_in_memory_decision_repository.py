@@ -1,7 +1,9 @@
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, ExposibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.events.event import Event
+from app.domain.entities.rules.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
+from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
     InMemoryDecisionRepository,
 )
@@ -21,7 +23,7 @@ def test_in_memory_decision_repository_returns_saved_decision():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -45,7 +47,7 @@ def test_in_memory_decision_repository_returns_decision_when_id_exists():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -70,7 +72,7 @@ def test_in_memory_decision_repository_returns_none_when_id_does_not_exist():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -94,7 +96,7 @@ def test_in_memory_decision_repository_returns_true_when_decision_is_deleted():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -123,7 +125,7 @@ def test_in_memory_decision_repository_returns_false_when_decision_is_not_delete
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -147,7 +149,7 @@ def test_in_memory_decision_repository_returns_list_of_decisions():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,

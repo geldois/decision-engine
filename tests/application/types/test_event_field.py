@@ -1,13 +1,13 @@
-from app.application.types.exposible_event_field import (
-    ExposibleEventField as DtoExposibleEventField,
+from app.application.types.exponible_event_field import (
+    ExponibleEventField as DtoExponibleEventField,
 )
-from app.domain.entities.events.event import ExposibleEventField
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
 
 
 # ==========
 # valid
 # ==========
 def test_dto_event_field_values_are_valid_event_fields():
-    assert {member.name for member in DtoExposibleEventField} == {
-        member.name for member in ExposibleEventField
+    assert {member.name for member in DtoExponibleEventField} == {
+        member.name for member in ExponibleEventField
     }

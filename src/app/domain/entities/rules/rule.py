@@ -9,7 +9,6 @@ from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.exponible_event_field import ExponibleEventField
 from app.domain.value_objects.rule_operator import RuleOperator
 
-
 _MAPPING = {
     RuleOperator.EQUALS: eq,
     RuleOperator.NOT_EQUALS: ne,

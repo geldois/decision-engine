@@ -3,7 +3,7 @@ from app.application.mappers.rule_operator_mapper import (
     map_rule_operator_to_dto,
 )
 from app.application.types.rule_operator import RuleOperator as DtoRuleOperator
-from app.domain.entities.rules.rule import RuleOperator
+from app.domain.value_objects.rule_operator import RuleOperator
 
 
 # ==========

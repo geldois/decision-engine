@@ -6,6 +6,7 @@ from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
 from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
+from app.domain.exceptions.domain_exception import DomainException
 
 
 def build_register_rule_handler(
@@ -31,10 +32,12 @@ def build_register_rule_handler(
                 outcome=register_rule_dto_response.outcome.value,
                 rule_id=register_rule_dto_response.rule_id,
             )
-        except Exception:
+        except DomainException as domain_exception:
+            raise DomainException("") from domain_exception
+        except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal server error",
-            )
+            ) from exception
 
     return register_rule_handler

@@ -2,8 +2,8 @@
 
 ## Domain
 
-- [ ] Replace generic exceptions with domain-specific ones
-- [ ] Define error types (EventError, RuleError, DecisionError)
+- [x] Replace generic exceptions with domain-specific ones
+- [x] Define error types (EventError, RuleError, DecisionError)
 - [ ] Remove silent failures (no hidden try/except)
 - [x] Enforce strict invariants in entities
 - [ ] Define explicit rule evaluation behavior (order, priority)

@@ -6,9 +6,10 @@ from sqlalchemy.orm import Session
 from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
-from app.domain.entities.events.event import ExponibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.rules.rule import Rule
 from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
+from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.database.models.rule_model import RuleModel
 
 

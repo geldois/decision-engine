@@ -1,6 +1,8 @@
 import pytest
 
-from app.domain.entities.events.event import Event, ExposibleEventField
+from app.domain.entities.events.event import Event
+from app.domain.exceptions.events.event_exception import EventException
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
 
 
 # ==========
@@ -13,8 +15,8 @@ def test_event_returns_valid_field_values():
 
     event = Event(event_type=event_type, payload=payload, timestamp=timestamp)
 
-    for member in ExposibleEventField:
-        assert event.get_field_value(exposible_event_field=member) == getattr(
+    for member in ExponibleEventField:
+        assert event.get_field_value(exponible_event_field=member) == getattr(
             event, member.value
         )
 
@@ -27,7 +29,7 @@ def test_event_raises_error_when_event_type_is_empty():
     payload = {"user_id": 123, "email": "user@email.com"}
     timestamp = 1700000000
 
-    with pytest.raises(ValueError):
+    with pytest.raises(EventException):
         Event(event_type=event_type, payload=payload, timestamp=timestamp)
 
 
@@ -36,7 +38,7 @@ def test_event_raises_error_when_payload_is_empty():
     payload = {}
     timestamp = 1700000000
 
-    with pytest.raises(ValueError):
+    with pytest.raises(EventException):
         Event(event_type=event_type, payload=payload, timestamp=timestamp)
 
 
@@ -45,8 +47,8 @@ def test_event_raises_error_when_timestamp_is_negative_or_zero():
     payload = {"user_id": 123, "email": "user@email.com"}
     timestamp = 0000000000
 
-    with pytest.raises(ValueError):
+    with pytest.raises(EventException):
         Event(event_type=event_type, payload=payload, timestamp=timestamp)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(EventException):
         Event(event_type=event_type, payload=payload, timestamp=timestamp)

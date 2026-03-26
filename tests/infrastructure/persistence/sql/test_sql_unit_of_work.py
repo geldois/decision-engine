@@ -1,10 +1,12 @@
 from sqlalchemy import select
 
 from app.bootstrap.bootstrap import build_dev_session_factory
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.entities.events.event import Event, ExposibleEventField
-from app.domain.entities.rules.rule import Rule, RuleOperator
+from app.domain.entities.events.event import Event
+from app.domain.entities.rules.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.exponible_event_field import ExponibleEventField
+from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.database.models.decision_model import DecisionModel
 from app.infrastructure.database.models.event_model import EventModel
 from app.infrastructure.database.models.rule_model import RuleModel
@@ -33,7 +35,7 @@ def test_sql_unit_of_work_commits():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
@@ -95,7 +97,7 @@ def test_sql_unit_of_work_rolls_back():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=ExposibleEventField.EVENT_TYPE,
+        condition_field=ExponibleEventField.EVENT_TYPE,
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,

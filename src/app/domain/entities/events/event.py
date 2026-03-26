@@ -32,5 +32,5 @@ class Event(DomainEntity):
         self.timestamp = timestamp
         super().__init__(event_id)
 
-    def get_field_value(self, exposible_event_field: ExponibleEventField) -> str:
-        return self.__getattribute__(exposible_event_field.value)
+    def get_field_value(self, exponible_event_field: ExponibleEventField) -> str:
+        return self.__getattribute__(exponible_event_field.value)
