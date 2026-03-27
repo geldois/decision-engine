@@ -30,6 +30,8 @@ class UnitOfWorkContract(ABC):
     ):
         if exc_type:
             self.rollback()
+
+            raise exc_type(exc_value)
         else:
             self.commit()
 

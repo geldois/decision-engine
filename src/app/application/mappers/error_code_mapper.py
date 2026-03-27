@@ -15,11 +15,3 @@ def map_domain_exception_to_error_code(
     domain_exception: type[DomainException],
 ) -> ErrorCode:
     return _MAPPING[domain_exception]
-
-
-def map_error_code_to_domain_exception(
-    error_code: ErrorCode,
-) -> type[DomainException] | None:
-    for domain_exception, error in _MAPPING.items():
-        if error is error_code:
-            return domain_exception

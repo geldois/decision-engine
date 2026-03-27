@@ -1,4 +1,4 @@
-from app.application.contracts.use_cases.use_case_contract import UseCaseContract
+from app.application.contracts.use_case_contract import UseCaseContract
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.application.dto.register_rule_dto_response import RegisterRuleDtoResponse
 from app.application.mappers.decision_result_mapper import (

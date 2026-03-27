@@ -6,6 +6,7 @@ from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpReq
 from app.api.schemas.produce_decision_http_response import ProduceDecisionHttpResponse
 from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoRequest
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
+from app.domain.exceptions.domain_exception import DomainException
 
 
 def build_produce_decision_handler(
@@ -29,6 +30,8 @@ def build_produce_decision_handler(
                 explanation=produce_decision_dto_response.explanation,
                 decision_id=produce_decision_dto_response.decision_id,
             )
+        except DomainException as domain_exception:
+            raise domain_exception
         except Exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

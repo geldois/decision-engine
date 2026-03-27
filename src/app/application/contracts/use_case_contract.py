@@ -1,7 +1,7 @@
 from abc import ABC
 from collections.abc import Callable
 
-from app.application.contracts.unit_of_works.unit_of_work_contract import (
+from app.application.contracts.unit_of_work_contract import (
     UnitOfWorkContract,
 )
 

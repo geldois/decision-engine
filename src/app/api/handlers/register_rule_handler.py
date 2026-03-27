@@ -33,7 +33,7 @@ def build_register_rule_handler(
                 rule_id=register_rule_dto_response.rule_id,
             )
         except DomainException as domain_exception:
-            raise DomainException("") from domain_exception
+            raise domain_exception
         except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

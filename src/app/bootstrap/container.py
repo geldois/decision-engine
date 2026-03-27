@@ -10,7 +10,7 @@ from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
 from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
 from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
 from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
-from app.application.contracts.unit_of_works.unit_of_work_contract import (
+from app.application.contracts.unit_of_work_contract import (
     UnitOfWorkContract,
 )
 from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase

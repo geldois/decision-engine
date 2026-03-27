@@ -11,7 +11,7 @@ from app.application.contracts.repositories.event_repository_contract import (
 from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
-from app.application.contracts.unit_of_works.unit_of_work_contract import (
+from app.application.contracts.unit_of_work_contract import (
     UnitOfWorkContract,
 )
 
