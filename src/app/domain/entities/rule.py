@@ -60,9 +60,11 @@ class Rule(DomainEntity):
                 )
         except Exception as exception:
             raise RuleException.rule_condition_cannot_be_builded(
-                condition_field=condition_field,
-                condition_operator=condition_operator,
-                condition_value=condition_value,
+                details={
+                    "condition_field": condition_field,
+                    "condition_operator": condition_operator,
+                    "condition_value": condition_value,
+                }
             ) from exception
 
         return condition

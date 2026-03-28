@@ -4,12 +4,12 @@ from dataclasses import dataclass
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 
-from app.api.schemas.produce_decision_http_request import ProduceDecisionHttpRequest
-from app.api.schemas.produce_decision_http_response import ProduceDecisionHttpResponse
-from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
-from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
-from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
-from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
+from app.api.schemas.use_cases.produce_decision_http_request import ProduceDecisionHttpRequest
+from app.api.schemas.use_cases.produce_decision_http_response import ProduceDecisionHttpResponse
+from app.api.schemas.use_cases.register_event_http_request import RegisterEventHttpRequest
+from app.api.schemas.use_cases.register_event_http_response import RegisterEventHttpResponse
+from app.api.schemas.use_cases.register_rule_http_request import RegisterRuleHttpRequest
+from app.api.schemas.use_cases.register_rule_http_response import RegisterRuleHttpResponse
 from app.application.contracts.unit_of_work_contract import (
     UnitOfWorkContract,
 )

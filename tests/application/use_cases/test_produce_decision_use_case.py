@@ -1,7 +1,12 @@
+from uuid import uuid4
+
+import pytest
+
 from app.application.dto.produce_decision_dto_request import ProduceDecisionDtoRequest
 from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.bootstrap.bootstrap import bootstrap
+from app.domain.exceptions.event_exception import EventException
 
 
 # ==========
@@ -49,3 +54,16 @@ def test_produce_decision_use_case_returns_valid_dto_response():
     assert produce_decision_dto_response.explanation
 
     assert produce_decision_dto_response.decision_id
+
+
+# ==========
+# invalid
+# ==========
+def test_produce_decision_use_case_raises_event_exception_when_event_is_not_found():
+    container = bootstrap(env="test")
+    produce_decision_dto_request = ProduceDecisionDtoRequest(event_id=uuid4())
+
+    with pytest.raises(EventException):
+        container.produce_decision_use_case.execute(
+            dto_request=produce_decision_dto_request
+        )

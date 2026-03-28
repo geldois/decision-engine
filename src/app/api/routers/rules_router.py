@@ -2,8 +2,10 @@ from collections.abc import Callable
 
 from fastapi import APIRouter
 
-from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
-from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
+from app.api.schemas.use_cases.register_rule_http_request import RegisterRuleHttpRequest
+from app.api.schemas.use_cases.register_rule_http_response import (
+    RegisterRuleHttpResponse,
+)
 
 
 def build_rules_router(

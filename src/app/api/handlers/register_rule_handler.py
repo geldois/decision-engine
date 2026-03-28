@@ -2,8 +2,14 @@ from collections.abc import Callable
 
 from fastapi import HTTPException, status
 
-from app.api.schemas.register_rule_http_request import RegisterRuleHttpRequest
-from app.api.schemas.register_rule_http_response import RegisterRuleHttpResponse
+from app.api.mappers.http_error_code_mapper import (
+    map_domain_exception_to_http_error_code,
+)
+from app.api.schemas.http_error_response import HttpErrorResponse
+from app.api.schemas.use_cases.register_rule_http_request import RegisterRuleHttpRequest
+from app.api.schemas.use_cases.register_rule_http_response import (
+    RegisterRuleHttpResponse,
+)
 from app.application.dto.register_rule_dto_request import RegisterRuleDtoRequest
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
 from app.domain.exceptions.domain_exception import DomainException
@@ -32,8 +38,28 @@ def build_register_rule_handler(
                 outcome=register_rule_dto_response.outcome.value,
                 rule_id=register_rule_dto_response.rule_id,
             )
-        except DomainException as domain_exception:
-            raise domain_exception
+
+        # ..........
+        # tmp
+        # ..........
+        except ValueError as exception:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail={"error": "RULE_CONDITION_INVALID", "message": str(exception)},
+            ) from exception
+        # ..........
+
+        except DomainException as exception:
+            http_error_response = HttpErrorResponse(
+                error=exception.exception_code,
+                message=exception.message,
+                details=exception.details,
+            )
+
+            raise HTTPException(
+                status_code=map_domain_exception_to_http_error_code(exception),
+                detail=http_error_response.model_dump(),
+            ) from exception
         except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

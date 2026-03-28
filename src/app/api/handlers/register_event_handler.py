@@ -2,10 +2,19 @@ from collections.abc import Callable
 
 from fastapi import HTTPException, status
 
-from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
-from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
+from app.api.mappers.http_error_code_mapper import (
+    map_domain_exception_to_http_error_code,
+)
+from app.api.schemas.http_error_response import HttpErrorResponse
+from app.api.schemas.use_cases.register_event_http_request import (
+    RegisterEventHttpRequest,
+)
+from app.api.schemas.use_cases.register_event_http_response import (
+    RegisterEventHttpResponse,
+)
 from app.application.dto.register_event_dto_request import RegisterEventDtoRequest
 from app.application.use_cases.register_event_use_case import RegisterEventUseCase
+from app.domain.exceptions.domain_exception import DomainException
 
 
 def build_register_event_handler(
@@ -30,10 +39,21 @@ def build_register_event_handler(
                 timestamp=register_event_dto_response.timestamp,
                 event_id=register_event_dto_response.event_id,
             )
-        except Exception:
+        except DomainException as exception:
+            http_error_response = HttpErrorResponse(
+                error=exception.exception_code,
+                message=exception.message,
+                details=exception.details,
+            )
+
+            raise HTTPException(
+                status_code=map_domain_exception_to_http_error_code(exception),
+                detail=http_error_response.model_dump(),
+            ) from exception
+        except Exception as exception:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal server error",
-            )
+            ) from exception
 
     return register_event_handler

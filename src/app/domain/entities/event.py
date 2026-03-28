@@ -22,10 +22,14 @@ class Event(DomainEntity):
             raise EventException.event_payload_cannot_be_empty()
 
         if not timestamp:
-            raise EventException.event_timestamp_cannot_be_zero(timestamp=timestamp)
+            raise EventException.event_timestamp_cannot_be_zero(
+                details={"timestamp": timestamp}
+            )
 
         if timestamp < 0:
-            raise EventException.event_timestamp_cannot_be_negative(timestamp=timestamp)
+            raise EventException.event_timestamp_cannot_be_negative(
+                details={"timestamp": timestamp}
+            )
 
         self.event_type = event_type.strip()
         self.payload = payload

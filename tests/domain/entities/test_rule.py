@@ -28,40 +28,6 @@ def test_rule_returns_true_when_condition_is_true() -> None:
     assert rule.applies_to(event=event)
 
 
-# ==========
-# invalid
-# ==========
-def test_rule_raises_error_when_name_is_empty() -> None:
-    with pytest.raises(RuleException):
-        Rule(
-            name=" ",
-            condition_field=ExponibleEventField.TIMESTAMP,
-            condition_operator=RuleOperator.EQUALS,
-            condition_value=1800000000,
-            outcome=DecisionOutcome.APPROVED,
-        )
-
-
-def test_rule_raises_error_when_condition_value_is_zero_or_empty() -> None:
-    with pytest.raises(RuleException):
-        Rule(
-            name="ALWAYS_APPLIES",
-            condition_field=ExponibleEventField.TIMESTAMP,
-            condition_operator=RuleOperator.EQUALS,
-            condition_value=0000000000,
-            outcome=DecisionOutcome.APPROVED,
-        )
-
-    with pytest.raises(RuleException):
-        Rule(
-            name="ALWAYS_APPLIES",
-            condition_field=ExponibleEventField.TIMESTAMP,
-            condition_operator=RuleOperator.EQUALS,
-            condition_value=" ",
-            outcome=DecisionOutcome.APPROVED,
-        )
-
-
 def test_rule_returns_false_when_condition_is_false() -> None:
     event = Event(
         event_type="USER_CREATED",
@@ -77,3 +43,37 @@ def test_rule_returns_false_when_condition_is_false() -> None:
     )
 
     assert not rule.applies_to(event=event)
+
+
+# ==========
+# invalid
+# ==========
+def test_rule_raises_rule_exception_when_name_is_empty() -> None:
+    with pytest.raises(RuleException):
+        Rule(
+            name=" ",
+            condition_field=ExponibleEventField.TIMESTAMP,
+            condition_operator=RuleOperator.EQUALS,
+            condition_value=1800000000,
+            outcome=DecisionOutcome.APPROVED,
+        )
+
+
+def test_rule_raises_rule_exception_when_condition_value_is_zero_or_empty() -> None:
+    with pytest.raises(RuleException):
+        Rule(
+            name="ALWAYS_APPLIES",
+            condition_field=ExponibleEventField.TIMESTAMP,
+            condition_operator=RuleOperator.EQUALS,
+            condition_value=0,
+            outcome=DecisionOutcome.APPROVED,
+        )
+
+    with pytest.raises(RuleException):
+        Rule(
+            name="ALWAYS_APPLIES",
+            condition_field=ExponibleEventField.TIMESTAMP,
+            condition_operator=RuleOperator.EQUALS,
+            condition_value=" ",
+            outcome=DecisionOutcome.APPROVED,
+        )

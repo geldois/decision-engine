@@ -1,29 +1,44 @@
 from __future__ import annotations
 
+from typing import Any
+
 from app.domain.exceptions.domain_exception import DomainException
-from app.domain.value_objects.exponible_event_field import ExponibleEventField
-from app.domain.value_objects.rule_operator import RuleOperator
 
 
 class RuleException(DomainException):
     @classmethod
     def rule_condition_cannot_be_builded(
         cls,
-        condition_field: ExponibleEventField,
-        condition_operator: RuleOperator,
-        condition_value: int | str,
+        details: dict[str, Any] | None = None,
     ) -> RuleException:
         return cls(
-            f"Rule condition cannot be builded \
-                (field: {condition_field} \
-                    | operator: {condition_operator} \
-                        | value: {condition_value})"
+            message="Rule condition cannot be builded",
+            exception_code="RULE_CONDITION_INVALID",
+            details=details,
         )
 
     @classmethod
-    def rule_condition_value_cannot_be_empty(cls) -> RuleException:
-        return cls("Rule condition value cannot be empty")
+    def rule_condition_value_cannot_be_empty(
+        cls, details: dict[str, Any] | None = None
+    ) -> RuleException:
+        return cls(
+            message="Rule condition value cannot be empty",
+            exception_code="RULE_CONDITION_VALUE_EMPTY",
+            details=details,
+        )
 
     @classmethod
-    def rule_name_cannot_be_empty(cls) -> RuleException:
-        return cls("Rule name cannot be empty")
+    def rule_name_cannot_be_empty(
+        cls, details: dict[str, Any] | None = None
+    ) -> RuleException:
+        return cls(
+            message="Rule name cannot be empty",
+            exception_code="RULE_NAME_EMPTY",
+            details=details,
+        )
+
+    @classmethod
+    def rule_not_found(cls, details: dict[str, Any] | None = None) -> RuleException:
+        return cls(
+            message="Rule not found", exception_code="RULE_NOT_FOUND", details=details
+        )

@@ -2,8 +2,12 @@ from collections.abc import Callable
 
 from fastapi import APIRouter
 
-from app.api.schemas.register_event_http_request import RegisterEventHttpRequest
-from app.api.schemas.register_event_http_response import RegisterEventHttpResponse
+from app.api.schemas.use_cases.register_event_http_request import (
+    RegisterEventHttpRequest,
+)
+from app.api.schemas.use_cases.register_event_http_response import (
+    RegisterEventHttpResponse,
+)
 
 
 def build_events_router(

@@ -16,9 +16,9 @@ from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
 
 
 # ==========
-# valid
+# valid cases
 # ==========
-def test_decisions_router_produce_decision_returns_200_and_valid_http_response():
+def test_produce_decision_handler_returns_200_and_valid_http_response():
     container = bootstrap(env="test")
     app = create_app(container=container)
     client = TestClient(app, raise_server_exceptions=True)
@@ -46,7 +46,9 @@ def test_decisions_router_produce_decision_returns_200_and_valid_http_response()
 
     assert response_payload.status_code == 200
 
-    assert response_payload.json()["event_id"] == str(register_event_dto_response.event_id)
+    assert response_payload.json()["event_id"] == str(
+        register_event_dto_response.event_id
+    )
 
     assert response_payload.json()["rule_id"] == str(register_rule_dto_response.rule_id)
 
@@ -60,7 +62,7 @@ def test_decisions_router_produce_decision_returns_200_and_valid_http_response()
 # ==========
 # invalid
 # ==========
-def test_decisions_router_produce_decision_returns_422_when_info_is_missing():
+def test_produce_decision_handler_returns_422_when_info_is_missing() -> None:
     container = bootstrap(env="test")
     app = create_app(container=container)
     client = TestClient(app, raise_server_exceptions=True)
@@ -72,18 +74,18 @@ def test_decisions_router_produce_decision_returns_422_when_info_is_missing():
 
 
 class BrokenProduceDecisionUseCase(ProduceDecisionUseCase):
-    def produce_decision(
+    def execute(
         self, dto_request: ProduceDecisionDtoRequest
     ) -> ProduceDecisionDtoResponse:
         raise RuntimeError("boom")
 
 
-def test_decisions_router_produce_decision_returns_500_on_internal_error():
+def test_produce_decision_handler_returns_500_on_internal_error() -> None:
     unit_of_work_factory = build_in_memory_unit_of_work_factory(
         in_memory_storage=InMemoryStorage()
     )
     overrides = {
-        "produce_decision_use_case": ProduceDecisionUseCase(
+        "produce_decision_use_case": BrokenProduceDecisionUseCase(
             unit_of_work_factory=unit_of_work_factory
         )
     }

@@ -24,14 +24,14 @@ class UnitOfWorkContract(ABC):
 
     def __exit__(
         self,
-        exc_type: type[BaseException] | None,
-        exc_value: BaseException | None,
-        exc_traceback: TracebackType | None,
+        exception_type: type[BaseException] | None,
+        exception_value: BaseException | None,
+        exception_traceback: TracebackType | None,
     ):
-        if exc_type:
+        if exception_type:
             self.rollback()
 
-            raise exc_type(exc_value)
+            return False
         else:
             self.commit()
 
