@@ -12,7 +12,7 @@ def test_event_returns_valid_field_values() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
 
     for member in EventField:
@@ -22,31 +22,31 @@ def test_event_returns_valid_field_values() -> None:
 # ==========
 # invalid cases
 # ==========
-def test_event_raises_event_exception_when_payload_is_empty() -> None:
+def test_event_raises_when_payload_is_empty() -> None:
     with pytest.raises(EventException):
-        Event(event_type="USER_CREATED", payload={}, timestamp=1700000000)
+        Event(event_type="USER_CREATED", payload={}, occurred_at=1700000000)
 
 
-def test_event_raises_event_exception_when_timestamp_is_negative_or_zero():
+def test_event_raises_when_occurred_at_is_negative_or_zero():
     with pytest.raises(EventException):
         Event(
             event_type="USER_CREATED",
             payload={"user_id": 123, "email": "user@email.com"},
-            timestamp=-1,
+            occurred_at=-1,
         )
 
     with pytest.raises(EventException):
         Event(
             event_type="USER_CREATED",
             payload={"user_id": 123, "email": "user@email.com"},
-            timestamp=0000000000,
+            occurred_at=0000000000,
         )
 
 
-def test_event_raises_event_exception_when_event_type_is_empty() -> None:
+def test_event_raises_when_event_type_is_empty() -> None:
     with pytest.raises(EventException):
         Event(
             event_type=" ",
             payload={"user_id": 123, "email": "user@email.com"},
-            timestamp=1700000000,
+            occurred_at=1700000000,
         )

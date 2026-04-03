@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
@@ -12,6 +13,7 @@ class Decision(DomainEntity):
         rule_id: UUID | None,
         outcome: DecisionOutcome,
         explanation: str,
+        created_at: datetime | None = None,
         decision_id: UUID | None = None,
     ) -> None:
         if rule_id and outcome is DecisionOutcome.NO_MATCH:
@@ -33,4 +35,4 @@ class Decision(DomainEntity):
         self.rule_id = rule_id
         self.outcome = outcome
         self.explanation = explanation
-        super().__init__(decision_id)
+        super().__init__(created_at=created_at, entity_id=decision_id)

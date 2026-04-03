@@ -6,4 +6,4 @@ from pydantic import BaseModel
 class HTTPRegisterEventRequest(BaseModel):
     event_type: str
     payload: dict[str, Any]
-    timestamp: int
+    occurred_at: int

@@ -10,13 +10,13 @@ class RegisterEventUseCase(UseCaseContract):
             event = Event(
                 event_type=dto_request.event_type,
                 payload=dto_request.payload,
-                timestamp=dto_request.timestamp,
+                occurred_at=dto_request.occurred_at,
             )
             saved_event = unit_of_work.events.save(event=event)
 
             return DTORegisterEventResponse(
                 event_type=saved_event.event_type,
                 payload=saved_event.payload,
-                timestamp=saved_event.timestamp,
+                occurred_at=saved_event.occurred_at,
                 event_id=saved_event.id,
             )

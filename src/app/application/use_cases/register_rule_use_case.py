@@ -22,11 +22,13 @@ class RegisterRuleUseCase(UseCaseContract):
                 ),
                 condition_value=dto_request.condition_value,
                 outcome=map_outcome_by_value(dto_request.outcome),
+                priority=dto_request.priority,
             )
             saved_rule = unit_of_work.rules.save(rule)
 
             return DTORegisterRuleResponse(
                 name=saved_rule.name,
                 outcome=saved_rule.outcome,
+                priority=saved_rule.priority,
                 rule_id=saved_rule.id,
             )

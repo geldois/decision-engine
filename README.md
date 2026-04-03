@@ -42,14 +42,14 @@ decision-engine dev
 {
     "event_type": "EVENT_TEST", 
     "payload": {"test": true}, 
-    "timestamp": 1000000000
+    "occurred_at": 1000000000
 }
 ```
 
 #### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "timestamp": 1000000000}'
+curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "occurred_at": 1000000000}'
 ```
 
 #### Response
@@ -58,7 +58,7 @@ curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json
 {
     "event_type": "USER_CREATED", 
     "payload": {"test": true}, 
-    "timestamp": 1000000000, 
+    "occurred_at": 1000000000, 
     "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"
 }
 ```
@@ -73,14 +73,15 @@ curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json
     "condition_field": "event_type", 
     "condition_operator": "==", 
     "condition_value": "EVENT_TEST", 
-    "outcome": "approved"
+    "outcome": "approved", 
+    "priority": 0
 }
 ```
 
 #### Request (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/rules/ -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved"}'
+curl -v -X POST http://localhost:8000/rules/ -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved", "priority": 0}'
 ```
 
 #### Response
@@ -89,6 +90,7 @@ curl -v -X POST http://localhost:8000/rules/ -H "Content-Type: application/json"
 {
     "name": "RULE_TEST", 
     "outcome": "approved", 
+    "priority": 0, 
     "rule_id": "6d2d3e6c-21ef-4a0c-91b5-1a8bb0b8e3c1"
 }
 ```
