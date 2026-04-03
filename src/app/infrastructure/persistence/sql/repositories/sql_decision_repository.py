@@ -1,3 +1,4 @@
+from datetime import UTC
 from uuid import UUID
 
 from sqlalchemy import select
@@ -18,11 +19,18 @@ class SqlDecisionRepository(DecisionRepositoryContract):
     def convert_decision_model_to_decision(
         self, decision_model: DecisionModel
     ) -> Decision:
+        created_at = (
+            decision_model.created_at.replace(tzinfo=UTC)
+            if decision_model.created_at.tzinfo is None
+            else decision_model.created_at
+        )
+
         decision = Decision(
             event_id=decision_model.event_id,
             rule_id=decision_model.rule_id,
             outcome=DecisionOutcome(decision_model.outcome),
             explanation=decision_model.explanation,
+            created_at=created_at,
             decision_id=decision_model.id,
         )
 
@@ -35,6 +43,7 @@ class SqlDecisionRepository(DecisionRepositoryContract):
             rule_id=decision.rule_id,
             outcome=decision.outcome.value,
             explanation=decision.explanation,
+            created_at=decision.created_at,
         )
 
         return decision_model

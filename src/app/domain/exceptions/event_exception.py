@@ -46,21 +46,21 @@ class EventException(DomainException):
         )
 
     @classmethod
-    def event_timestamp_cannot_be_negative(
+    def event_occurred_at_cannot_be_negative(
         cls, details: dict[str, Any] | None = None
     ) -> EventException:
         return cls(
-            message="Event timestamp cannot be negative",
+            message="Event occurred_at cannot be negative",
             error_code=ErrorCode.EVENT_TIMESTAMP_INVALID,
             details=details,
         )
 
     @classmethod
-    def event_timestamp_cannot_be_zero(
+    def event_occurred_at_cannot_be_zero(
         cls, details: dict[str, Any] | None = None
     ) -> EventException:
         return cls(
-            message="Event timestamp cannot be zero",
+            message="Event occurred_at cannot be zero",
             error_code=ErrorCode.EVENT_TIMESTAMP_INVALID,
             details=details,
         )

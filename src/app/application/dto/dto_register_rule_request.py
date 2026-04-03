@@ -8,3 +8,4 @@ class DTORegisterRuleRequest:
     condition_operator: str
     condition_value: int | str
     outcome: str
+    priority: int

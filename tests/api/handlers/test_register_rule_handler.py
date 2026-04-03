@@ -9,8 +9,6 @@ from app.bootstrap.bootstrap import (
     build_in_memory_unit_of_work_factory,
     create_app,
 )
-from app.domain.exceptions.event_exception import EventException
-from app.domain.exceptions.rule_exception import RuleException
 from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
     InMemoryStorage,
 )
@@ -36,6 +34,7 @@ def test_register_rule_handler_returns_200_and_valid_http_response(
         "condition_operator": "==",
         "condition_value": "USER_CREATED",
         "outcome": "approved",
+        "priority": 0,
     }
 
     response_payload = client.post("/rules/", json=request_payload)
@@ -45,6 +44,8 @@ def test_register_rule_handler_returns_200_and_valid_http_response(
     assert response_payload.json()["name"] == request_payload["name"]
 
     assert response_payload.json()["outcome"] == request_payload["outcome"]
+
+    assert response_payload.json()["priority"] == request_payload["priority"]
 
     assert "rule_id" in response_payload.json()
 
@@ -87,6 +88,7 @@ def test_register_rule_handler_returns_500_on_internal_error(
         "condition_operator": "==",
         "condition_value": "USER_CREATED",
         "outcome": "approved",
+        "priority": 0,
     }
 
     response_payload = client.post("/rules/", json=request_payload)

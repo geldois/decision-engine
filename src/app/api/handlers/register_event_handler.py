@@ -23,7 +23,7 @@ def build_register_event_handler(
             dto_register_event_request = DTORegisterEventRequest(
                 event_type=http_register_event_request.event_type,
                 payload=http_register_event_request.payload,
-                timestamp=http_register_event_request.timestamp,
+                occurred_at=http_register_event_request.occurred_at,
             )
             dto_register_event_response = register_event_use_case.execute(
                 dto_request=dto_register_event_request
@@ -32,7 +32,7 @@ def build_register_event_handler(
             return HTTPRegisterEventResponse(
                 event_type=dto_register_event_response.event_type,
                 payload=dto_register_event_response.payload,
-                timestamp=dto_register_event_response.timestamp,
+                occurred_at=dto_register_event_response.occurred_at,
                 event_id=dto_register_event_response.event_id,
             )
         except Exception as exception:

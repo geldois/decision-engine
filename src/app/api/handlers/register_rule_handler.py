@@ -24,6 +24,7 @@ def build_register_rule_handler(
                 condition_operator=http_register_rule_request.condition_operator,
                 condition_value=http_register_rule_request.condition_value,
                 outcome=http_register_rule_request.outcome,
+                priority=http_register_rule_request.priority
             )
             dto_register_rule_response = register_rule_use_case.execute(
                 dto_request=dto_register_rule_request
@@ -32,6 +33,7 @@ def build_register_rule_handler(
             return HTTPRegisterRuleResponse(
                 name=dto_register_rule_response.name,
                 outcome=dto_register_rule_response.outcome.value,
+                priority=dto_register_rule_response.priority,
                 rule_id=dto_register_rule_response.rule_id,
             )
         except Exception as exception:

@@ -25,7 +25,7 @@ def test_produce_decision_handler_returns_200_and_valid_http_response() -> None:
     dto_register_event_request = DTORegisterEventRequest(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     dto_register_rule_request = DTORegisterRuleRequest(
         name="ALWAYS_APPLIES",
@@ -33,6 +33,7 @@ def test_produce_decision_handler_returns_200_and_valid_http_response() -> None:
         condition_operator="==",
         condition_value="USER_CREATED",
         outcome="approved",
+        priority=0,
     )
     dto_register_event_response = container.register_event_use_case.execute(
         dto_request=dto_register_event_request
@@ -95,7 +96,7 @@ def test_produce_decision_handler_returns_500_on_internal_error() -> None:
     dto_register_event_request = DTORegisterEventRequest(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     dto_register_event_response = container.register_event_use_case.execute(
         dto_request=dto_register_event_request
