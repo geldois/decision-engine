@@ -19,7 +19,7 @@ def test_in_memory_decision_repository_returns_saved_decision() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -27,6 +27,7 @@ def test_in_memory_decision_repository_returns_saved_decision() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])
@@ -43,7 +44,7 @@ def test_in_memory_decision_repository_returns_decision_when_id_exists() -> None
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -51,6 +52,7 @@ def test_in_memory_decision_repository_returns_decision_when_id_exists() -> None
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])
@@ -68,7 +70,7 @@ def test_in_memory_decision_repository_returns_none_when_id_does_not_exist() -> 
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -76,6 +78,7 @@ def test_in_memory_decision_repository_returns_none_when_id_does_not_exist() -> 
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])
@@ -92,7 +95,7 @@ def test_in_memory_decision_repository_returns_true_when_decision_is_deleted() -
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -100,6 +103,7 @@ def test_in_memory_decision_repository_returns_true_when_decision_is_deleted() -
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])
@@ -123,7 +127,7 @@ def test_in_memory_decision_repository_returns_false_when_decision_is_not_delete
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -131,6 +135,7 @@ def test_in_memory_decision_repository_returns_false_when_decision_is_not_delete
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])
@@ -147,7 +152,7 @@ def test_in_memory_decision_repository_returns_list_of_decisions() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -155,6 +160,7 @@ def test_in_memory_decision_repository_returns_list_of_decisions() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])

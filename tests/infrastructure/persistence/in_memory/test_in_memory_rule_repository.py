@@ -20,6 +20,7 @@ def test_in_memory_rule_repository_returns_saved_rule() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
     saved_rule = rule_repository.save(rule)
@@ -34,6 +35,7 @@ def test_in_memory_rule_repository_returns_rule_when_id_exists() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
     rule_repository.save(rule=rule)
@@ -50,6 +52,7 @@ def test_in_memory_rule_repository_returns_none_when_id_does_not_exist() -> None
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
 
@@ -65,6 +68,7 @@ def test_in_memory_rule_repository_returns_true_when_rule_is_deleted() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
     rule_repository.save(rule=rule)
@@ -85,6 +89,7 @@ def test_in_memory_rule_repository_returns_false_when_rule_is_not_deleted() -> N
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
 
@@ -100,6 +105,7 @@ def test_in_memory_rule_repository_returns_list_of_rules() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
     rule_repository.save(rule=rule)

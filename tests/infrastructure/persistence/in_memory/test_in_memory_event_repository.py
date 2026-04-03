@@ -14,7 +14,7 @@ def test_in_memory_event_repository_returns_saved_event() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     event_repository = InMemoryEventRepository(in_memory_storage=InMemoryStorage())
 
@@ -27,7 +27,7 @@ def test_in_memory_event_repository_returns_event_when_id_exists() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     event_repository = InMemoryEventRepository(in_memory_storage=InMemoryStorage())
     event_repository.save(event=event)
@@ -41,7 +41,7 @@ def test_in_memory_event_repository_returns_none_when_id_does_not_exist() -> Non
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     event_repository = InMemoryEventRepository(in_memory_storage=InMemoryStorage())
 
@@ -54,7 +54,7 @@ def test_in_memory_event_repository_returns_true_when_event_is_deleted() -> None
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     event_repository = InMemoryEventRepository(in_memory_storage=InMemoryStorage())
     event_repository.save(event=event)
@@ -72,7 +72,7 @@ def test_in_memory_event_repository_returns_false_when_event_is_not_deleted() ->
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     event_repository = InMemoryEventRepository(in_memory_storage=InMemoryStorage())
 
@@ -85,7 +85,7 @@ def test_in_memory_event_repository_returns_list_of_events() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     event_repository = InMemoryEventRepository(in_memory_storage=InMemoryStorage())
     event_repository.save(event=event)

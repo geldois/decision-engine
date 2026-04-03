@@ -7,5 +7,5 @@ from uuid import UUID
 class DTORegisterEventResponse:
     event_type: str
     payload: dict[str, Any]
-    timestamp: int
+    occurred_at: int
     event_id: UUID

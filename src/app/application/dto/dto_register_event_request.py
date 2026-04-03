@@ -6,4 +6,4 @@ from typing import Any
 class DTORegisterEventRequest:
     event_type: str
     payload: dict[str, Any]
-    timestamp: int
+    occurred_at: int

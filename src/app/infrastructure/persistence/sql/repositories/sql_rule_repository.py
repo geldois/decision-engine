@@ -1,3 +1,4 @@
+from datetime import UTC
 from uuid import UUID
 
 from sqlalchemy import select
@@ -18,6 +19,12 @@ class SqlRuleRepository(RuleRepositoryContract):
         self.session = session
 
     def convert_rule_model_to_rule(self, rule_model: RuleModel) -> Rule:
+        created_at = (
+            rule_model.created_at.replace(tzinfo=UTC)
+            if rule_model.created_at.tzinfo is None
+            else rule_model.created_at
+        )
+
         rule = Rule(
             name=rule_model.name,
             condition_field=EventField(rule_model.condition_field),
@@ -26,6 +33,8 @@ class SqlRuleRepository(RuleRepositoryContract):
             if rule_model.condition_value_int
             else rule_model.condition_value_str,
             outcome=DecisionOutcome(rule_model.outcome),
+            priority=rule_model.priority,
+            created_at=created_at,
             rule_id=rule_model.id,
         )
 
@@ -44,6 +53,8 @@ class SqlRuleRepository(RuleRepositoryContract):
             if isinstance(rule.condition_value, str)
             else None,
             outcome=rule.outcome.value,
+            priority=rule.priority,
+            created_at=rule.created_at,
         )
 
         return rule_model

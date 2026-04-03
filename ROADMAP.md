@@ -5,8 +5,8 @@
 - [x] Replace generic exceptions with domain-specific ones
 - [x] Remove silent failures (no hidden try/except)
 - [x] Enforce strict invariants in entities
-- [ ] Define explicit rule evaluation behavior (order, priority)
-- [ ] Add rule priority and deterministic execution
+- [x] Define explicit rule evaluation behavior (order, priority)
+- [x] Add rule priority and deterministic execution
 - [ ] Support rule composition (AND / OR)
 - [ ] Ensure type consistency (no implicit coercion)
 - [ ] Improve decision explanation (full evaluation context)

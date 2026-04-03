@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from datetime import datetime
 from operator import eq, gt, lt, ne
 from uuid import UUID
 
@@ -25,6 +26,8 @@ class Rule(DomainEntity):
         condition_operator: RuleOperator,
         condition_value: int | str,
         outcome: DecisionOutcome,
+        priority: int,
+        created_at: datetime | None = None,
         rule_id: UUID | None = None,
     ) -> None:
 
@@ -69,12 +72,16 @@ class Rule(DomainEntity):
                 }
             )
 
+        if priority < 0:
+            raise RuleException.rule_priority_is_invalid(details={"priority": priority})
+
         self.name = name
         self.condition_field = condition_field
         self.condition_operator = condition_operator
         self.condition_value = condition_value
         self.outcome = outcome
-        super().__init__(rule_id)
+        self.priority = priority
+        super().__init__(created_at=created_at, entity_id=rule_id)
 
     def build_condition(
         self,

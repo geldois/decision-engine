@@ -32,7 +32,7 @@ def test_register_event_handler_returns_200_and_valid_http_response(
     request_payload = {
         "event_type": "USER_CREATED",
         "payload": {"user_id": 123, "email": "user@email.com"},
-        "timestamp": 1700000000,
+        "occurred_at": 1700000000,
     }
 
     response_payload = client.post("/events/", json=request_payload)
@@ -43,7 +43,7 @@ def test_register_event_handler_returns_200_and_valid_http_response(
 
     assert response_payload.json()["payload"] == request_payload["payload"]
 
-    assert response_payload.json()["timestamp"] == request_payload["timestamp"]
+    assert response_payload.json()["occurred_at"] == request_payload["occurred_at"]
 
     assert response_payload.json()["event_id"]
 
@@ -83,7 +83,7 @@ def test_register_event_handler_returns_500_on_internal_error(
     request_payload = {
         "event_type": "USER_CREATED",
         "payload": {"user_id": 123, "email": "user@email.com"},
-        "timestamp": 1700000000,
+        "occurred_at": 1700000000,
     }
 
     response_payload = client.post("/events/", json=request_payload)

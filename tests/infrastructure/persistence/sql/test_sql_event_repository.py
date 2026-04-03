@@ -14,7 +14,7 @@ def test_sql_event_repository_returns_saved_event() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     session_factory = build_dev_session_factory()
     event_repository = SqlEventRepository(session=session_factory())
@@ -28,7 +28,7 @@ def test_sql_event_repository_returns_event_when_id_exists() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     session_factory = build_dev_session_factory()
     event_repository = SqlEventRepository(session=session_factory())
@@ -43,7 +43,7 @@ def test_sql_event_repository_returns_none_when_id_does_not_exist() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     session_factory = build_dev_session_factory()
     event_repository = SqlEventRepository(session=session_factory())
@@ -57,7 +57,7 @@ def test_sql_event_repository_returns_true_when_event_is_deleted() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     session_factory = build_dev_session_factory()
     event_repository = SqlEventRepository(session=session_factory())
@@ -76,7 +76,7 @@ def test_sql_event_repository_returns_false_when_event_is_not_deleted() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     session_factory = build_dev_session_factory()
     event_repository = SqlEventRepository(session=session_factory())
@@ -90,7 +90,7 @@ def test_sql_event_repository_returns_list_of_rules() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     session_factory = build_dev_session_factory()
     event_repository = SqlEventRepository(session=session_factory())

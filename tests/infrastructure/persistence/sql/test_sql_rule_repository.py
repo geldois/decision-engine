@@ -20,6 +20,7 @@ def test_sql_rule_repository_returns_saved_rule() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     session_factory = build_dev_session_factory()
     rule_repository = SqlRuleRepository(session=session_factory())
@@ -36,6 +37,7 @@ def test_sql_rule_repository_returns_rule_when_id_exists() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     session_factory = build_dev_session_factory()
     rule_repository = SqlRuleRepository(session=session_factory())
@@ -53,6 +55,7 @@ def test_sql_rule_repository_returns_none_when_id_does_not_exist() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     session_factory = build_dev_session_factory()
     rule_repository = SqlRuleRepository(session=session_factory())
@@ -69,6 +72,7 @@ def test_sql_rule_repository_returns_true_when_rule_is_deleted() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     session_factory = build_dev_session_factory()
     rule_repository = SqlRuleRepository(session=session_factory())
@@ -90,6 +94,7 @@ def test_sql_rule_repository_returns_false_when_rule_is_not_deleted() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     session_factory = build_dev_session_factory()
     rule_repository = SqlRuleRepository(session=session_factory())
@@ -106,6 +111,7 @@ def test_sql_rule_repository_returns_list_of_rules() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     session_factory = build_dev_session_factory()
     rule_repository = SqlRuleRepository(session=session_factory())

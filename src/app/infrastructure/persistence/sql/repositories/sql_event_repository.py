@@ -1,3 +1,4 @@
+from datetime import UTC
 from uuid import UUID
 
 from sqlalchemy import select
@@ -15,10 +16,17 @@ class SqlEventRepository(EventRepositoryContract):
         self.session = session
 
     def convert_event_model_to_event(self, event_model: EventModel) -> Event:
+        created_at = (
+            event_model.created_at.replace(tzinfo=UTC)
+            if event_model.created_at.tzinfo is None
+            else event_model.created_at
+        )
+
         event = Event(
             event_type=event_model.event_type,
             payload=event_model.payload,
-            timestamp=event_model.timestamp,
+            occurred_at=event_model.occurred_at,
+            created_at=created_at,
             event_id=event_model.id,
         )
 
@@ -29,7 +37,8 @@ class SqlEventRepository(EventRepositoryContract):
             id=event.id,
             event_type=event.event_type,
             payload=event.payload,
-            timestamp=event.timestamp,
+            occurred_at=event.occurred_at,
+            created_at=event.created_at,
         )
 
         return event_model

@@ -9,4 +9,4 @@ class EventModel(Base):
 
     event_type: Mapped[str] = mapped_column(String, nullable=False)
     payload: Mapped[str] = mapped_column(JSON, nullable=False)
-    timestamp: Mapped[int] = mapped_column(Integer, nullable=False)
+    occurred_at: Mapped[int] = mapped_column(Integer, nullable=False)

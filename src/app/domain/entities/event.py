@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 from uuid import UUID
 
@@ -11,7 +12,8 @@ class Event(DomainEntity):
         self,
         event_type: str,
         payload: dict[str, Any],
-        timestamp: int,
+        occurred_at: int,
+        created_at: datetime | None = None,
         event_id: UUID | None = None,
     ) -> None:
         if not event_type.strip():
@@ -24,20 +26,20 @@ class Event(DomainEntity):
                 details={"payload": payload}
             )
 
-        if not timestamp:
-            raise EventException.event_timestamp_cannot_be_zero(
-                details={"timestamp": timestamp}
+        if not occurred_at:
+            raise EventException.event_occurred_at_cannot_be_zero(
+                details={"occurred_at": occurred_at}
             )
 
-        if timestamp < 0:
-            raise EventException.event_timestamp_cannot_be_negative(
-                details={"timestamp": timestamp}
+        if occurred_at < 0:
+            raise EventException.event_occurred_at_cannot_be_negative(
+                details={"occurred_at": occurred_at}
             )
 
         self.event_type = event_type
         self.payload = payload
-        self.timestamp = timestamp
-        super().__init__(event_id)
+        self.occurred_at = occurred_at
+        super().__init__(created_at=created_at, entity_id=event_id)
 
     def get_field_value(self, event_field: EventField) -> str:
         return self.__getattribute__(event_field.value)

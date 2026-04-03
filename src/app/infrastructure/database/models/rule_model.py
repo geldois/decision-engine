@@ -13,6 +13,7 @@ class RuleModel(Base):
     condition_value_int: Mapped[int] = mapped_column(Integer, nullable=True)
     condition_value_str: Mapped[str] = mapped_column(String, nullable=True)
     outcome: Mapped[str] = mapped_column(String, nullable=False)
+    priority: Mapped[int] = mapped_column(Integer, nullable=False)
 
     __table_args__ = (
         CheckConstraint("condition_operator IN ('==', '!=', '<', '>')"),
@@ -21,4 +22,5 @@ class RuleModel(Base):
             AND \
             (condition_value_int IS NOT NULL OR condition_value_str IS NOT NULL)"
         ),
+        CheckConstraint("priority >= 0"),
     )

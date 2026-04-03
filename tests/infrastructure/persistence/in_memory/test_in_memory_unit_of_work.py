@@ -28,7 +28,7 @@ def test_in_memory_unit_of_work_commits() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -36,6 +36,7 @@ def test_in_memory_unit_of_work_commits() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])
@@ -75,7 +76,7 @@ def test_in_memory_unit_of_work_rolls_back() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
-        timestamp=1700000000,
+        occurred_at=1700000000,
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
@@ -83,6 +84,7 @@ def test_in_memory_unit_of_work_rolls_back() -> None:
         condition_operator=RuleOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
+        priority=0,
     )
     decision_engine = DecisionEngine()
     decision = decision_engine.decide(event=event, rules=[rule])

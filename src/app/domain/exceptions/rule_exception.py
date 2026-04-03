@@ -69,6 +69,17 @@ class RuleException(DomainException):
         )
 
     @classmethod
+    def rule_priority_is_invalid(
+        cls,
+        details: dict[str, Any] | None = None,
+    ) -> RuleException:
+        return cls(
+            message="Rule priority is invalid",
+            error_code=ErrorCode.RULE_PRIORITY_INVALID,
+            details=details,
+        )
+
+    @classmethod
     def rule_not_found(cls, details: dict[str, Any] | None = None) -> RuleException:
         return cls(
             message="Rule not found",
