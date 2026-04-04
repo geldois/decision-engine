@@ -1,3 +1,4 @@
+import json
 from datetime import UTC
 from uuid import UUID
 
@@ -7,10 +8,10 @@ from sqlalchemy.orm import Session
 from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
+from app.application.factories.condition_factory import ConditionFactory
+from app.application.mappers.condition_mapper import ConditionMapper
 from app.domain.entities.rule import Rule
 from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.rule_operator import RuleOperator
 from app.infrastructure.database.models.rule_model import RuleModel
 
 
@@ -27,11 +28,9 @@ class SqlRuleRepository(RuleRepositoryContract):
 
         rule = Rule(
             name=rule_model.name,
-            condition_field=EventField(rule_model.condition_field),
-            condition_operator=RuleOperator(rule_model.condition_operator),
-            condition_value=rule_model.condition_value_int
-            if rule_model.condition_value_int
-            else rule_model.condition_value_str,
+            condition=ConditionFactory.build(
+                dto_condition=json.loads(rule_model.condition)
+            ),
             outcome=DecisionOutcome(rule_model.outcome),
             priority=rule_model.priority,
             created_at=created_at,
@@ -44,14 +43,7 @@ class SqlRuleRepository(RuleRepositoryContract):
         rule_model = RuleModel(
             id=rule.id,
             name=rule.name,
-            condition_field=rule.condition_field.value,
-            condition_operator=rule.condition_operator.value,
-            condition_value_int=rule.condition_value
-            if isinstance(rule.condition_value, int)
-            else None,
-            condition_value_str=rule.condition_value
-            if isinstance(rule.condition_value, str)
-            else None,
+            condition=json.dumps(ConditionMapper.map_to_dict(condition=rule.condition)),
             outcome=rule.outcome.value,
             priority=rule.priority,
             created_at=rule.created_at,

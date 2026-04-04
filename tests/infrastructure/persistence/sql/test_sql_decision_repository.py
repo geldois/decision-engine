@@ -1,12 +1,11 @@
-from utils.domain_entity_util import compare_domain_entities
-
 from app.bootstrap.bootstrap import build_dev_session_factory
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.conditions.simple_condition import SimpleCondition
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.rule_operator import RuleOperator
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.persistence.sql.repositories.sql_decision_repository import (
     SqlDecisionRepository,
 )
@@ -23,9 +22,11 @@ def test_sql_decision_repository_returns_saved_decision() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -47,9 +48,11 @@ def test_sql_decision_repository_returns_decision_when_id_exists() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -61,7 +64,9 @@ def test_sql_decision_repository_returns_decision_when_id_exists() -> None:
 
     returned_decision = decision_repository.get_by_id(decision_id=decision.id)
 
-    assert compare_domain_entities(a=returned_decision, b=decision)
+    assert returned_decision
+
+    assert returned_decision.is_structurally_equal(other=decision)
 
 
 def test_sql_decision_repository_returns_none_when_id_does_not_exist() -> None:
@@ -72,9 +77,11 @@ def test_sql_decision_repository_returns_none_when_id_does_not_exist() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -96,9 +103,11 @@ def test_sql_decision_repository_returns_true_when_decision_is_deleted() -> None
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -125,9 +134,11 @@ def test_sql_decision_repository_returns_false_when_decision_is_not_deleted() ->
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -149,9 +160,11 @@ def test_sql_decision_repository_returns_list_of_decisions() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -166,5 +179,5 @@ def test_sql_decision_repository_returns_list_of_decisions() -> None:
     assert isinstance(decisions, list)
 
     for d in decisions:
-        if d.id == decision.id:
-            assert compare_domain_entities(a=d, b=decision)
+        if d == decision:
+            assert d.is_structurally_equal(other=decision)

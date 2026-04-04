@@ -17,8 +17,6 @@ def test_register_event_use_case_returns_valid_dto_response() -> None:
         dto_request=dto_register_event_request
     )
 
-    assert dto_register_event_response.event_id
-
     assert (
         dto_register_event_response.event_type == dto_register_event_request.event_type
     )
@@ -29,3 +27,5 @@ def test_register_event_use_case_returns_valid_dto_response() -> None:
         dto_register_event_response.occurred_at
         == dto_register_event_request.occurred_at
     )
+
+    assert dto_register_event_response.event_id

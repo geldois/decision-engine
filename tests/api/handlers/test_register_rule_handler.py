@@ -30,9 +30,12 @@ def test_register_rule_handler_returns_200_and_valid_http_response(
 ) -> None:
     request_payload = {
         "name": "ALWAYS_APPLIES",
-        "condition_field": "event_type",
-        "condition_operator": "==",
-        "condition_value": "USER_CREATED",
+        "condition": {
+            "type": "simple",
+            "field": "event_type",
+            "operator": "==",
+            "value": "USER_CREATED",
+        },
         "outcome": "approved",
         "priority": 0,
     }
@@ -42,6 +45,8 @@ def test_register_rule_handler_returns_200_and_valid_http_response(
     assert response_payload.status_code == 200
 
     assert response_payload.json()["name"] == request_payload["name"]
+
+    assert response_payload.json()["condition"] == request_payload["condition"]
 
     assert response_payload.json()["outcome"] == request_payload["outcome"]
 
@@ -84,9 +89,12 @@ def test_register_rule_handler_returns_500_on_internal_error(
     client = TestClient(app, raise_server_exceptions=True)
     request_payload = {
         "name": "ALWAYS_APPLIES",
-        "condition_field": "event_type",
-        "condition_operator": "==",
-        "condition_value": "USER_CREATED",
+        "condition": {
+            "type": "simple",
+            "field": "event_type",
+            "operator": "==",
+            "value": "USER_CREATED",
+        },
         "outcome": "approved",
         "priority": 0,
     }

@@ -21,9 +21,12 @@ def test_produce_decision_use_case_returns_valid_dto_response() -> None:
     )
     dto_register_rule_request = DTORegisterRuleRequest(
         name="ALWAYS_APPLIES",
-        condition_field="event_type",
-        condition_operator="==",
-        condition_value="USER_CREATED",
+        condition={
+            "type": "simple",
+            "field": "event_type",
+            "operator": "==",
+            "value": "USER_CREATED",
+        },
         outcome="approved",
         priority=0,
     )
@@ -47,10 +50,7 @@ def test_produce_decision_use_case_returns_valid_dto_response() -> None:
 
     assert dto_produce_decision_response.rule_id == dto_register_rule_response.rule_id
 
-    assert (
-        dto_produce_decision_response.status.value
-        == dto_register_rule_response.outcome.value
-    )
+    assert dto_produce_decision_response.status == dto_register_rule_response.outcome
 
     assert dto_produce_decision_response.explanation
 
@@ -60,9 +60,7 @@ def test_produce_decision_use_case_returns_valid_dto_response() -> None:
 # ==========
 # invalid cases
 # ==========
-def test_produce_decision_use_case_raises_event_exception_when_event_is_not_found() -> (
-    None
-):
+def test_produce_decision_use_case_raises_on_not_found_event() -> None:
     container = bootstrap(env="test")
     dto_produce_decision_request = DTOProduceDecisionRequest(event_id=uuid4())
 

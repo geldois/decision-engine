@@ -29,9 +29,12 @@ def test_produce_decision_handler_returns_200_and_valid_http_response() -> None:
     )
     dto_register_rule_request = DTORegisterRuleRequest(
         name="ALWAYS_APPLIES",
-        condition_field="event_type",
-        condition_operator="==",
-        condition_value="USER_CREATED",
+        condition={
+            "type": "simple",
+            "field": "event_type",
+            "operator": "==",
+            "value": "USER_CREATED",
+        },
         outcome="approved",
         priority=0,
     )
@@ -53,7 +56,7 @@ def test_produce_decision_handler_returns_200_and_valid_http_response() -> None:
 
     assert response_payload.json()["rule_id"] == str(dto_register_rule_response.rule_id)
 
-    assert response_payload.json()["status"] == dto_register_rule_response.outcome.value
+    assert response_payload.json()["status"] == dto_register_rule_response.outcome
 
     assert response_payload.json()["explanation"]
 

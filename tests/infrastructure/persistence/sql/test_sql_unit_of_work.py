@@ -4,9 +4,10 @@ from app.bootstrap.bootstrap import build_dev_session_factory
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.conditions.simple_condition import SimpleCondition
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.rule_operator import RuleOperator
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.database.models.decision_model import DecisionModel
 from app.infrastructure.database.models.event_model import EventModel
 from app.infrastructure.database.models.rule_model import RuleModel
@@ -35,9 +36,11 @@ def test_sql_unit_of_work_commits() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -98,9 +101,11 @@ def test_sql_unit_of_work_rolls_back() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )

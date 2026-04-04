@@ -1,12 +1,12 @@
 from dataclasses import dataclass
+from typing import Any
 from uuid import UUID
-
-from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 @dataclass(frozen=True)
 class DTORegisterRuleResponse:
     name: str
-    outcome: DecisionOutcome
+    condition: dict[str, Any]
+    outcome: str
     priority: int
     rule_id: UUID

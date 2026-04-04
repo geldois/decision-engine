@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
+from app.application.dto.dto_condition import DTOCondition
+
 
 @dataclass(frozen=True)
 class DTORegisterRuleRequest:
     name: str
-    condition_field: str
-    condition_operator: str
-    condition_value: int | str
+    condition: DTOCondition
     outcome: str
     priority: int
