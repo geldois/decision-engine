@@ -1,5 +1,3 @@
-from utils.domain_entity_util import compare_domain_entities
-
 from app.bootstrap.bootstrap import build_dev_session_factory
 from app.domain.entities.event import Event
 from app.infrastructure.persistence.sql.repositories.sql_event_repository import (
@@ -36,7 +34,9 @@ def test_sql_event_repository_returns_event_when_id_exists() -> None:
 
     returned_event = event_repository.get_by_id(event_id=event.id)
 
-    assert compare_domain_entities(a=returned_event, b=event)
+    assert returned_event
+
+    assert returned_event.is_structurally_equal(other=event)
 
 
 def test_sql_event_repository_returns_none_when_id_does_not_exist() -> None:
@@ -103,5 +103,5 @@ def test_sql_event_repository_returns_list_of_rules() -> None:
     assert isinstance(events, list)
 
     for e in events:
-        if e.id == event.id:
-            assert compare_domain_entities(a=e, b=event)
+        if e == event:
+            assert e.is_structurally_equal(other=event)

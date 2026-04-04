@@ -9,11 +9,23 @@ Live API: <https://decision-engine.angelitochagas.com>
 ## Design
 
 - Explicit domain modeling (Event, Rule, Decision)
-- Deterministic rule evaluation
 - Clean Architecture separation
 - Use-case driven application layer
 - Unit of Work
 - Manual dependecy injection via bootstrap (composition root)
+- Deterministic rule evaluation with AST structure
+- Conditions are stored as serialized JSON (AST structure)
+
+## Rule Evaluation Model
+
+Rules are evaluated using a recursive Abstract Syntax Tree (AST) structure.
+
+Conditions are no longer flat (field/operator/value), but composable and nested:
+
+- `SimpleCondition`: evaluates a single field against a value
+- `CompositeCondition`: combines multiple conditions using logical operators (`and`, `or`)
+
+Evaluation uses short-circuit logic (lazy evaluation), stopping as soon as the result is determined.
 
 ## Testing
 
@@ -29,14 +41,15 @@ cd decision-engine
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
+pytest
 decision-engine dev
 ```
 
 ## Examples
 
-### Register an event
+### RegisterEvent
 
-#### Request (swagger)
+#### RegisterEventRequest (swagger)
 
 ```json
 {
@@ -46,60 +59,159 @@ decision-engine dev
 }
 ```
 
-#### Request (terminal)
+#### RegisterEventRequest (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/events/ -H "Content-Type: application/json" -d '{"event_type": "EVENT_TEST", "payload": {"test": true}, "occurred_at": 1000000000}'
+curl -v -X POST http://localhost:8000/events/ \
+-H "Content-Type: application/json" \
+-d '{
+    "event_type": "EVENT_TEST",
+    "payload": {"test": true},
+    "occurred_at": 1000000000
+}'
 ```
 
-#### Response
+#### RegisterEventResponse
 
 ```json
 {
-    "event_type": "USER_CREATED", 
+    "event_type": "EVENT_TEST", 
     "payload": {"test": true}, 
     "occurred_at": 1000000000, 
     "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"
 }
 ```
 
-### Register a rule
+### RegisterRule
 
-#### Request (swagger)
+#### RegisterRuleRequest (swagger)
 
 ```json
 {
     "name": "RULE_TEST", 
-    "condition_field": "event_type", 
-    "condition_operator": "==", 
-    "condition_value": "EVENT_TEST", 
-    "outcome": "approved", 
+    "condition": {
+        "type": "composite",
+        "operator": "and",
+        "conditions": [
+            {
+                "type": "simple",
+                "field": "event_type",
+                "operator": "==",
+                "value": "EVENT_TEST"
+            },
+            {
+                "type": "composite",
+                "operator": "or",
+                "conditions": [
+                    {
+                        "type": "simple",
+                        "field": "event_type",
+                        "operator": "==",
+                        "value": "FALSE"
+                    },
+                    {
+                        "type": "simple",
+                        "field": "payload",
+                        "operator": "==",
+                        "value": {"test": true}
+                    }
+                ]
+            }
+        ]
+    },
+    "outcome": "approved",
     "priority": 0
 }
 ```
 
-#### Request (terminal)
+#### RegisterRuleRequest (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/rules/ -H "Content-Type: application/json" -d '{"name": "RULE_TEST", "condition_field": "event_type", "condition_operator": "==", "condition_value": "EVENT_TEST", "outcome": "approved", "priority": 0}'
+curl -v -X POST http://localhost:8000/rules/ \
+-H "Content-Type: application/json" \
+-d '{
+    "name": "RULE_TEST",
+    "condition": {
+        "type": "composite",
+        "operator": "and",
+        "conditions": [
+            {
+                "type": "simple",
+                "field": "event_type",
+                "operator": "==",
+                "value": "EVENT_TEST"
+            },
+            {
+                "type": "composite",
+                "operator": "or",
+                "conditions": [
+                    {
+                        "type": "simple",
+                        "field": "event_type",
+                        "operator": "==",
+                        "value": "FALSE"
+                    },
+                    {
+                        "type": "simple",
+                        "field": "payload",
+                        "operator": "==",
+                        "value": {"test": true}
+                    }
+                ]
+            }
+        ]
+    },
+    "outcome": "approved",
+    "priority": 0
+}'
 ```
 
-#### Response
+#### RegisterRuleResponse
 
 ```json
 {
-    "name": "RULE_TEST", 
-    "outcome": "approved", 
-    "priority": 0, 
+    "name": "RULE_TEST",
+    "condition": {
+        "type": "composite",
+        "operator": "and",
+        "conditions": [
+            {
+                "type": "simple",
+                "field": "event_type",
+                "operator": "==",
+                "value": "EVENT_TEST"
+            },
+            {
+                "type": "composite",
+                "operator": "or",
+                "conditions": [
+                    {
+                        "type": "simple",
+                        "field": "event_type",
+                        "operator": "==",
+                        "value": "FALSE"
+                    },
+                    {
+                        "type": "simple",
+                        "field": "payload",
+                        "operator": "==",
+                        "value": {"test": true}
+                    }
+                ]
+            }
+        ]
+    },
+    "outcome": "approved",
+    "priority": 0,
     "rule_id": "6d2d3e6c-21ef-4a0c-91b5-1a8bb0b8e3c1"
 }
 ```
 
-### Produce a decision
+### ProduceDecision
 
 Replace the "event_id" in the /decisions request with the ID returned when registering the event.
 
-#### Request (swagger)
+#### ProduceDecisionRequest (swagger)
 
 ```json
 {
@@ -107,13 +219,17 @@ Replace the "event_id" in the /decisions request with the ID returned when regis
 }
 ```
 
-#### Request (terminal)
+#### ProduceDecisionRequest (terminal)
 
 ```bash
-curl -v -X POST http://localhost:8000/decisions/ -H "Content-Type: application/json" -d '{"event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"}'
+curl -v -X POST http://localhost:8000/decisions/ \
+-H "Content-Type: application/json" \
+-d '{
+    "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2"
+}'
 ```
 
-#### Response
+#### ProduceDecisionResponse
 
 ```json
 {

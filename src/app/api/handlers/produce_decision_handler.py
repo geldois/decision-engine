@@ -30,7 +30,7 @@ def build_produce_decision_handler(
             return HTTPProduceDecisionResponse(
                 event_id=dto_produce_decision_response.event_id,
                 rule_id=dto_produce_decision_response.rule_id,
-                status=dto_produce_decision_response.status.value,
+                status=dto_produce_decision_response.status,
                 explanation=dto_produce_decision_response.explanation,
                 decision_id=dto_produce_decision_response.decision_id,
             )

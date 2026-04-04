@@ -1,9 +1,10 @@
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.conditions.simple_condition import SimpleCondition
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.rule_operator import RuleOperator
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
     InMemoryDecisionRepository,
 )
@@ -23,9 +24,11 @@ def test_in_memory_decision_repository_returns_saved_decision() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -48,9 +51,11 @@ def test_in_memory_decision_repository_returns_decision_when_id_exists() -> None
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -74,9 +79,11 @@ def test_in_memory_decision_repository_returns_none_when_id_does_not_exist() -> 
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -99,9 +106,11 @@ def test_in_memory_decision_repository_returns_true_when_decision_is_deleted() -
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -131,9 +140,11 @@ def test_in_memory_decision_repository_returns_false_when_decision_is_not_delete
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -156,9 +167,11 @@ def test_in_memory_decision_repository_returns_list_of_decisions() -> None:
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )

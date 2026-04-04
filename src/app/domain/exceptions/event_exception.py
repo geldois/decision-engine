@@ -51,7 +51,7 @@ class EventException(DomainException):
     ) -> EventException:
         return cls(
             message="Event occurred_at cannot be negative",
-            error_code=ErrorCode.EVENT_TIMESTAMP_INVALID,
+            error_code=ErrorCode.EVENT_OCCURRED_AT_INVALID,
             details=details,
         )
 
@@ -61,7 +61,7 @@ class EventException(DomainException):
     ) -> EventException:
         return cls(
             message="Event occurred_at cannot be zero",
-            error_code=ErrorCode.EVENT_TIMESTAMP_INVALID,
+            error_code=ErrorCode.EVENT_OCCURRED_AT_INVALID,
             details=details,
         )
 

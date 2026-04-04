@@ -7,8 +7,7 @@
 - [x] Enforce strict invariants in entities
 - [x] Define explicit rule evaluation behavior (order, priority)
 - [x] Add rule priority and deterministic execution
-- [ ] Support rule composition (AND / OR)
-- [ ] Ensure type consistency (no implicit coercion)
+- [x] Support rule composition (AND / OR)
 - [ ] Improve decision explanation (full evaluation context)
 
 ## Domain - Audit Log

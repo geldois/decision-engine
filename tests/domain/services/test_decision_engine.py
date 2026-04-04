@@ -3,9 +3,10 @@ from datetime import UTC, datetime
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.conditions.simple_condition import SimpleCondition
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.rule_operator import RuleOperator
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 # ==========
@@ -16,27 +17,33 @@ def test_decision_engine_returns_sorted_list_of_rules_by_priority_and_tie_breaki
 ):
     rule_1 = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
         created_at=datetime(2026, 1, 1, tzinfo=UTC),
     )
     rule_2 = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
         created_at=datetime(2026, 1, 2, tzinfo=UTC),
     )
     rule_3 = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=1,
         created_at=datetime(2026, 1, 1, tzinfo=UTC),
@@ -52,7 +59,7 @@ def test_decision_engine_returns_sorted_list_of_rules_by_priority_and_tie_breaki
     )
 
 
-def test_decision_engine_returns_valid_decision_when_rule_applies():
+def test_decision_engine_returns_valid_decision_when_rule_applies() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -60,9 +67,11 @@ def test_decision_engine_returns_valid_decision_when_rule_applies():
     )
     rule = Rule(
         name="ALWAYS_APPLIES",
-        condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
-        condition_value="USER_CREATED",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
         outcome=DecisionOutcome.APPROVED,
         priority=0,
     )
@@ -79,7 +88,7 @@ def test_decision_engine_returns_valid_decision_when_rule_applies():
     assert decision.explanation
 
 
-def test_decision_engine_returns_valid_decision_when_no_rule_applies():
+def test_decision_engine_returns_valid_decision_when_no_rule_applies() -> None:
     event = Event(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},

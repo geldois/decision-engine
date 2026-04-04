@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from typing import cast
 
 from app.api.mappers.http_error_code_mapper import (
     map_exception_to_http_exception,
@@ -7,6 +8,7 @@ from app.api.schemas.use_cases.http_register_rule_request import HTTPRegisterRul
 from app.api.schemas.use_cases.http_register_rule_response import (
     HTTPRegisterRuleResponse,
 )
+from app.application.dto.dto_condition import DTOCondition
 from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
 from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
 
@@ -20,11 +22,9 @@ def build_register_rule_handler(
         try:
             dto_register_rule_request = DTORegisterRuleRequest(
                 name=http_register_rule_request.name,
-                condition_field=http_register_rule_request.condition_field,
-                condition_operator=http_register_rule_request.condition_operator,
-                condition_value=http_register_rule_request.condition_value,
+                condition=cast(DTOCondition, http_register_rule_request.condition),
                 outcome=http_register_rule_request.outcome,
-                priority=http_register_rule_request.priority
+                priority=http_register_rule_request.priority,
             )
             dto_register_rule_response = register_rule_use_case.execute(
                 dto_request=dto_register_rule_request
@@ -32,7 +32,8 @@ def build_register_rule_handler(
 
             return HTTPRegisterRuleResponse(
                 name=dto_register_rule_response.name,
-                outcome=dto_register_rule_response.outcome.value,
+                condition=dto_register_rule_response.condition,
+                outcome=dto_register_rule_response.outcome,
                 priority=dto_register_rule_response.priority,
                 rule_id=dto_register_rule_response.rule_id,
             )

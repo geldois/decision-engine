@@ -1,3 +1,4 @@
+import json
 from datetime import UTC
 from uuid import UUID
 
@@ -24,7 +25,7 @@ class SqlEventRepository(EventRepositoryContract):
 
         event = Event(
             event_type=event_model.event_type,
-            payload=event_model.payload,
+            payload=json.loads(event_model.payload),
             occurred_at=event_model.occurred_at,
             created_at=created_at,
             event_id=event_model.id,
@@ -36,7 +37,7 @@ class SqlEventRepository(EventRepositoryContract):
         event_model = EventModel(
             id=event.id,
             event_type=event.event_type,
-            payload=event.payload,
+            payload=json.dumps(event.payload),
             occurred_at=event.occurred_at,
             created_at=event.created_at,
         )

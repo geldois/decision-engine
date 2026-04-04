@@ -36,3 +36,15 @@ class Decision(DomainEntity):
         self.outcome = outcome
         self.explanation = explanation
         super().__init__(created_at=created_at, entity_id=decision_id)
+
+    def is_structurally_equal(self, other: DomainEntity) -> bool:
+        if not isinstance(other, Decision):
+            return False
+
+        return (
+            self.event_id == other.event_id
+            and self.rule_id == other.rule_id
+            and self.outcome == other.outcome
+            and self.explanation == other.explanation
+            and self.created_at == other.created_at
+        )

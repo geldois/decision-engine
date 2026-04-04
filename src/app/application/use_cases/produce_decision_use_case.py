@@ -29,7 +29,7 @@ class ProduceDecisionUseCase(UseCaseContract):
             return DTOProduceDecisionResponse(
                 event_id=saved_decision.event_id,
                 rule_id=saved_decision.rule_id,
-                status=saved_decision.outcome,
+                status=saved_decision.outcome.value,
                 explanation=saved_decision.explanation,
                 decision_id=saved_decision.id,
             )
