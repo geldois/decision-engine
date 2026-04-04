@@ -8,47 +8,6 @@ from app.domain.exceptions.error_code import ErrorCode
 
 class RuleException(DomainException):
     @classmethod
-    def rule_condition_cannot_be_built(
-        cls,
-        details: dict[str, Any] | None = None,
-    ) -> RuleException:
-        return cls(
-            message="Rule condition cannot be built",
-            error_code=ErrorCode.RULE_CONDITION_INVALID,
-            details=details,
-        )
-
-    @classmethod
-    def rule_condition_operator_cannot_be_empty(
-        cls, details: dict[str, Any] | None = None
-    ) -> RuleException:
-        return cls(
-            message="Rule condition operator cannot be empty",
-            error_code=ErrorCode.RULE_CONDITION_OPERATOR_EMPTY,
-            details=details,
-        )
-
-    @classmethod
-    def rule_condition_operator_is_invalid(
-        cls, details: dict[str, Any] | None = None
-    ) -> RuleException:
-        return cls(
-            message="Rule condition operator is invalid",
-            error_code=ErrorCode.RULE_CONDITION_OPERATOR_INVALID,
-            details=details,
-        )
-
-    @classmethod
-    def rule_condition_value_cannot_be_empty(
-        cls, details: dict[str, Any] | None = None
-    ) -> RuleException:
-        return cls(
-            message="Rule condition value cannot be empty",
-            error_code=ErrorCode.RULE_CONDITION_VALUE_EMPTY,
-            details=details,
-        )
-
-    @classmethod
     def rule_name_cannot_be_empty(
         cls, details: dict[str, Any] | None = None
     ) -> RuleException:

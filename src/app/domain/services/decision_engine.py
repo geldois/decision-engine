@@ -11,7 +11,7 @@ class DecisionEngine:
         rules = self.sort_by_priority(rules=rules)
 
         for rule in rules:
-            if rule.applies_to(event):
+            if rule.apply(event):
                 outcome = rule.outcome
                 explanation = "Event <ID: " + str(event.id) + "> " + str(outcome.value)
 

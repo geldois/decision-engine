@@ -3,9 +3,9 @@ from datetime import UTC, datetime
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.comparison_operator import ComparisonOperator
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.rule_operator import RuleOperator
 
 
 # ==========
@@ -17,7 +17,7 @@ def test_decision_engine_returns_sorted_list_of_rules_by_priority_and_tie_breaki
     rule_1 = Rule(
         name="ALWAYS_APPLIES",
         condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
+        condition_operator=ComparisonOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
         priority=0,
@@ -26,7 +26,7 @@ def test_decision_engine_returns_sorted_list_of_rules_by_priority_and_tie_breaki
     rule_2 = Rule(
         name="ALWAYS_APPLIES",
         condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
+        condition_operator=ComparisonOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
         priority=0,
@@ -35,7 +35,7 @@ def test_decision_engine_returns_sorted_list_of_rules_by_priority_and_tie_breaki
     rule_3 = Rule(
         name="ALWAYS_APPLIES",
         condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
+        condition_operator=ComparisonOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
         priority=1,
@@ -61,7 +61,7 @@ def test_decision_engine_returns_valid_decision_when_rule_applies():
     rule = Rule(
         name="ALWAYS_APPLIES",
         condition_field=EventField.EVENT_TYPE,
-        condition_operator=RuleOperator.EQUALS,
+        condition_operator=ComparisonOperator.EQUALS,
         condition_value="USER_CREATED",
         outcome=DecisionOutcome.APPROVED,
         priority=0,

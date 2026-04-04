@@ -9,7 +9,6 @@ from app.bootstrap.bootstrap import (
     build_in_memory_unit_of_work_factory,
     create_app,
 )
-from app.domain.exceptions.event_exception import EventException
 from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
     InMemoryStorage,
 )

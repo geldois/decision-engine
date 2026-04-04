@@ -1,13 +1,15 @@
 from app.application.contracts.use_case_contract import UseCaseContract
 from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
 from app.application.dto.dto_register_rule_response import DTORegisterRuleResponse
+from app.application.mappers.comparison_operator_mapper import (
+    map_comparison_operator_by_value,
+)
 from app.application.mappers.decision_outcome_mapper import (
     map_outcome_by_value,
 )
 from app.application.mappers.event_field_mapper import (
     map_event_field_by_value,
 )
-from app.application.mappers.rule_operator_mapper import map_rule_operator_by_value
 from app.domain.entities.rule import Rule
 
 
@@ -17,7 +19,7 @@ class RegisterRuleUseCase(UseCaseContract):
             rule = Rule(
                 name=dto_request.name,
                 condition_field=map_event_field_by_value(dto_request.condition_field),
-                condition_operator=map_rule_operator_by_value(
+                condition_operator=map_comparison_operator_by_value(
                     dto_request.condition_operator
                 ),
                 condition_value=dto_request.condition_value,
