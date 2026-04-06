@@ -4,7 +4,6 @@ from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.exceptions.event_exception import EventException
-from app.domain.value_objects.event_field import EventField
 
 
 class Event(DomainEntity):
@@ -40,6 +39,3 @@ class Event(DomainEntity):
         self.payload = payload
         self.occurred_at = occurred_at
         super().__init__(created_at=created_at, entity_id=event_id)
-
-    def get_field_value(self, event_field: EventField) -> Any:
-        return getattr(self, event_field.value)

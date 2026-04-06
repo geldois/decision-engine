@@ -9,10 +9,10 @@ from typing import Any
 class ComparisonOperator(Enum):
     _function: Callable[[Any, Any], bool]
 
-    EQUALS = "==", eq
-    GREATER_THAN = ">", gt
-    LESS_THAN = "<", lt
-    NOT_EQUALS = "!=", ne
+    EQUALS = ("==", eq)
+    GREATER_THAN = (">", gt)
+    LESS_THAN = ("<", lt)
+    NOT_EQUALS = ("!=", ne)
 
     def __new__(
         cls, operator: str, _function: Callable[[Any, Any], bool]
@@ -23,5 +23,5 @@ class ComparisonOperator(Enum):
 
         return obj
 
-    def compare(self, left: Any, right: Any) -> bool:
+    def evaluate(self, left: Any, right: Any) -> bool:
         return self._function(left, right)

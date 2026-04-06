@@ -27,7 +27,7 @@ class SqlRuleRepository(RuleRepositoryContract):
 
         rule = Rule(
             name=rule_model.name,
-            condition_field=EventField(rule_model.condition_field),
+            condition=EventField(rule_model.condition_field),
             condition_operator=ComparisonOperator(rule_model.condition_operator),
             condition_value=rule_model.condition_value_int
             if rule_model.condition_value_int
@@ -44,7 +44,7 @@ class SqlRuleRepository(RuleRepositoryContract):
         rule_model = RuleModel(
             id=rule.id,
             name=rule.name,
-            condition_field=rule.condition_field.value,
+            condition_field=rule.condition.value,
             condition_operator=rule.condition_operator.value,
             condition_value_int=rule.condition_value
             if isinstance(rule.condition_value, int)

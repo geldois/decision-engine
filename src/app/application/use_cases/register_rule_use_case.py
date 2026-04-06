@@ -18,7 +18,7 @@ class RegisterRuleUseCase(UseCaseContract):
         with self.unit_of_work_factory() as unit_of_work:
             rule = Rule(
                 name=dto_request.name,
-                condition_field=map_event_field_by_value(dto_request.condition_field),
+                condition=map_event_field_by_value(dto_request.condition_field),
                 condition_operator=map_comparison_operator_by_value(
                     dto_request.condition_operator
                 ),

@@ -7,8 +7,8 @@ from enum import Enum
 class LogicalOperator(Enum):
     stop_value: bool
 
-    AND = "and", False
-    OR = "or", True
+    AND = ("and", False)
+    OR = ("or", True)
 
     def __new__(cls, operator: str, stop_value: bool) -> LogicalOperator:
         obj = object.__new__(cls)
@@ -17,7 +17,7 @@ class LogicalOperator(Enum):
 
         return obj
 
-    def compare(self, conditions: Iterable[bool]) -> bool:
+    def evaluate(self, conditions: Iterable[bool]) -> bool:
         for condition in conditions:
             if condition is self.stop_value:
                 return self.stop_value

@@ -8,16 +8,16 @@ from app.domain.exceptions.error_code import ErrorCode
 
 class ConditionException(DomainException):
     @classmethod
-    def condition_cannot_be_built(
+    def condition_is_invalid(
         cls,
         details: dict[str, Any] | None = None,
     ) -> ConditionException:
         return cls(
-            message="Condition cannot be built",
+            message="Condition is invalid",
             error_code=ErrorCode.CONDITION_INVALID,
             details=details,
         )
-    
+
     @classmethod
     def condition_list_is_invalid(
         cls,
