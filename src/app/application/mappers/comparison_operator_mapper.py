@@ -1,5 +1,5 @@
 from app.domain.exceptions.condition_exception import ConditionException
-from app.domain.value_objects.comparison_operator import ComparisonOperator
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 def map_comparison_operator_by_name(

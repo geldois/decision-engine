@@ -3,9 +3,9 @@ import pytest
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.exceptions.rule_exception import RuleException
-from app.domain.value_objects.comparison_operator import ComparisonOperator
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 # ==========

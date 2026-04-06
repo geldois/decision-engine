@@ -4,9 +4,9 @@ from app.bootstrap.bootstrap import build_dev_session_factory
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
-from app.domain.value_objects.comparison_operator import ComparisonOperator
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.persistence.sql.repositories.sql_decision_repository import (
     SqlDecisionRepository,
 )

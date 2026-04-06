@@ -1,7 +1,7 @@
 from app.domain.entities.rule import Rule
-from app.domain.value_objects.comparison_operator import ComparisonOperator
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
     InMemoryRuleRepository,
 )

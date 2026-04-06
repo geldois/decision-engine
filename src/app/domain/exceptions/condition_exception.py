@@ -17,6 +17,17 @@ class ConditionException(DomainException):
             error_code=ErrorCode.CONDITION_INVALID,
             details=details,
         )
+    
+    @classmethod
+    def condition_list_is_invalid(
+        cls,
+        details: dict[str, Any] | None = None,
+    ) -> ConditionException:
+        return cls(
+            message="Condition list is invalid",
+            error_code=ErrorCode.CONDITION_LIST_INVALID,
+            details=details,
+        )
 
     @classmethod
     def condition_operator_cannot_be_empty(

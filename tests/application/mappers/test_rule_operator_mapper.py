@@ -5,7 +5,7 @@ from app.application.mappers.comparison_operator_mapper import (
     map_comparison_operator_by_value,
 )
 from app.domain.exceptions.condition_exception import ConditionException
-from app.domain.value_objects.comparison_operator import ComparisonOperator
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 # ==========

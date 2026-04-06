@@ -8,9 +8,9 @@ from app.application.contracts.repositories.rule_repository_contract import (
     RuleRepositoryContract,
 )
 from app.domain.entities.rule import Rule
-from app.domain.value_objects.comparison_operator import ComparisonOperator
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.database.models.rule_model import RuleModel
 
 

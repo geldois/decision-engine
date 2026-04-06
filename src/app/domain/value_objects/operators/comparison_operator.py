@@ -7,7 +7,7 @@ from typing import Any
 
 
 class ComparisonOperator(Enum):
-    _function: Callable[..., bool]
+    _function: Callable[[Any, Any], bool]
 
     EQUALS = "==", eq
     GREATER_THAN = ">", gt
@@ -15,7 +15,7 @@ class ComparisonOperator(Enum):
     NOT_EQUALS = "!=", ne
 
     def __new__(
-        cls, operator: str, _function: Callable[..., bool]
+        cls, operator: str, _function: Callable[[Any, Any], bool]
     ) -> ComparisonOperator:
         obj = object.__new__(cls)
         obj._value_ = operator
@@ -23,5 +23,5 @@ class ComparisonOperator(Enum):
 
         return obj
 
-    def evaluate(self, left: Any, right: Any, /) -> bool:
+    def compare(self, left: Any, right: Any) -> bool:
         return self._function(left, right)

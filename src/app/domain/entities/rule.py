@@ -5,9 +5,9 @@ from uuid import UUID
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.entities.event import Event
 from app.domain.exceptions.rule_exception import RuleException
-from app.domain.value_objects.comparison_operator import ComparisonOperator
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 class Rule(DomainEntity):
@@ -44,7 +44,7 @@ class Rule(DomainEntity):
         condition_value: int | str,
     ) -> Callable[[Event], bool]:
         def condition(event: Event) -> bool:
-            return condition_operator.evaluate(
+            return condition_operator.compare(
                 event.get_field_value(condition_field), condition_value
             )
 

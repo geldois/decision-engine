@@ -41,5 +41,5 @@ class Event(DomainEntity):
         self.occurred_at = occurred_at
         super().__init__(created_at=created_at, entity_id=event_id)
 
-    def get_field_value(self, event_field: EventField) -> str:
-        return self.__getattribute__(event_field.value)
+    def get_field_value(self, event_field: EventField) -> Any:
+        return getattr(self, event_field.value)
