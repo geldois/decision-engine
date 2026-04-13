@@ -27,7 +27,7 @@ def build_register_rule_handler(
                 priority=http_register_rule_request.priority,
             )
             dto_register_rule_response = register_rule_use_case.execute(
-                dto_request=dto_register_rule_request
+                dto=dto_register_rule_request
             )
 
             return HTTPRegisterRuleResponse(

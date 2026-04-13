@@ -40,13 +40,13 @@ from app.infrastructure.persistence.in_memory.unit_of_work.in_memory_unit_of_wor
     InMemoryUnitOfWork,
 )
 from app.infrastructure.persistence.sql.repositories.sql_decision_repository import (
-    SqlDecisionRepository,
+    SQLDecisionRepository,
 )
 from app.infrastructure.persistence.sql.repositories.sql_event_repository import (
-    SqlEventRepository,
+    SQLEventRepository,
 )
 from app.infrastructure.persistence.sql.repositories.sql_rule_repository import (
-    SqlRuleRepository,
+    SQLRuleRepository,
 )
 from app.infrastructure.persistence.sql.unit_of_work.sql_unit_of_work import (
     SqlUnitOfWork,
@@ -95,9 +95,9 @@ def build_sql_unit_of_work_factory(
     return partial(
         SqlUnitOfWork,
         session_factory=session_factory,
-        decision_repository_factory=SqlDecisionRepository,
-        event_repository_factory=SqlEventRepository,
-        rule_repository_factory=SqlRuleRepository,
+        decision_repository_factory=SQLDecisionRepository,
+        event_repository_factory=SQLEventRepository,
+        rule_repository_factory=SQLRuleRepository,
     )
 
 

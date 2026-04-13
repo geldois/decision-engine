@@ -4,6 +4,7 @@ from uuid import UUID
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.exceptions.decision_exception import DecisionException
 from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_trace import DecisionTrace
 
 
 class Decision(DomainEntity):
@@ -12,7 +13,7 @@ class Decision(DomainEntity):
         event_id: UUID,
         rule_id: UUID | None,
         outcome: DecisionOutcome,
-        explanation: str,
+        traces: tuple[DecisionTrace, ...],
         created_at: datetime | None = None,
         decision_id: UUID | None = None,
     ) -> None:
@@ -26,15 +27,10 @@ class Decision(DomainEntity):
                 details={"rule_id": rule_id, "outcome": outcome}
             )
 
-        if not explanation.strip():
-            raise DecisionException.decision_explanation_cannot_be_empty(
-                details={"explanation": explanation}
-            )
-
         self.event_id = event_id
         self.rule_id = rule_id
         self.outcome = outcome
-        self.explanation = explanation
+        self.traces = traces
         super().__init__(created_at=created_at, entity_id=decision_id)
 
     def is_structurally_equal(self, other: DomainEntity) -> bool:
@@ -45,6 +41,6 @@ class Decision(DomainEntity):
             self.event_id == other.event_id
             and self.rule_id == other.rule_id
             and self.outcome == other.outcome
-            and self.explanation == other.explanation
+            and self.traces == other.traces
             and self.created_at == other.created_at
         )

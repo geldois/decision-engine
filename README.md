@@ -13,10 +13,10 @@ Live API: <https://decision-engine.angelitochagas.com>
 - Use-case driven application layer
 - Unit of Work
 - Manual dependecy injection via bootstrap (composition root)
-- Deterministic rule evaluation with AST structure
-- Conditions are stored as serialized JSON (AST structure)
+- Deterministic rule evaluation with full execution trace (AST-based)
+- Conditions and traces are stored as serialized JSON (AST-based)
 
-## Rule Evaluation Model
+## Rule evaluation model
 
 Rules are evaluated using a recursive Abstract Syntax Tree (AST) structure.
 
@@ -27,9 +27,26 @@ Conditions are no longer flat (field/operator/value), but composable and nested:
 
 Evaluation uses short-circuit logic (lazy evaluation), stopping as soon as the result is determined.
 
+## Decision trace
+
+The decision engine now produces a full evaluation trace instead of a simple boolean result.
+
+Each rule evaluation returns a `DecisionTrace`, which can be:
+
+- `SimpleDecisionTrace`: evaluation of a single condition
+- `CompositeDecisionTrace`: logical composition (AND/OR) of multiple conditions
+
+The final `Decision` contains a tuple of traces representing the evaluation order (execution trace).
+
+This enables:
+
+- full explainability of decisions
+- debugging of rule evaluation
+- future audit logging support
+
 ## Testing
 
-- Domain and application layers developed with TDD.  
+- All layers developed with TDD.
 - API contracts validated with automated tests.
 - Test database isolated from production database
 
@@ -45,7 +62,7 @@ pytest
 decision-engine dev
 ```
 
-## Examples
+## Use cases
 
 ### RegisterEvent
 
@@ -236,7 +253,46 @@ curl -v -X POST http://localhost:8000/decisions/ \
     "event_id": "09ef7596-75ad-46e8-bb6c-eae532ce6cd2",
     "rule_id": "6d2d3e6c-21ef-4a0c-91b5-1a8bb0b8e3c1",
     "status": "approved",
-    "explanation": "Event <ID: 09ef7596-75ad-46e8-bb6c-eae532ce6cd2> approved",
+    "traces": [
+        {
+            "type": "composite",
+            "result": true,
+            "operator": "and",
+            "traces": [
+                {
+                    "type": "simple",
+                    "result": true,
+                    "operator": "==",
+                    "field": "event_type",
+                    "expected_value": "EVENT_TEST",
+                    "actual_value": "EVENT_TEST"
+                },
+                {
+                    "type": "composite",
+                    "result": true,
+                    "operator": "or",
+                    "traces": [
+                        {
+                            "type": "simple",
+                            "result": false,
+                            "operator": "==",
+                            "field": "event_type",
+                            "expected_value": "FALSE",
+                            "actual_value": "EVENT_TEST"
+                        },
+                        {
+                            "type": "simple",
+                            "result": true,
+                            "operator": "==",
+                            "field": "payload",
+                            "expected_value": {"test": true},
+                            "actual_value": {"test": true}
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     "decision_id": "b51b40c3-9c2c-4d2a-b7c4-7c8d3c7d3a9f"
 }
 ```

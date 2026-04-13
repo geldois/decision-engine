@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 from uuid import UUID
 
 
@@ -7,5 +8,5 @@ class DTOProduceDecisionResponse:
     event_id: UUID
     rule_id: UUID | None
     status: str
-    explanation: str
+    traces: list[dict[str, Any]]
     decision_id: UUID

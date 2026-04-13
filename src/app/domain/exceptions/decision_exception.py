@@ -8,16 +8,6 @@ from app.domain.exceptions.error_code import ErrorCode
 
 class DecisionException(DomainException):
     @classmethod
-    def decision_explanation_cannot_be_empty(
-        cls, details: dict[str, Any] | None = None
-    ) -> DecisionException:
-        return cls(
-            message="Decision explanation cannot be empty",
-            error_code=ErrorCode.DECISION_EXPLANATION_EMPTY,
-            details=details,
-        )
-
-    @classmethod
     def decision_not_found(
         cls, details: dict[str, Any] | None = None
     ) -> DecisionException:

@@ -24,14 +24,14 @@ def build_produce_decision_handler(
                 event_id=http_produce_decision_request.event_id
             )
             dto_produce_decision_response = produce_decision_use_case.execute(
-                dto_request=dto_produce_decision_request
+                dto=dto_produce_decision_request
             )
 
             return HTTPProduceDecisionResponse(
                 event_id=dto_produce_decision_response.event_id,
                 rule_id=dto_produce_decision_response.rule_id,
                 status=dto_produce_decision_response.status,
-                explanation=dto_produce_decision_response.explanation,
+                traces=dto_produce_decision_response.traces,
                 decision_id=dto_produce_decision_response.decision_id,
             )
         except Exception as exception:

@@ -8,7 +8,8 @@
 - [x] Define explicit rule evaluation behavior (order, priority)
 - [x] Add rule priority and deterministic execution
 - [x] Support rule composition (AND / OR)
-- [ ] Improve decision explanation (full evaluation context)
+- [x] Improve decision explanation (full evaluation context via DecisionTrace)
+- [x] Implement Visitor pattern for AST traversal
 
 ## Domain - Audit Log
 
@@ -42,17 +43,17 @@
 - [x] Define output contracts (no domain leakage)
 - [ ] Make orchestration explicit (step-by-step flows)
 - [ ] Handle failures explicitly (domain vs infra)
-- [ ] Prevent partial state (atomic flows)
+- [x] Prevent partial state (atomic flows)
 - [ ] Add simple retry/failure strategies
 - [x] Keep business logic out of application layer
 
 ## API
 
-- [ ] Define request schemas
-- [ ] Define response schemas
+- [x] Define request schemas
+- [x] Define response schemas
 - [ ] Map errors (domain → 4xx, infra → 5xx)
 - [ ] Ensure idempotency where needed
-- [ ] Separate validation (API vs domain)
+- [x] Separate validation (API vs domain)
 
 ## Bootstrap
 
@@ -78,4 +79,4 @@
 
 - [ ] Dockerize app
 - [ ] Add migrations
-- [ ] Keep CI running
+- [x] Keep CI running

@@ -16,7 +16,7 @@ class DecisionModel(Base):
         UUID, ForeignKey("rules.id"), nullable=True
     )
     outcome: Mapped[str] = mapped_column(String, nullable=False)
-    explanation: Mapped[str] = mapped_column(String, nullable=False)
+    traces: Mapped[str] = mapped_column(String, nullable=False)
 
     event = relationship("EventModel")
     rule = relationship("RuleModel")

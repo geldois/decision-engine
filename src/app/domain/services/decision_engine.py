@@ -4,32 +4,33 @@ from app.domain.entities.decision import Decision
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.decision_trace import DecisionTrace
 
 
 class DecisionEngine:
     def decide(self, event: Event, rules: list[Rule]) -> Decision:
-        rules = self.sort_by_priority(rules=rules)
+        traces: list[DecisionTrace] = []
 
-        for rule in rules:
-            if rule.condition.evaluate(event=event):
-                outcome = rule.outcome
-                explanation = "Event <ID: " + str(event.id) + "> " + str(outcome.value)
+        for rule in self.sort_by_priority(rules=rules):
+            trace = rule.condition.evaluate(event=event)
+            traces.append(trace)
 
+            if trace.result:
                 return Decision(
                     event_id=event.id,
                     rule_id=rule.id,
-                    outcome=outcome,
-                    explanation=explanation,
+                    outcome=rule.outcome,
+                    traces=tuple(traces),
                 )
 
-        outcome = DecisionOutcome.NO_MATCH
-        explanation = "Event <ID: " + str(event.id) + "> " + str(outcome.value)
-
         return Decision(
-            event_id=event.id, rule_id=None, outcome=outcome, explanation=explanation
+            event_id=event.id,
+            rule_id=None,
+            outcome=DecisionOutcome.NO_MATCH,
+            traces=tuple(traces),
         )
 
     def sort_by_priority(self, rules: list[Rule]) -> list[Rule]:
         return sorted(
-            rules, key=attrgetter("priority", "created_at", "id"), reverse=True
+            rules, key=attrgetter("priority"), reverse=True
         )

@@ -5,8 +5,8 @@ from typing import Literal, TypedDict
 
 class DTOSimpleCondition(TypedDict):
     type: Literal["simple"]
-    field: str
-    operator: str
+    field: Literal["id", "event_type", "occurred_at", "payload"]
+    operator: Literal["==", ">", "<", "!="]
     value: object
 
 
