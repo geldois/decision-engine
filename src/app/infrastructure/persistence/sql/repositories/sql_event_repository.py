@@ -1,10 +1,9 @@
-import json
-from datetime import UTC
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+import app.infrastructure.persistence.sql.mappers.sql_event_mapper as SQLEventMapper
 from app.application.contracts.repositories.event_repository_contract import (
     EventRepositoryContract,
 )
@@ -12,40 +11,12 @@ from app.domain.entities.event import Event
 from app.infrastructure.database.models.event_model import EventModel
 
 
-class SqlEventRepository(EventRepositoryContract):
+class SQLEventRepository(EventRepositoryContract):
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def convert_event_model_to_event(self, event_model: EventModel) -> Event:
-        created_at = (
-            event_model.created_at.replace(tzinfo=UTC)
-            if event_model.created_at.tzinfo is None
-            else event_model.created_at
-        )
-
-        event = Event(
-            event_type=event_model.event_type,
-            payload=json.loads(event_model.payload),
-            occurred_at=event_model.occurred_at,
-            created_at=created_at,
-            event_id=event_model.id,
-        )
-
-        return event
-
-    def convert_event_to_event_model(self, event: Event) -> EventModel:
-        event_model = EventModel(
-            id=event.id,
-            event_type=event.event_type,
-            payload=json.dumps(event.payload),
-            occurred_at=event.occurred_at,
-            created_at=event.created_at,
-        )
-
-        return event_model
-
     def save(self, event: Event) -> Event:
-        event_model = self.convert_event_to_event_model(event=event)
+        event_model = SQLEventMapper.domain_to_model(event=event)
         self.session.add(event_model)
         self.session.flush()
         self.session.refresh(event_model)
@@ -75,7 +46,7 @@ class SqlEventRepository(EventRepositoryContract):
         )
 
         if event_model:
-            return self.convert_event_model_to_event(event_model=event_model)
+            return SQLEventMapper.model_to_domain(event_model=event_model)
 
         return None
 
@@ -84,7 +55,7 @@ class SqlEventRepository(EventRepositoryContract):
         events: list[Event] = []
 
         for event_model in event_models:
-            event = self.convert_event_model_to_event(event_model=event_model)
+            event = SQLEventMapper.model_to_domain(event_model=event_model)
             events.append(event)
 
         return events

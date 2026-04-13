@@ -2,23 +2,17 @@ from app.domain.exceptions.condition_exception import ConditionException
 from app.domain.value_objects.operators.logical_operator import LogicalOperator
 
 
-def map_logical_operator_by_name(
-    logical_operator_name: str,
+def parse_logical_operator(
+    value: str,
 ) -> LogicalOperator:
-    return LogicalOperator[logical_operator_name]
-
-
-def map_logical_operator_by_value(
-    logical_operator_value: str,
-) -> LogicalOperator:
-    if not logical_operator_value.strip():
+    if not value.strip():
         raise ConditionException.condition_operator_cannot_be_empty(
-            details={"condition_operator": logical_operator_value}
+            details={"condition_operator": value}
         )
 
     try:
-        return LogicalOperator(logical_operator_value)
+        return LogicalOperator(value)
     except ValueError as exception:
         raise ConditionException.condition_operator_is_invalid(
-            details={"condition_operator": logical_operator_value}
+            details={"condition_operator": value}
         ) from exception

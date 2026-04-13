@@ -1,0 +1,124 @@
+from app.domain.entities.event import Event
+from app.domain.entities.rule import Rule
+from app.domain.services.decision_engine import DecisionEngine
+from app.domain.value_objects.condition import SimpleCondition
+from app.domain.value_objects.decision_outcome import DecisionOutcome
+from app.domain.value_objects.event_field import EventField
+from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
+    InMemoryDecisionRepository,
+)
+from app.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
+    InMemoryEventRepository,
+)
+from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
+    InMemoryRuleRepository,
+)
+from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
+    InMemoryStorage,
+)
+from app.infrastructure.persistence.in_memory.unit_of_work.in_memory_unit_of_work import (
+    InMemoryUnitOfWork,
+)
+
+
+# ==========
+# valid cases
+# ==========
+def test_in_memory_unit_of_work_commits() -> None:
+    event = Event(
+        event_type="USER_CREATED",
+        payload={"user_id": 123, "email": "user@email.com"},
+        occurred_at=1700000000,
+    )
+    rule = Rule(
+        name="ALWAYS_APPLIES",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
+        outcome=DecisionOutcome.APPROVED,
+        priority=0,
+    )
+    decision_engine = DecisionEngine()
+    decision = decision_engine.decide(event=event, rules=[rule])
+    in_memory_storage = InMemoryStorage()
+    in_memory_unit_of_work = InMemoryUnitOfWork(
+        in_memory_storage=in_memory_storage,
+        decision_repository_factory=InMemoryDecisionRepository,
+        event_repository_factory=InMemoryEventRepository,
+        rule_repository_factory=InMemoryRuleRepository,
+    )
+
+    assert not in_memory_storage.events
+
+    assert not in_memory_storage.rules
+
+    assert not in_memory_storage.decisions
+
+    try:
+        with in_memory_unit_of_work:
+            in_memory_unit_of_work.events.save(event=event)
+            in_memory_unit_of_work.rules.save(rule=rule)
+            in_memory_unit_of_work.decisions.save(decision=decision)
+    except Exception:
+        pass
+
+    assert event.id in in_memory_storage.events
+
+    assert rule.id in in_memory_storage.rules
+
+    assert decision.id in in_memory_storage.decisions
+
+
+# ==========
+# invalid cases
+# ==========
+def test_in_memory_unit_of_work_rolls_back() -> None:
+    event = Event(
+        event_type="USER_CREATED",
+        payload={"user_id": 123, "email": "user@email.com"},
+        occurred_at=1700000000,
+    )
+    rule = Rule(
+        name="ALWAYS_APPLIES",
+        condition=SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value="USER_CREATED",
+        ),
+        outcome=DecisionOutcome.APPROVED,
+        priority=0,
+    )
+    decision_engine = DecisionEngine()
+    decision = decision_engine.decide(event=event, rules=[rule])
+    in_memory_storage = InMemoryStorage()
+    in_memory_unit_of_work = InMemoryUnitOfWork(
+        in_memory_storage=in_memory_storage,
+        decision_repository_factory=InMemoryDecisionRepository,
+        event_repository_factory=InMemoryEventRepository,
+        rule_repository_factory=InMemoryRuleRepository,
+    )
+
+    assert not in_memory_storage.events
+
+    assert not in_memory_storage.rules
+
+    assert not in_memory_storage.decisions
+
+    try:
+        with in_memory_unit_of_work:
+            in_memory_unit_of_work.events.save(event=event)
+            in_memory_unit_of_work.rules.save(rule=rule)
+            in_memory_unit_of_work.decisions.save(decision=decision)
+
+            raise Exception
+    except Exception:
+        pass
+
+    assert not in_memory_storage.events
+
+    assert not in_memory_storage.rules
+
+    assert not in_memory_storage.decisions

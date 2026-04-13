@@ -3,7 +3,7 @@ from uuid import UUID
 
 from app.domain.entities.domain_entity import DomainEntity
 from app.domain.exceptions.rule_exception import RuleException
-from app.domain.value_objects.conditions.condition import Condition
+from app.domain.value_objects.condition import Condition
 from app.domain.value_objects.decision_outcome import DecisionOutcome
 
 

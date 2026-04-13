@@ -26,7 +26,7 @@ def build_register_event_handler(
                 occurred_at=http_register_event_request.occurred_at,
             )
             dto_register_event_response = register_event_use_case.execute(
-                dto_request=dto_register_event_request
+                dto=dto_register_event_request
             )
 
             return HTTPRegisterEventResponse(

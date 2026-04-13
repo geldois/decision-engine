@@ -4,13 +4,15 @@ from app.application.dto.dto_register_event_response import DTORegisterEventResp
 from app.domain.entities.event import Event
 
 
-class RegisterEventUseCase(UseCaseContract):
-    def execute(self, dto_request: DTORegisterEventRequest) -> DTORegisterEventResponse:
+class RegisterEventUseCase(
+    UseCaseContract[DTORegisterEventRequest, DTORegisterEventResponse]
+):
+    def execute(self, dto: DTORegisterEventRequest) -> DTORegisterEventResponse:
         with self.unit_of_work_factory() as unit_of_work:
             event = Event(
-                event_type=dto_request.event_type,
-                payload=dto_request.payload,
-                occurred_at=dto_request.occurred_at,
+                event_type=dto.event_type,
+                payload=dto.payload,
+                occurred_at=dto.occurred_at,
             )
             saved_event = unit_of_work.events.save(event=event)
 
