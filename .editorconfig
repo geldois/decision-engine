@@ -19,11 +19,13 @@ max_line_length = 88
 [*.{yml,yaml}]
 indent_style = space
 indent_size = 2
+tab_width = 2
 
 # JSON
 [*.json]
 indent_style = space
 indent_size = 2
+tab_width = 2
 
 # Markdown
 [*.md]
@@ -33,16 +35,19 @@ trim_trailing_whitespace = false
 [*.sh]
 indent_style = space
 indent_size = 2
+tab_width = 2
 
 # TOML
 [*.toml]
 indent_style = space
 indent_size = 2
+tab_width = 2
 
 # Dockerfile
 [Dockerfile]
 indent_style = space
 indent_size = 2
+tab_width = 2
 
 # Makefiles
 [Makefile]
@@ -52,3 +57,4 @@ indent_style = tab
 [*.{gitconfig,gitattributes,gitignore}]
 indent_style = space
 indent_size = 2
+tab_width = 2
