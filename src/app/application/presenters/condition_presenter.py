@@ -3,25 +3,27 @@ from typing import Any
 from app.domain.value_objects.condition import (
     CompositeCondition,
     Condition,
+    ConditionVisitor,
     SimpleCondition,
 )
-from app.domain.visitors.condition_visitor import ConditionVisitor
 
 
 class ConditionPresenter(ConditionVisitor[dict[str, Any]]):
+    @classmethod
     def visit_composite(
-        self,
+        cls,
         element: CompositeCondition,
     ) -> dict[str, Any]:
         return {
             "type": "composite",
             "operator": element.operator.value,
             "conditions": [
-                condition.accept(visitor=self) for condition in element.conditions
+                condition.accept(visitor=cls) for condition in element.conditions
             ],
         }
 
-    def visit_simple(self, element: SimpleCondition) -> dict[str, Any]:
+    @classmethod
+    def visit_simple(cls, element: SimpleCondition) -> dict[str, Any]:
         return {
             "type": "simple",
             "field": element.field.value,
@@ -29,5 +31,6 @@ class ConditionPresenter(ConditionVisitor[dict[str, Any]]):
             "value": element.value,
         }
 
-    def present(self, element: Condition) -> dict[str, Any]:
-        return element.accept(visitor=self)
+    @classmethod
+    def present(cls, element: Condition) -> dict[str, Any]:
+        return element.accept(visitor=cls)

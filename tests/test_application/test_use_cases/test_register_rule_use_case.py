@@ -1,12 +1,12 @@
 from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
-from app.bootstrap.bootstrap import bootstrap
+from app.config.container import Container
+
+# VALID CASES
 
 
-# ==========
-# valid cases
-# ==========
-def test_register_rule_use_case_returns_valid_dto_response() -> None:
-    container = bootstrap(env="test")
+def test_register_rule_use_case_returns_valid_dto_response(
+    container: Container,
+) -> None:
     dto_register_rule_request = DTORegisterRuleRequest(
         name="ALWAYS_APPLIES",
         condition={
@@ -19,7 +19,7 @@ def test_register_rule_use_case_returns_valid_dto_response() -> None:
         priority=0,
     )
 
-    dto_register_rule_response = container.register_rule_use_case.execute(
+    dto_register_rule_response = container.use_cases.register_rule.execute(
         dto=dto_register_rule_request
     )
 

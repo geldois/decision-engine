@@ -1,17 +1,15 @@
 from uuid import UUID
 
-from app.application.contracts.repositories.decision_repository_contract import (
-    DecisionRepositoryContract,
+from app.application.contracts.repository import (
+    DecisionRepository,
 )
 from app.domain.entities.decision import Decision
-from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
-    InMemoryStorage,
-)
+from app.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
 
 
-class InMemoryDecisionRepository(DecisionRepositoryContract):
-    def __init__(self, in_memory_storage: InMemoryStorage) -> None:
-        self.decisions = in_memory_storage.decisions
+class InMemoryDecisionRepository(DecisionRepository):
+    def __init__(self, storage: InMemoryStorage) -> None:
+        self.decisions = storage.decisions
 
     def save(self, decision: Decision) -> Decision:
         self.decisions[decision.id] = decision

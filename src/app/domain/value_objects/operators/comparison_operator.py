@@ -45,7 +45,7 @@ class ComparisonOperator(Enum):
 
         if isinstance(field, dict) and isinstance(value, dict):
             return self in {ComparisonOperator.EQUALS, ComparisonOperator.NOT_EQUALS}
-        
+
         if isinstance(field, str) and isinstance(value, str):
             return self in {ComparisonOperator.EQUALS, ComparisonOperator.NOT_EQUALS}
 

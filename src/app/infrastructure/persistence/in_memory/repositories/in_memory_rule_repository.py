@@ -1,17 +1,15 @@
 from uuid import UUID
 
-from app.application.contracts.repositories.rule_repository_contract import (
-    RuleRepositoryContract,
+from app.application.contracts.repository import (
+    RuleRepository,
 )
 from app.domain.entities.rule import Rule
-from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
-    InMemoryStorage,
-)
+from app.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
 
 
-class InMemoryRuleRepository(RuleRepositoryContract):
-    def __init__(self, in_memory_storage: InMemoryStorage) -> None:
-        self.rules = in_memory_storage.rules
+class InMemoryRuleRepository(RuleRepository):
+    def __init__(self, storage: InMemoryStorage) -> None:
+        self.rules = storage.rules
 
     def save(self, rule: Rule) -> Rule:
         self.rules[rule.id] = rule

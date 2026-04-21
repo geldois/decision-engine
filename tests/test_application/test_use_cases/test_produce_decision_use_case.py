@@ -5,15 +5,15 @@ import pytest
 from app.application.dto.dto_produce_decision_request import DTOProduceDecisionRequest
 from app.application.dto.dto_register_event_request import DTORegisterEventRequest
 from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
-from app.bootstrap.bootstrap import bootstrap
+from app.config.container import Container
 from app.domain.exceptions.event_exception import EventException
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
-def test_produce_decision_use_case_returns_valid_dto_response() -> None:
-    container = bootstrap(env="test")
+
+def test_produce_decision_use_case_returns_valid_dto_response(
+    container: Container,
+) -> None:
     dto_register_event_request = DTORegisterEventRequest(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
@@ -30,17 +30,17 @@ def test_produce_decision_use_case_returns_valid_dto_response() -> None:
         outcome="approved",
         priority=0,
     )
-    dto_register_event_response = container.register_event_use_case.execute(
+    dto_register_event_response = container.use_cases.register_event.execute(
         dto=dto_register_event_request
     )
-    dto_register_rule_response = container.register_rule_use_case.execute(
+    dto_register_rule_response = container.use_cases.register_rule.execute(
         dto=dto_register_rule_request
     )
     dto_produce_decision_request = DTOProduceDecisionRequest(
         event_id=dto_register_event_response.event_id
     )
 
-    dto_produce_decision_response = container.produce_decision_use_case.execute(
+    dto_produce_decision_response = container.use_cases.produce_decision.execute(
         dto=dto_produce_decision_request
     )
 
@@ -57,12 +57,13 @@ def test_produce_decision_use_case_returns_valid_dto_response() -> None:
     assert dto_produce_decision_response.decision_id
 
 
-# ==========
-# invalid cases
-# ==========
-def test_produce_decision_use_case_raises_on_not_found_event() -> None:
-    container = bootstrap(env="test")
+# INVALID CASES
+
+
+def test_produce_decision_use_case_raises_on_not_found_event(
+    container: Container,
+) -> None:
     dto_produce_decision_request = DTOProduceDecisionRequest(event_id=uuid4())
 
     with pytest.raises(EventException):
-        container.produce_decision_use_case.execute(dto=dto_produce_decision_request)
+        container.use_cases.produce_decision.execute(dto=dto_produce_decision_request)

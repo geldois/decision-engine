@@ -7,10 +7,9 @@ from app.domain.value_objects.event_field import EventField
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.domain.value_objects.operators.logical_operator import LogicalOperator
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
+
 def test_decision_trace_presenter_presents_simple_tuple_of_decision_traces() -> None:
     traces = (
         SimpleDecisionTrace(
@@ -22,7 +21,7 @@ def test_decision_trace_presenter_presents_simple_tuple_of_decision_traces() -> 
         ),
     )
 
-    data = DecisionTracePresenter().present(element=traces)
+    data = DecisionTracePresenter.present(element=traces)
 
     assert data == [
         {
@@ -67,7 +66,7 @@ def test_decision_trace_presenter_presents_composite_tuple_of_decision_traces() 
         ),
     )
 
-    data = DecisionTracePresenter().present(element=traces)
+    data = DecisionTracePresenter.present(element=traces)
 
     assert data == [
         {
