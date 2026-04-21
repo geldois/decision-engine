@@ -1,9 +1,8 @@
 from app.domain.value_objects.operators.logical_operator import LogicalOperator
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
+
 def test_logical_operator_and_returns_valid_bool() -> None:
     operator = LogicalOperator.AND
 

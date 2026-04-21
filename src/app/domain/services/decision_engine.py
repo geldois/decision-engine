@@ -8,10 +8,11 @@ from app.domain.value_objects.decision_trace import DecisionTrace
 
 
 class DecisionEngine:
-    def decide(self, event: Event, rules: list[Rule]) -> Decision:
+    @staticmethod
+    def decide(event: Event, rules: list[Rule]) -> Decision:
         traces: list[DecisionTrace] = []
 
-        for rule in self.sort_by_priority(rules=rules):
+        for rule in DecisionEngine.sort_by_priority(rules=rules):
             trace = rule.condition.evaluate(event=event)
             traces.append(trace)
 
@@ -30,7 +31,6 @@ class DecisionEngine:
             traces=tuple(traces),
         )
 
-    def sort_by_priority(self, rules: list[Rule]) -> list[Rule]:
-        return sorted(
-            rules, key=attrgetter("priority"), reverse=True
-        )
+    @staticmethod
+    def sort_by_priority(rules: list[Rule]) -> list[Rule]:
+        return sorted(rules, key=attrgetter("priority"), reverse=True)

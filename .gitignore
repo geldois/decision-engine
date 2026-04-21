@@ -210,8 +210,9 @@ __marimo__/
 *.db
 *.sqlite
 
-# Linux
-typescript
-
-# Generated artifacts
+##########
+.env.dev
+.env.prod
+.env.test
 scripts/output
+typescript

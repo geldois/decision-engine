@@ -9,10 +9,9 @@ from app.domain.value_objects.event_field import EventField
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.domain.value_objects.operators.logical_operator import LogicalOperator
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
+
 def test_composite_condition_returns_valid_bool() -> None:
     event_id = uuid4()
     event = Event(
@@ -69,9 +68,11 @@ def test_composite_condition_returns_valid_bool() -> None:
         ),
     ]
 
-    assert CompositeCondition(
-        operator=LogicalOperator.AND, conditions=conditions
-    ).evaluate(event=event).result
+    assert (
+        CompositeCondition(operator=LogicalOperator.AND, conditions=conditions)
+        .evaluate(event=event)
+        .result
+    )
 
     conditions = [
         SimpleCondition(
@@ -121,9 +122,11 @@ def test_composite_condition_returns_valid_bool() -> None:
         ),
     ]
 
-    assert not CompositeCondition(
-        operator=LogicalOperator.AND, conditions=conditions
-    ).evaluate(event=event).result
+    assert (
+        not CompositeCondition(operator=LogicalOperator.AND, conditions=conditions)
+        .evaluate(event=event)
+        .result
+    )
 
 
 def test_simple_condition_returns_valid_bool() -> None:
@@ -135,34 +138,50 @@ def test_simple_condition_returns_valid_bool() -> None:
         event_id=event_id,
     )
 
-    assert SimpleCondition(
-        operator=ComparisonOperator.EQUALS,
-        field=EventField.EVENT_TYPE,
-        value=event.event_type,
-    ).evaluate(event=event).result
+    assert (
+        SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_TYPE,
+            value=event.event_type,
+        )
+        .evaluate(event=event)
+        .result
+    )
 
-    assert SimpleCondition(
-        operator=ComparisonOperator.EQUALS,
-        field=EventField.PAYLOAD,
-        value=event.payload,
-    ).evaluate(event=event).result
+    assert (
+        SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.PAYLOAD,
+            value=event.payload,
+        )
+        .evaluate(event=event)
+        .result
+    )
 
-    assert SimpleCondition(
-        operator=ComparisonOperator.EQUALS,
-        field=EventField.OCCURRED_AT,
-        value=event.occurred_at,
-    ).evaluate(event=event).result
+    assert (
+        SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.OCCURRED_AT,
+            value=event.occurred_at,
+        )
+        .evaluate(event=event)
+        .result
+    )
 
-    assert SimpleCondition(
-        operator=ComparisonOperator.EQUALS,
-        field=EventField.EVENT_ID,
-        value=event.id,
-    ).evaluate(event=event).result
+    assert (
+        SimpleCondition(
+            operator=ComparisonOperator.EQUALS,
+            field=EventField.EVENT_ID,
+            value=event.id,
+        )
+        .evaluate(event=event)
+        .result
+    )
 
 
-# ==========
-# invalid cases
-# ==========
+# INVALID CASES
+
+
 def test_composite_condition_raises_on_invalid_conditions_length() -> None:
     with pytest.raises(ConditionException):
         CompositeCondition(

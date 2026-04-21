@@ -31,11 +31,11 @@
 
 ## Infrastructure - PostgreSQL
 
-- [ ] Introduce PostgreSQL (replace SQLite)
-- [ ] Configure connection via env
-- [ ] Adapt models if needed
-- [ ] Add DB indexes (critical fields)
-- [ ] Validate queries and performance basics
+- [x] Introduce PostgreSQL (replace SQLite)
+- [x] Configure connection via env
+- [x] Adapt models if needed
+- [x] Add DB indexes (critical fields)
+- [x] Validate queries and performance basics
 
 ## Application
 
@@ -57,9 +57,9 @@
 
 ## Bootstrap
 
-- [ ] Ensure container is single source of truth
+- [x] Ensure container is single source of truth
 - [x] Remove hidden wiring
-- [ ] Validate config at startup
+- [x] Validate config at startup
 - [x] Support envs (test/dev/prod)
 
 ## Observability
@@ -71,12 +71,12 @@
 ## Testing
 
 - [x] Isolated tests (no shared state)
-- [ ] Use bootstrap in tests
+- [x] Use bootstrap in tests
 - [x] Cover domain rules
 - [x] Cover failure scenarios
 
 ## Deployment
 
-- [ ] Dockerize app
-- [ ] Add migrations
+- [x] Dockerize app
+- [x] Add migrations
 - [x] Keep CI running

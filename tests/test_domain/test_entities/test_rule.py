@@ -7,10 +7,9 @@ from app.domain.value_objects.decision_outcome import DecisionOutcome
 from app.domain.value_objects.event_field import EventField
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
+# INVALID CASES
 
-# ==========
-# invalid cases
-# ==========
+
 def test_rule_raises_on_empty_name() -> None:
     with pytest.raises(RuleException):
         Rule(

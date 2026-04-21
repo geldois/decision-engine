@@ -1,21 +1,20 @@
 import pytest
 
-import app.application.mappers.event_field_mapper as EventFieldMapper
+from app.application.mappers.event_field_mapper import parse_event_field
 from app.domain.exceptions.event_exception import EventException
 from app.domain.value_objects.event_field import EventField
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
+
 def test_parse_event_field_returns_valid_event_fields() -> None:
     for member in EventField:
-        assert EventFieldMapper.parse_event_field(value=member.value) is member
+        assert parse_event_field(value=member.value) is member
 
 
-# ==========
-# invalid cases
-# ==========
+# INVALID CASES
+
+
 def test_parse_event_field_raises_when_value_is_invalid() -> None:
     with pytest.raises(EventException):
-        EventFieldMapper.parse_event_field(value="TEST")
+        parse_event_field(value="TEST")
