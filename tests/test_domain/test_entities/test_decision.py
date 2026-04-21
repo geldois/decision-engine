@@ -9,10 +9,9 @@ from app.domain.value_objects.decision_trace import SimpleDecisionTrace
 from app.domain.value_objects.event_field import EventField
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
+# INVALID CASES
 
-# ==========
-# invalid cases
-# ==========
+
 def test_decision_raises_when_outcome_is_invalid() -> None:
     with pytest.raises(DecisionException):
         Decision(

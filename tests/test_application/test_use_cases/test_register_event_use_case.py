@@ -1,19 +1,19 @@
 from app.application.dto.dto_register_event_request import DTORegisterEventRequest
-from app.bootstrap.bootstrap import bootstrap
+from app.config.container import Container
+
+# VALID CASES
 
 
-# ==========
-# valid cases
-# ==========
-def test_register_event_use_case_returns_valid_dto_response() -> None:
-    container = bootstrap(env="test")
+def test_register_event_use_case_returns_valid_dto_response(
+    container: Container,
+) -> None:
     dto_register_event_request = DTORegisterEventRequest(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
         occurred_at=1700000000,
     )
 
-    dto_register_event_response = container.register_event_use_case.execute(
+    dto_register_event_response = container.use_cases.register_event.execute(
         dto=dto_register_event_request
     )
 

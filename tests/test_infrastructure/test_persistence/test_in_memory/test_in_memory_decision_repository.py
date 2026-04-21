@@ -1,189 +1,113 @@
+from collections.abc import Callable
+
+import pytest
+
+from app.domain.entities.decision import Decision
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
-from app.domain.services.decision_engine import DecisionEngine
-from app.domain.value_objects.condition import SimpleCondition
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
     InMemoryDecisionRepository,
 )
-from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
-    InMemoryStorage,
+from app.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
+    InMemoryEventRepository,
+)
+from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
+    InMemoryRuleRepository,
 )
 
 
-# ==========
-# valid cases
-# ==========
-def test_in_memory_decision_repository_returns_saved_decision() -> None:
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
-    )
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    decision_engine = DecisionEngine()
-    decision = decision_engine.decide(event=event, rules=[rule])
-    decision_repository = InMemoryDecisionRepository(
-        in_memory_storage=InMemoryStorage()
-    )
+@pytest.fixture(scope="function")
+def decision_with_scenario(
+    decision_factory: Callable[..., Decision],
+    event_factory: Callable[..., Event],
+    rule_factory: Callable[..., Rule],
+    in_memory_event_repo: InMemoryEventRepository,
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> Decision:
+    event = event_factory()
+    rule = rule_factory()
+    decision = decision_factory(event=event, rules=[rule])
 
-    saved_decision = decision_repository.save(decision=decision)
+    in_memory_event_repo.save(event=event)
+    in_memory_rule_repo.save(rule=rule)
 
-    assert saved_decision is decision
+    return decision
 
 
-def test_in_memory_decision_repository_returns_decision_when_id_exists() -> None:
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
-    )
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    decision_engine = DecisionEngine()
-    decision = decision_engine.decide(event=event, rules=[rule])
-    decision_repository = InMemoryDecisionRepository(
-        in_memory_storage=InMemoryStorage()
-    )
-    decision_repository.save(decision=decision)
-
-    returned_decision = decision_repository.get_by_id(decision_id=decision.id)
-
-    assert returned_decision is decision
+# VALID CASES
 
 
-def test_in_memory_decision_repository_returns_none_when_id_does_not_exist() -> None:
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
-    )
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    decision_engine = DecisionEngine()
-    decision = decision_engine.decide(event=event, rules=[rule])
-    decision_repository = InMemoryDecisionRepository(
-        in_memory_storage=InMemoryStorage()
+def test_in_memory_decision_repository_returns_saved_decision(
+    decision_with_scenario: Decision,
+    in_memory_decision_repo: InMemoryDecisionRepository,
+) -> None:
+    saved = in_memory_decision_repo.save(decision=decision_with_scenario)
+
+    assert saved is decision_with_scenario
+
+
+def test_in_memory_decision_repository_returns_decision_when_id_exists(
+    decision_with_scenario: Decision,
+    in_memory_decision_repo: InMemoryDecisionRepository,
+) -> None:
+    in_memory_decision_repo.save(decision=decision_with_scenario)
+
+    returned = in_memory_decision_repo.get_by_id(
+        decision_id=decision_with_scenario.id
     )
 
-    returned_decision = decision_repository.get_by_id(decision_id=decision.id)
-
-    assert not returned_decision
+    assert returned is decision_with_scenario
 
 
-def test_in_memory_decision_repository_returns_true_when_decision_is_deleted() -> None:
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
+def test_in_memory_decision_repository_returns_none_when_id_does_not_exist(
+    decision_with_scenario: Decision,
+    in_memory_decision_repo: InMemoryDecisionRepository,
+) -> None:
+    returned = in_memory_decision_repo.get_by_id(
+        decision_id=decision_with_scenario.id
     )
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    decision_engine = DecisionEngine()
-    decision = decision_engine.decide(event=event, rules=[rule])
-    decision_repository = InMemoryDecisionRepository(
-        in_memory_storage=InMemoryStorage()
-    )
-    decision_repository.save(decision=decision)
 
-    it_was_deleted = decision_repository.delete(decision=decision)
+    assert returned is None
 
-    returned_decision = decision_repository.get_by_id(decision_id=decision.id)
+
+def test_in_memory_decision_repository_returns_true_when_decision_is_deleted(
+    decision_with_scenario: Decision,
+    in_memory_decision_repo: InMemoryDecisionRepository,
+) -> None:
+    in_memory_decision_repo.save(decision=decision_with_scenario)
+
+    it_was_deleted = in_memory_decision_repo.delete(
+        decision=decision_with_scenario
+    )
+
+    returned = in_memory_decision_repo.get_by_id(
+        decision_id=decision_with_scenario.id
+    )
 
     assert it_was_deleted
 
-    assert not returned_decision
+    assert returned is None
 
 
-def test_in_memory_decision_repository_returns_false_when_decision_is_not_deleted() -> (
-    None
-):
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
+def test_in_memory_decision_repository_returns_false_when_decision_is_not_deleted(
+    decision_with_scenario: Decision,
+    in_memory_decision_repo: InMemoryDecisionRepository,
+) -> None:
+    it_was_deleted = in_memory_decision_repo.delete(
+        decision=decision_with_scenario
     )
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    decision_engine = DecisionEngine()
-    decision = decision_engine.decide(event=event, rules=[rule])
-    decision_repository = InMemoryDecisionRepository(
-        in_memory_storage=InMemoryStorage()
-    )
-
-    it_was_deleted = decision_repository.delete(decision=decision)
 
     assert not it_was_deleted
 
 
-def test_in_memory_decision_repository_returns_list_of_decisions() -> None:
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
-    )
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    decision_engine = DecisionEngine()
-    decision = decision_engine.decide(event=event, rules=[rule])
-    decision_repository = InMemoryDecisionRepository(
-        in_memory_storage=InMemoryStorage()
-    )
-    decision_repository.save(decision=decision)
+def test_in_memory_decision_repository_returns_list_of_decisions(
+    decision_with_scenario: Decision,
+    in_memory_decision_repo: InMemoryDecisionRepository,
+) -> None:
+    in_memory_decision_repo.save(decision=decision_with_scenario)
 
-    decisions = decision_repository.list_all()
+    decisions = in_memory_decision_repo.list_all()
 
     assert isinstance(decisions, list)
 
-    assert decision in decisions
+    assert decision_with_scenario in decisions

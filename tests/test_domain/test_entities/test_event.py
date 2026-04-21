@@ -3,10 +3,9 @@ import pytest
 from app.domain.entities.event import Event
 from app.domain.exceptions.event_exception import EventException
 
+# INVALID CASES
 
-# ==========
-# invalid cases
-# ==========
+
 def test_event_raises_on_empty_payload() -> None:
     with pytest.raises(EventException):
         Event(event_type="USER_CREATED", payload={}, occurred_at=1700000000)

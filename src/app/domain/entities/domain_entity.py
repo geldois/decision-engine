@@ -6,7 +6,7 @@ from uuid import UUID, uuid4
 
 
 class DomainEntity(ABC):
-    def __init__(self, created_at: datetime | None, entity_id: UUID | None) -> None:
+    def __init__(self, *, created_at: datetime | None, entity_id: UUID | None) -> None:
         if created_at is None:
             self.created_at = datetime.now(UTC)
         elif created_at.tzinfo is None:

@@ -9,6 +9,7 @@ from app.domain.exceptions.event_exception import EventException
 class Event(DomainEntity):
     def __init__(
         self,
+        *,
         event_type: str,
         payload: dict[str, Any],
         occurred_at: int,

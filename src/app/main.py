@@ -1,4 +1,7 @@
-from app.bootstrap.bootstrap import bootstrap, create_app
+from app.config.bootstrap import load_environment, run_migrations
+from app.interface.http.app import create_app
 
-container = bootstrap(env="prod")
-app = create_app(container=container)
+load_environment()
+run_migrations()
+
+app = create_app()

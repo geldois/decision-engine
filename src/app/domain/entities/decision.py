@@ -10,6 +10,7 @@ from app.domain.value_objects.decision_trace import DecisionTrace
 class Decision(DomainEntity):
     def __init__(
         self,
+        *,
         event_id: UUID,
         rule_id: UUID | None,
         outcome: DecisionOutcome,

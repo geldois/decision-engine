@@ -10,6 +10,7 @@ from app.domain.value_objects.decision_outcome import DecisionOutcome
 class Rule(DomainEntity):
     def __init__(
         self,
+        *,
         name: str,
         condition: Condition,
         outcome: DecisionOutcome,

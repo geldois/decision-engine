@@ -1,129 +1,85 @@
+from collections.abc import Callable
+
 from app.domain.entities.rule import Rule
-from app.domain.value_objects.condition import SimpleCondition
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
     InMemoryRuleRepository,
 )
-from app.infrastructure.persistence.in_memory.storage.in_memory_storage import (
-    InMemoryStorage,
-)
+
+# VALID CASES
 
 
-# ==========
-# valid cases
-# ==========
-def test_in_memory_rule_repository_returns_saved_rule() -> None:
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
-    saved_rule = rule_repository.save(rule)
+def test_in_memory_rule_repository_returns_saved_rule(
+    rule_factory: Callable[..., Rule],
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> None:
+    rule = rule_factory()
 
-    assert saved_rule is rule
+    saved = in_memory_rule_repo.save(rule)
+
+    assert saved is rule
 
 
-def test_in_memory_rule_repository_returns_rule_when_id_exists() -> None:
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
-    rule_repository.save(rule=rule)
+def test_in_memory_rule_repository_returns_rule_when_id_exists(
+    rule_factory: Callable[..., Rule],
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> None:
+    rule = rule_factory()
 
-    returned_rule = rule_repository.get_by_id(rule_id=rule.id)
+    in_memory_rule_repo.save(rule=rule)
 
-    assert returned_rule is rule
+    returned = in_memory_rule_repo.get_by_id(rule_id=rule.id)
+
+    assert returned is rule
 
 
-def test_in_memory_rule_repository_returns_none_when_id_does_not_exist() -> None:
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
+def test_in_memory_rule_repository_returns_none_when_id_does_not_exist(
+    rule_factory: Callable[..., Rule],
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> None:
+    rule = rule_factory()
 
-    returned_rule = rule_repository.get_by_id(rule_id=rule.id)
+    returned = in_memory_rule_repo.get_by_id(rule_id=rule.id)
 
-    assert not returned_rule
+    assert not returned
 
 
-def test_in_memory_rule_repository_returns_true_when_rule_is_deleted() -> None:
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
-    rule_repository.save(rule=rule)
+def test_in_memory_rule_repository_returns_true_when_rule_is_deleted(
+    rule_factory: Callable[..., Rule],
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> None:
+    rule = rule_factory()
 
-    it_was_deleted = rule_repository.delete(rule=rule)
+    in_memory_rule_repo.save(rule=rule)
 
-    returned_rule = rule_repository.get_by_id(rule_id=rule.id)
+    it_was_deleted = in_memory_rule_repo.delete(rule=rule)
+
+    returned = in_memory_rule_repo.get_by_id(rule_id=rule.id)
 
     assert it_was_deleted
 
-    assert not returned_rule
+    assert returned is None
 
 
-def test_in_memory_rule_repository_returns_false_when_rule_is_not_deleted() -> None:
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
+def test_in_memory_rule_repository_returns_false_when_rule_is_not_deleted(
+    rule_factory: Callable[..., Rule],
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> None:
+    rule = rule_factory()
 
-    it_was_deleted = rule_repository.delete(rule=rule)
+    it_was_deleted = in_memory_rule_repo.delete(rule=rule)
 
     assert not it_was_deleted
 
 
-def test_in_memory_rule_repository_returns_list_of_rules() -> None:
-    rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    rule_repository = InMemoryRuleRepository(in_memory_storage=InMemoryStorage())
-    rule_repository.save(rule=rule)
+def test_in_memory_rule_repository_returns_list_of_rules(
+    rule_factory: Callable[..., Rule],
+    in_memory_rule_repo: InMemoryRuleRepository,
+) -> None:
+    rule = rule_factory()
 
-    rules = rule_repository.list_all()
+    in_memory_rule_repo.save(rule=rule)
+
+    rules = in_memory_rule_repo.list_all()
 
     assert isinstance(rules, list)
 

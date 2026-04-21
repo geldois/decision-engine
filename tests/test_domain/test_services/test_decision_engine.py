@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 from app.domain.entities.event import Event
 from app.domain.entities.rule import Rule
 from app.domain.services.decision_engine import DecisionEngine
@@ -11,45 +13,17 @@ from app.domain.value_objects.event_field import EventField
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.domain.value_objects.operators.logical_operator import LogicalOperator
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
-def test_decision_engine_returns_sorted_list_of_rules_by_priority_and_tie_breaking_criteria() -> (
-    None
-):
-    third_priority_rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=0,
-    )
-    second_priority_rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=1,
-    )
-    first_priority_rule = Rule(
-        name="ALWAYS_APPLIES",
-        condition=SimpleCondition(
-            operator=ComparisonOperator.EQUALS,
-            field=EventField.EVENT_TYPE,
-            value="USER_CREATED",
-        ),
-        outcome=DecisionOutcome.APPROVED,
-        priority=2,
-    )
 
-    sorted_rules = DecisionEngine().sort_by_priority(
+def test_decision_engine_returns_sorted_list_of_rules_by_priority(
+    rule_factory: Callable[..., Rule],
+) -> None:
+    third_priority_rule = rule_factory(priority=0)
+    second_priority_rule = rule_factory(priority=1)
+    first_priority_rule = rule_factory(priority=2)
+
+    sorted_rules = DecisionEngine.sort_by_priority(
         rules=[third_priority_rule, second_priority_rule, first_priority_rule]
     )
 
@@ -97,7 +71,7 @@ def test_decision_engine_returns_valid_decision_when_rule_applies() -> None:
         priority=0,
     )
 
-    decision = DecisionEngine().decide(event=event, rules=[composite_rule, simple_rule])
+    decision = DecisionEngine.decide(event=event, rules=[composite_rule, simple_rule])
 
     assert decision.event_id == event.id
 
@@ -173,7 +147,7 @@ def test_decision_engine_returns_valid_decision_when_no_rule_applies() -> None:
         priority=0,
     )
 
-    decision = DecisionEngine().decide(event=event, rules=[composite_rule, simple_rule])
+    decision = DecisionEngine.decide(event=event, rules=[composite_rule, simple_rule])
 
     assert decision.event_id == event.id
 
@@ -212,15 +186,11 @@ def test_decision_engine_returns_valid_decision_when_no_rule_applies() -> None:
     )
 
 
-def test_decision_engine_returns_valid_decision_when_list_of_rules_is_empty() -> None:
-    event = Event(
-        event_type="USER_CREATED",
-        payload={"user_id": 123, "email": "user@email.com"},
-        occurred_at=1700000000,
-    )
-    decision_engine = DecisionEngine()
-
-    decision = decision_engine.decide(event=event, rules=[])
+def test_decision_engine_returns_valid_decision_when_list_of_rules_is_empty(
+    event_factory: Callable[..., Event],
+) -> None:
+    event = event_factory()
+    decision = DecisionEngine.decide(event=event, rules=[])
 
     assert decision.event_id == event.id
 

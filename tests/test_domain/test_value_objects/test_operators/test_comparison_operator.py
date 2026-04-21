@@ -3,10 +3,9 @@ from uuid import uuid4
 from app.domain.entities.event import Event
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
+
 def test_comparison_operator_equals_returns_valid_bool() -> None:
     event_id = uuid4()
     event = Event(

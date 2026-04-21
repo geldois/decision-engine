@@ -9,9 +9,9 @@ class ConcreteDomainEntity(DomainEntity):
         return True
 
 
-# ==========
-# valid cases
-# ==========
+# VALID CASES
+
+
 def test_domain_entity_assigns_attributes_when_none_provided() -> None:
     domain_entity = ConcreteDomainEntity(created_at=None, entity_id=None)
 

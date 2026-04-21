@@ -4,13 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "decision-engine"
-version = "0.1.0"
-description = "Backend system for deterministic rule evaluation with explicit domain modeling and controlled transaction boundaries"
+version = "0.6.0"
+description = "Deterministic rule engine with full execution traceability"
 dependencies = [
+    "alembic",
     "fastapi",
     "httpx",
+    "psycopg[binary]",
     "pyright",
     "pytest",
+    "python-dotenv",
     "ruff",
     "sqlalchemy",
     "typer",
@@ -20,8 +23,8 @@ dependencies = [
 [project.scripts]
 decision-engine = "app.cli:cli"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
 
 [tool.ruff]
 line-length = 88
@@ -34,3 +37,6 @@ indent-style = "space"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -8,9 +8,9 @@ class FakeType:
     pass
 
 
-# ==========
-# valid cases
-# ==========
+# VALID CASES
+
+
 def test_event_field_returns_valid_bool_when_receives_invalid_value_type() -> None:
     fake_type_obj = FakeType()
 

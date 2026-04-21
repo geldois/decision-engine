@@ -4,10 +4,9 @@ from app.domain.value_objects.event_field import EventField
 from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
 from app.domain.value_objects.operators.logical_operator import LogicalOperator
 
+# VALID CASES
 
-# ==========
-# valid cases
-# ==========
+
 def test_condition_presenter_presents_simple_condition() -> None:
     condition = SimpleCondition(
         operator=ComparisonOperator.EQUALS,
@@ -15,7 +14,7 @@ def test_condition_presenter_presents_simple_condition() -> None:
         value={"test": True},
     )
 
-    data = ConditionPresenter().present(element=condition)
+    data = ConditionPresenter.present(element=condition)
 
     assert data == {
         "type": "simple",
@@ -42,7 +41,7 @@ def test_condition_presenter_presents_composite_condition() -> None:
         ],
     )
 
-    data = data = ConditionPresenter().present(element=condition)
+    data = data = ConditionPresenter.present(element=condition)
 
     assert data == {
         "type": "composite",
@@ -91,7 +90,7 @@ def test_condition_presenter_presents_nested_composite_condition() -> None:
         ],
     )
 
-    data = data = ConditionPresenter().present(element=condition)
+    data = data = ConditionPresenter.present(element=condition)
 
     assert data == {
         "type": "composite",

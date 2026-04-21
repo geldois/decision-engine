@@ -1,6 +1,7 @@
 {
   "typeCheckingMode": "strict",
   "include": [
-    "src"
+    "src",
+    "tests"
   ]
 }
