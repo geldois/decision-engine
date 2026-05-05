@@ -16,9 +16,7 @@ def payload() -> dict[str, Any]:
 # VALID CASES
 
 
-def test_payload_codec_roundtrip_preserves_structure(
-    payload: dict[str, Any]
-) -> None:
+def test_payload_codec_roundtrip_preserves_structure(payload: dict[str, Any]) -> None:
     encoded = PayloadSerializer.serialize(payload=payload)
     decoded = PayloadDeserializer.deserialize(data=encoded)
 

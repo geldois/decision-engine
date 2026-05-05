@@ -4,24 +4,41 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "decision-engine"
-version = "0.6.0"
+version = "1.0.0"
 description = "Deterministic rule engine with full execution traceability"
 dependencies = [
-    "alembic",
-    "fastapi",
-    "httpx",
-    "psycopg[binary]",
-    "pyright",
-    "pytest",
-    "python-dotenv",
-    "ruff",
-    "sqlalchemy",
-    "typer",
-    "uvicorn"
+  "alembic",
+  "fastapi",
+  "httpx",
+  "psycopg[binary]",
+  "python-dotenv",
+  "sqlalchemy",
+  "typer",
+  "uvicorn"
+]
+
+[project.optional-dependencies]
+dev = [
+  "commitizen",
+  "pre-commit",
+  "pyright",
+  "pytest",
+  "ruff"
 ]
 
 [project.scripts]
 decision-engine = "app.cli:cli"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "pep621"
+update_map_pyproject = true
+
+[tool.pyright]
+typeCheckingMode = "strict"
+include = ["src", "tests"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "tests"]

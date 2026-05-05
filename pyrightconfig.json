@@ -1,7 +1,0 @@
-{
-  "typeCheckingMode": "strict",
-  "include": [
-    "src",
-    "tests"
-  ]
-}

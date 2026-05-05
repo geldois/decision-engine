@@ -52,9 +52,7 @@ def test_in_memory_decision_repository_returns_decision_when_id_exists(
 ) -> None:
     in_memory_decision_repo.save(decision=decision_with_scenario)
 
-    returned = in_memory_decision_repo.get_by_id(
-        decision_id=decision_with_scenario.id
-    )
+    returned = in_memory_decision_repo.get_by_id(decision_id=decision_with_scenario.id)
 
     assert returned is decision_with_scenario
 
@@ -63,9 +61,7 @@ def test_in_memory_decision_repository_returns_none_when_id_does_not_exist(
     decision_with_scenario: Decision,
     in_memory_decision_repo: InMemoryDecisionRepository,
 ) -> None:
-    returned = in_memory_decision_repo.get_by_id(
-        decision_id=decision_with_scenario.id
-    )
+    returned = in_memory_decision_repo.get_by_id(decision_id=decision_with_scenario.id)
 
     assert returned is None
 
@@ -76,13 +72,9 @@ def test_in_memory_decision_repository_returns_true_when_decision_is_deleted(
 ) -> None:
     in_memory_decision_repo.save(decision=decision_with_scenario)
 
-    it_was_deleted = in_memory_decision_repo.delete(
-        decision=decision_with_scenario
-    )
+    it_was_deleted = in_memory_decision_repo.delete(decision=decision_with_scenario)
 
-    returned = in_memory_decision_repo.get_by_id(
-        decision_id=decision_with_scenario.id
-    )
+    returned = in_memory_decision_repo.get_by_id(decision_id=decision_with_scenario.id)
 
     assert it_was_deleted
 
@@ -93,9 +85,7 @@ def test_in_memory_decision_repository_returns_false_when_decision_is_not_delete
     decision_with_scenario: Decision,
     in_memory_decision_repo: InMemoryDecisionRepository,
 ) -> None:
-    it_was_deleted = in_memory_decision_repo.delete(
-        decision=decision_with_scenario
-    )
+    it_was_deleted = in_memory_decision_repo.delete(decision=decision_with_scenario)
 
     assert not it_was_deleted
 

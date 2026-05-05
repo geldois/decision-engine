@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/geldois/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/geldois/decision-engine/actions)
 
-Deterministic rule engine with full execution traceability, built with clean architecture and production-grade infrastructure.
+Deterministic rule engine with full execution traceability, built with Clean Architecture and production-grade infrastructure.
 
 Live API: <https://decision-engine.angelitochagas.com>
 
@@ -10,7 +10,7 @@ Live API: <https://decision-engine.angelitochagas.com>
 
 ```mermaid
 flowchart LR
-    subgraph DOMAIN
+    subgraph Domain
         Decision("Decision")
         Event("Event")
         Rule("Rule")
@@ -20,7 +20,7 @@ flowchart LR
     API --> UseCase("UseCase")
     API --> Container("Container")
 
-    UseCase --> UoWFactory("uow_factory")
+    UseCase --> UoWFactory("UoWFactory")
 
     Container --> InMemoryDB("InMemoryDB")
     Container --> SQLAlchemyDB("SQLAlchemyDB")
@@ -28,10 +28,9 @@ flowchart LR
 
     UoWFactory --> UnitOfWorkMem("UnitOfWork (InMemory)")
     UoWFactory --> UnitOfWorkSQL("UnitOfWork (SQLAlchemy)")
-    UoWFactory --> InMemoryStorage("InMemoryStorage")
 
     UnitOfWorkMem --> RepositoriesMem("Repositories (InMemory)")
-    UnitOfWorkMem --> InMemoryStorage
+    UnitOfWorkMem --> InMemoryStorage("InMemoryStorage")
 
     RepositoriesMem --> InMemoryStorage
     RepositoriesMem --> Decision
@@ -39,6 +38,7 @@ flowchart LR
     RepositoriesMem --> Rule
 
     UnitOfWorkSQL --> RepositoriesSQL("Repositories (SQLAlchemy)")
+    UnitOfWorkSQL --> SessionFactory("SessionFactory")
 
     RepositoriesSQL --> PostgreSQL("PostgreSQL")
     RepositoriesSQL --> Decision
@@ -46,11 +46,11 @@ flowchart LR
     RepositoriesSQL --> Rule
 
     SQLAlchemyDB --> UoWFactory
-    SQLAlchemyDB --> Engine("engine")
-    SQLAlchemyDB --> SessionFactory("session_factory")
+    SQLAlchemyDB --> Engine("Engine")
+    SQLAlchemyDB --> SessionFactory
 
-    SessionFactory --> Engine
-    UoWFactory --> SessionFactory
+    SessionFactory --> Session("Session")
+    Session --> Engine
     Engine --> PostgreSQL
 
     InMemoryDB --> UoWFactory
@@ -63,8 +63,8 @@ flowchart LR
 ## Stack
 
 - FastAPI
-- SQLAlchemy
 - PostgreSQL
+- SQLAlchemy
 - Alembic
 - Docker
 - Pytest
@@ -102,7 +102,7 @@ flowchart LR
 git clone https://github.com/geldois/decision-engine.git && cd decision-engine
 
 # create virtual environment and install dependencies
-python3 -m venv .venv && source .venv/bin/activate && pip install -e .
+python3 -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
 
 # configure environment variables
 cp .env.dev.example .env.dev && cp .env.test.example .env.test
@@ -127,7 +127,7 @@ cd decision-engine
 # create virtual environment and install dependencies
 python -m venv .venv
 .venv\Scripts\Activate
-pip install -e .
+pip install -e ".[dev]"
 
 # configure environment variables
 copy .env.dev.example .env.dev

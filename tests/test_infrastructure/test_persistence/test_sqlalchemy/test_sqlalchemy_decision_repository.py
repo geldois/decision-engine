@@ -52,9 +52,7 @@ def test_sql_decision_repository_returns_decision_when_id_exists(
 ) -> None:
     sqlalchemy_decision_repo.save(decision=decision_with_scenario)
 
-    returned = sqlalchemy_decision_repo.get_by_id(
-        decision_id=decision_with_scenario.id
-    )
+    returned = sqlalchemy_decision_repo.get_by_id(decision_id=decision_with_scenario.id)
 
     assert returned
 
@@ -67,9 +65,7 @@ def test_sql_decision_repository_returns_none_when_id_does_not_exist(
     decision_with_scenario: Decision,
     sqlalchemy_decision_repo: SQLAlchemyDecisionRepository,
 ) -> None:
-    returned = sqlalchemy_decision_repo.get_by_id(
-        decision_id=decision_with_scenario.id
-    )
+    returned = sqlalchemy_decision_repo.get_by_id(decision_id=decision_with_scenario.id)
 
     assert returned is None
 
@@ -80,13 +76,9 @@ def test_sql_decision_repository_returns_true_when_decision_is_deleted(
 ) -> None:
     sqlalchemy_decision_repo.save(decision=decision_with_scenario)
 
-    it_was_deleted = sqlalchemy_decision_repo.delete(
-        decision=decision_with_scenario
-    )
+    it_was_deleted = sqlalchemy_decision_repo.delete(decision=decision_with_scenario)
 
-    returned = sqlalchemy_decision_repo.get_by_id(
-        decision_id=decision_with_scenario.id
-    )
+    returned = sqlalchemy_decision_repo.get_by_id(decision_id=decision_with_scenario.id)
 
     assert it_was_deleted
 
@@ -97,9 +89,7 @@ def test_sql_decision_repository_returns_false_when_decision_is_not_deleted(
     decision_with_scenario: Decision,
     sqlalchemy_decision_repo: SQLAlchemyDecisionRepository,
 ) -> None:
-    it_was_deleted = sqlalchemy_decision_repo.delete(
-        decision=decision_with_scenario
-    )
+    it_was_deleted = sqlalchemy_decision_repo.delete(decision=decision_with_scenario)
 
     assert not it_was_deleted
 
