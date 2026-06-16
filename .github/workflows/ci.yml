@@ -27,13 +27,29 @@ jobs:
           POSTGRES_DB: decision_engine_test
         ports:
           - "5432:5432"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: pip install -e ".[dev]"
-      - run: decision-engine wait-db
-      - run: pytest
-      - run: alembic upgrade head
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Wait for database
+        run: uv run decision-engine wait-db
+
+      - name: Test
+        run: uv run pytest
+
+      - name: Validate migrations
+        run: uv run alembic upgrade head
