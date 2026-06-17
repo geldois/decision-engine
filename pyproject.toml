@@ -9,6 +9,7 @@ dependencies = [
   "psycopg[binary]",
   "python-dotenv",
   "sqlalchemy",
+  "structlog",
   "typer",
   "uvicorn"
 ]
