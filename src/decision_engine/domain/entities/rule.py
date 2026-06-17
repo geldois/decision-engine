@@ -1,15 +1,19 @@
 from __future__ import annotations
 
-from datetime import datetime
-from uuid import UUID
+from typing import TYPE_CHECKING
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
 from decision_engine.domain.errors.rule_error import (
     EmptyRuleNameError,
     InvalidRulePriorityError,
 )
-from decision_engine.domain.value_objects.condition import Condition
-from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
+
+if TYPE_CHECKING:
+    from datetime import datetime
+    from uuid import UUID
+
+    from decision_engine.domain.value_objects.condition import Condition
+    from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 class Rule(DomainEntity):

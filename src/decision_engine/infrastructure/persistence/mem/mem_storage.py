@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from uuid import UUID
+from typing import TYPE_CHECKING
 
-from decision_engine.domain.entities.decision import Decision
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from decision_engine.domain.entities.decision import Decision
+    from decision_engine.domain.entities.event import Event
+    from decision_engine.domain.entities.rule import Rule
 
 
 class MemStorage:

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from uuid import UUID
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 from decision_engine.application.contracts.repository import RuleRepository
-from decision_engine.domain.entities.rule import Rule
 from decision_engine.infrastructure.persistence.sqlalchemy.mappers.sqlalchemy_rule_mapper import (
     domain_to_model,
     model_to_domain,
@@ -14,6 +12,13 @@ from decision_engine.infrastructure.persistence.sqlalchemy.mappers.sqlalchemy_ru
 from decision_engine.infrastructure.persistence.sqlalchemy.models.rule_model import (
     RuleModel,
 )
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from sqlalchemy.orm import Session
+
+    from decision_engine.domain.entities.rule import Rule
 
 
 class SQLAlchemyRuleRepository(RuleRepository):

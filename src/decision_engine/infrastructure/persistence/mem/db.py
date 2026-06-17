@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 from decision_engine.infrastructure.persistence.mem.mem_uow import MemUoW
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class MemDB:

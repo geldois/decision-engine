@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
-from decision_engine.config.settings import Settings
 from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
     SQLAlchemyUoW,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from decision_engine.config.settings import Settings
 
 
 class SQLAlchemyDB:

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
-from uuid import UUID
+from typing import TYPE_CHECKING
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
 from decision_engine.domain.errors.decision_error import (
@@ -9,7 +8,12 @@ from decision_engine.domain.errors.decision_error import (
     UnmatchedRuleWithoutNoMatchOutcomeError,
 )
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
-from decision_engine.domain.value_objects.decision_trace import DecisionTrace
+
+if TYPE_CHECKING:
+    from datetime import datetime
+    from uuid import UUID
+
+    from decision_engine.domain.value_objects.decision_trace import DecisionTrace
 
 
 class Decision(DomainEntity):

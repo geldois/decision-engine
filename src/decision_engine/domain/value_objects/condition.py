@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Callable, Sequence
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
-from decision_engine.domain.entities.event import Event
 from decision_engine.domain.errors.condition_error import (
     InvalidConditionError,
     InvalidConditionTypeError,
@@ -21,6 +19,11 @@ from decision_engine.domain.value_objects.operators.comparison_operator import (
 from decision_engine.domain.value_objects.operators.logical_operator import (
     LogicalOperator,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
+
+    from decision_engine.domain.entities.event import Event
 
 
 class Condition(ABC):

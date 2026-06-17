@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import operator
-from collections.abc import Callable
 from enum import Enum
 from numbers import Number
+from typing import TYPE_CHECKING
 from uuid import UUID
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class ComparisonOperator(Enum):

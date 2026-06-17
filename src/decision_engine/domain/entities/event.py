@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Any
-from uuid import UUID
+from typing import TYPE_CHECKING, Any
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
 from decision_engine.domain.errors.event_error import (
@@ -11,6 +9,10 @@ from decision_engine.domain.errors.event_error import (
     NegativeEventOccurredAtError,
     ZeroEventOccurredAtError,
 )
+
+if TYPE_CHECKING:
+    from datetime import datetime
+    from uuid import UUID
 
 
 class Event(DomainEntity):

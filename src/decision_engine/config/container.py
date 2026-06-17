@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from decision_engine.application.protocols.db_protocol import DBProtocol
-from decision_engine.application.use_cases.produce_decision import (
-    ProduceDecisionUseCase,
-)
-from decision_engine.application.use_cases.register_event import RegisterEventUseCase
-from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
-from decision_engine.config.settings import Settings
-from decision_engine.infrastructure.persistence.mem.db import MemDB
-from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
+if TYPE_CHECKING:
+    from decision_engine.application.protocols.db_protocol import DBProtocol
+    from decision_engine.application.use_cases.produce_decision import (
+        ProduceDecisionUseCase,
+    )
+    from decision_engine.application.use_cases.register_event import (
+        RegisterEventUseCase,
+    )
+    from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
+    from decision_engine.config.settings import Settings
+    from decision_engine.infrastructure.persistence.mem.db import MemDB
+    from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
 
 
 @dataclass(frozen=True)

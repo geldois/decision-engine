@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from decision_engine.application.contracts.uow import UoW
-from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (
     MemDecisionRepository,
 )
@@ -11,6 +12,9 @@ from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repos
 from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_repository import (
     MemRuleRepository,
 )
+
+if TYPE_CHECKING:
+    from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 
 
 class MemUoW(UoW):

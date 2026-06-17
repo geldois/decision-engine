@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from operator import attrgetter
+from typing import TYPE_CHECKING
 
 from decision_engine.domain.entities.decision import Decision
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
-from decision_engine.domain.value_objects.decision_trace import DecisionTrace
+
+if TYPE_CHECKING:
+    from decision_engine.domain.entities.event import Event
+    from decision_engine.domain.entities.rule import Rule
+    from decision_engine.domain.value_objects.decision_trace import DecisionTrace
 
 
 class DecisionEngine:

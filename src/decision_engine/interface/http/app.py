@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import RedirectResponse
 
 from decision_engine.config.bootstrap import build_container
-from decision_engine.config.container import Container, ContainerOverride
-from decision_engine.config.settings import Settings
 from decision_engine.interface.http.middleware import register_correlation_id_middleware
 from decision_engine.interface.http.routers.decision_router import build_decision_router
 from decision_engine.interface.http.routers.event_router import build_event_router
 from decision_engine.interface.http.routers.rule_router import build_rule_router
 from decision_engine.observability.logging import configure_logging
+
+if TYPE_CHECKING:
+    from decision_engine.config.container import Container, ContainerOverride
+    from decision_engine.config.settings import Settings
 
 
 def create_app(

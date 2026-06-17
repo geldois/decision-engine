@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable
-
-from sqlalchemy.orm import Session
+from typing import TYPE_CHECKING
 
 from decision_engine.application.contracts.uow import UoW
 from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
@@ -14,6 +12,11 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
     SQLAlchemyRuleRepository,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from sqlalchemy.orm import Session
 
 
 class SQLAlchemyUoW(UoW):

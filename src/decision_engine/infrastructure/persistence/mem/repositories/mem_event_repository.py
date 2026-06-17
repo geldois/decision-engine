@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from uuid import UUID
+from typing import TYPE_CHECKING
 
 from decision_engine.application.contracts.repository import (
     EventRepository,
 )
-from decision_engine.domain.entities.event import Event
-from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from decision_engine.domain.entities.event import Event
+    from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 
 
 class MemEventRepository(EventRepository):
