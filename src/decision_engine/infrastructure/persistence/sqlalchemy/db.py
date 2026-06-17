@@ -13,15 +13,15 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
     SQLAlchemyRuleRepository,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_unit_of_work import (
-    SQLAlchemyUnitOfWork,
+from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
+    SQLAlchemyUoW,
 )
 
 
 class SQLAlchemyDB:
     def __init__(
         self,
-        uow_factory: Callable[[], SQLAlchemyUnitOfWork],
+        uow_factory: Callable[[], SQLAlchemyUoW],
         database_url: str,
         engine: Engine,
         session_factory: Callable[[], Session],
@@ -66,8 +66,8 @@ class SQLAlchemyDBBuilder:
     @staticmethod
     def create_uow_factory(
         session_factory: Callable[[], Session],
-    ) -> Callable[[], SQLAlchemyUnitOfWork]:
-        return lambda: SQLAlchemyUnitOfWork(
+    ) -> Callable[[], SQLAlchemyUoW]:
+        return lambda: SQLAlchemyUoW(
             session_factory=session_factory,
             decision_repo_factory=SQLAlchemyDecisionRepository,
             event_repo_factory=SQLAlchemyEventRepository,

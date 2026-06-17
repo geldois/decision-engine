@@ -6,31 +6,31 @@ from decision_engine.application.contracts.repository import (
     RuleRepository,
 )
 from decision_engine.application.contracts.uow import UoW
-from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
-from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
-    InMemoryDecisionRepository,
+from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
+from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (
+    MemDecisionRepository,
 )
-from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
-    InMemoryEventRepository,
+from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (
+    MemEventRepository,
 )
-from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
-    InMemoryRuleRepository,
+from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_repository import (
+    MemRuleRepository,
 )
 
 
-class InMemoryUnitOfWork(UoW):
+class MemUoW(UoW):
     def __init__(
         self,
-        storage: InMemoryStorage,
+        storage: MemStorage,
         decision_repo_factory: Callable[
-            [InMemoryStorage], DecisionRepository
-        ] = InMemoryDecisionRepository,
+            [MemStorage], DecisionRepository
+        ] = MemDecisionRepository,
         event_repo_factory: Callable[
-            [InMemoryStorage], EventRepository
-        ] = InMemoryEventRepository,
+            [MemStorage], EventRepository
+        ] = MemEventRepository,
         rule_repo_factory: Callable[
-            [InMemoryStorage], RuleRepository
-        ] = InMemoryRuleRepository,
+            [MemStorage], RuleRepository
+        ] = MemRuleRepository,
     ) -> None:
         self.storage = storage
         self.decision_repo_factory = decision_repo_factory

@@ -11,14 +11,14 @@ from decision_engine.config.bootstrap import build_container, load_environment
 from decision_engine.config.container import Container, ContainerOverride
 from decision_engine.config.settings import Settings
 from decision_engine.infrastructure.config.db import build_database_url
-from decision_engine.infrastructure.persistence.in_memory.db import InMemoryDB
-from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
-from decision_engine.infrastructure.persistence.in_memory.in_memory_unit_of_work import (
-    InMemoryUnitOfWork,
+from decision_engine.infrastructure.persistence.mem.db import MemDB
+from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
+from decision_engine.infrastructure.persistence.mem.mem_uow import (
+    MemUoW,
 )
 from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
-from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_unit_of_work import (
-    SQLAlchemyUnitOfWork,
+from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
+    SQLAlchemyUoW,
 )
 from decision_engine.interface.http.app import create_app
 
@@ -47,7 +47,7 @@ def setup_environment() -> Generator[None, None, None]:
         os.environ["ENV"] = old_env
 
 
-@pytest.fixture(scope="function", params=["in_memory", "postgresql"])
+@pytest.fixture(scope="function", params=["mem", "postgresql"])
 def persistence(request: pytest.FixtureRequest) -> str:
     return request.param
 
@@ -89,8 +89,8 @@ def setup_migrations(setup_environment: None) -> Generator[None, None, None]:
 
 
 @pytest.fixture(scope="function")
-def in_memory_storage() -> Generator[InMemoryStorage, None, None]:
-    storage = InMemoryStorage()
+def mem_storage() -> Generator[MemStorage, None, None]:
+    storage = MemStorage()
 
     yield storage
 
@@ -98,18 +98,18 @@ def in_memory_storage() -> Generator[InMemoryStorage, None, None]:
 
 
 @pytest.fixture(scope="function")
-def in_memory_uow_factory(
-    in_memory_storage: InMemoryStorage,
-) -> Callable[[], InMemoryUnitOfWork]:
-    return lambda: InMemoryUnitOfWork(storage=in_memory_storage)
+def mem_uow_factory(
+    mem_storage: MemStorage,
+) -> Callable[[], MemUoW]:
+    return lambda: MemUoW(storage=mem_storage)
 
 
 @pytest.fixture(scope="function")
-def in_memory_db(
-    in_memory_uow_factory: Callable[[], InMemoryUnitOfWork],
-    in_memory_storage: InMemoryStorage,
-) -> InMemoryDB:
-    return InMemoryDB(uow_factory=in_memory_uow_factory, storage=in_memory_storage)
+def mem_db(
+    mem_uow_factory: Callable[[], MemUoW],
+    mem_storage: MemStorage,
+) -> MemDB:
+    return MemDB(uow_factory=mem_uow_factory, storage=mem_storage)
 
 
 @pytest.fixture(scope="function")
@@ -145,8 +145,8 @@ def session(connection: Connection) -> Generator[Session, None, None]:
 @pytest.fixture(scope="function")
 def sqlalchemy_uow_factory(
     session: Session,
-) -> Callable[[], SQLAlchemyUnitOfWork]:
-    return lambda: SQLAlchemyUnitOfWork(session_factory=lambda: session)
+) -> Callable[[], SQLAlchemyUoW]:
+    return lambda: SQLAlchemyUoW(session_factory=lambda: session)
 
 
 @pytest.fixture(scope="function")
@@ -154,7 +154,7 @@ def sqlalchemy_db(
     settings: Settings,
     connection: Connection,
     session: Session,
-    sqlalchemy_uow_factory: Callable[[], SQLAlchemyUnitOfWork],
+    sqlalchemy_uow_factory: Callable[[], SQLAlchemyUoW],
 ) -> SQLAlchemyDB:
     return SQLAlchemyDB(
         uow_factory=sqlalchemy_uow_factory,
@@ -169,9 +169,9 @@ def container_override(
     settings: Settings, request: pytest.FixtureRequest
 ) -> ContainerOverride:
     match settings.persistence:
-        case "in_memory":
+        case "mem":
             return ContainerOverride(
-                in_memory_db=request.getfixturevalue("in_memory_db")
+                mem_db=request.getfixturevalue("mem_db")
             )
         case "postgresql":
             return ContainerOverride(

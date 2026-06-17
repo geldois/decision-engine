@@ -1,15 +1,15 @@
 import pytest
 from sqlalchemy.orm import Session
 
-from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
-from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
-    InMemoryDecisionRepository,
+from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
+from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (
+    MemDecisionRepository,
 )
-from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
-    InMemoryEventRepository,
+from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (
+    MemEventRepository,
 )
-from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
-    InMemoryRuleRepository,
+from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_repository import (
+    MemRuleRepository,
 )
 from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
     SQLAlchemyDecisionRepository,
@@ -23,24 +23,24 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 
 
 @pytest.fixture(scope="function")
-def in_memory_decision_repo(
-    in_memory_storage: InMemoryStorage,
-) -> InMemoryDecisionRepository:
-    return InMemoryDecisionRepository(storage=in_memory_storage)
+def mem_decision_repo(
+    mem_storage: MemStorage,
+) -> MemDecisionRepository:
+    return MemDecisionRepository(storage=mem_storage)
 
 
 @pytest.fixture(scope="function")
-def in_memory_event_repo(
-    in_memory_storage: InMemoryStorage,
-) -> InMemoryEventRepository:
-    return InMemoryEventRepository(storage=in_memory_storage)
+def mem_event_repo(
+    mem_storage: MemStorage,
+) -> MemEventRepository:
+    return MemEventRepository(storage=mem_storage)
 
 
 @pytest.fixture(scope="function")
-def in_memory_rule_repo(
-    in_memory_storage: InMemoryStorage,
-) -> InMemoryRuleRepository:
-    return InMemoryRuleRepository(storage=in_memory_storage)
+def mem_rule_repo(
+    mem_storage: MemStorage,
+) -> MemRuleRepository:
+    return MemRuleRepository(storage=mem_storage)
 
 
 @pytest.fixture(scope="function")

@@ -4,11 +4,11 @@ from decision_engine.application.contracts.repository import (
     DecisionRepository,
 )
 from decision_engine.domain.entities.decision import Decision
-from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
+from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 
 
-class InMemoryDecisionRepository(DecisionRepository):
-    def __init__(self, storage: InMemoryStorage) -> None:
+class MemDecisionRepository(DecisionRepository):
+    def __init__(self, storage: MemStorage) -> None:
         self.decisions = storage.decisions
 
     def save(self, decision: Decision) -> Decision:

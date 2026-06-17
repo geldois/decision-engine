@@ -3,13 +3,13 @@ from collections.abc import Callable
 from decision_engine.domain.entities.decision import Decision
 from decision_engine.domain.entities.event import Event
 from decision_engine.domain.entities.rule import Rule
-from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
+from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 
 # VALID CASES
 
 
-def test_in_memory_storage_creates_empty_dicts() -> None:
-    storage = InMemoryStorage()
+def test_mem_storage_creates_empty_dicts() -> None:
+    storage = MemStorage()
 
     assert storage.decisions == {}
 
@@ -18,12 +18,12 @@ def test_in_memory_storage_creates_empty_dicts() -> None:
     assert storage.rules == {}
 
 
-def test_in_memory_storage_creates_new_dict_when_backups(
+def test_mem_storage_creates_new_dict_when_backups(
     decision_factory: Callable[..., Decision],
     event_factory: Callable[..., Event],
     rule_factory: Callable[..., Rule],
 ) -> None:
-    storage = InMemoryStorage()
+    storage = MemStorage()
 
     event = event_factory()
     rule = rule_factory()
@@ -48,8 +48,8 @@ def test_in_memory_storage_creates_new_dict_when_backups(
     assert storage_backup.rules == storage.rules
 
 
-def test_in_memory_storage_cleans_storage() -> None:
-    storage = InMemoryStorage()
+def test_mem_storage_cleans_storage() -> None:
+    storage = MemStorage()
 
     storage.clear()
 
@@ -60,13 +60,13 @@ def test_in_memory_storage_cleans_storage() -> None:
     assert storage.rules == {}
 
 
-def test_in_memory_storage_updates_storage(
+def test_mem_storage_updates_storage(
     decision_factory: Callable[..., Decision],
     event_factory: Callable[..., Event],
     rule_factory: Callable[..., Rule],
 ) -> None:
-    storage = InMemoryStorage()
-    new_storage = InMemoryStorage()
+    storage = MemStorage()
+    new_storage = MemStorage()
 
     event = event_factory()
     rule = rule_factory()

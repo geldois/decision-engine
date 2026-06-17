@@ -7,7 +7,7 @@ from decision_engine.application.use_cases.register_event import RegisterEventUs
 from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
 from decision_engine.config.container import Container, ContainerOverride, UseCaseSet
 from decision_engine.config.settings import Settings
-from decision_engine.infrastructure.persistence.in_memory.db import InMemoryDBBuilder
+from decision_engine.infrastructure.persistence.mem.db import MemDBBuilder
 from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDBBuilder
 
 
@@ -31,11 +31,11 @@ def build_container(
     settings = settings or Settings.build()
 
     match settings.persistence:
-        case "in_memory":
+        case "mem":
             db = (
-                overrides.in_memory_db
-                if overrides and overrides.in_memory_db
-                else InMemoryDBBuilder.build()
+                overrides.mem_db
+                if overrides and overrides.mem_db
+                else MemDBBuilder.build()
             )
         case "postgresql":
             db = (

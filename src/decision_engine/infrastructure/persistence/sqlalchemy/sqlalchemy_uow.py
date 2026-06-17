@@ -19,7 +19,7 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 )
 
 
-class SQLAlchemyUnitOfWork(UoW):
+class SQLAlchemyUoW(UoW):
     def __init__(
         self,
         session_factory: Callable[[], Session],

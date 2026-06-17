@@ -7,7 +7,7 @@ from typing import Literal, TypeGuard, get_args
 from decision_engine.infrastructure.config.db import build_database_url
 
 EnvType = Literal["dev", "prod", "test"]
-PersistenceType = Literal["in_memory", "postgresql"]
+PersistenceType = Literal["mem", "postgresql"]
 
 
 @dataclass(frozen=True)

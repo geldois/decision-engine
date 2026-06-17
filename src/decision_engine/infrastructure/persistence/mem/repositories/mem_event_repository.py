@@ -4,11 +4,11 @@ from decision_engine.application.contracts.repository import (
     EventRepository,
 )
 from decision_engine.domain.entities.event import Event
-from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
+from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 
 
-class InMemoryEventRepository(EventRepository):
-    def __init__(self, storage: InMemoryStorage) -> None:
+class MemEventRepository(EventRepository):
+    def __init__(self, storage: MemStorage) -> None:
         self.events = storage.events
 
     def save(self, event: Event) -> Event:
