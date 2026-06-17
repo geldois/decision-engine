@@ -18,6 +18,24 @@ from decision_engine.interface.http.schemas.responses.http_produce_decision_resp
 def build_decision_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/decisions")
 
+    @router.get("/")
+    def list_decisions() -> list[HTTPProduceDecisionResponse]:  # pyright: ignore[reportUnusedFunction]
+        try:
+            response = container.use_cases.list_decisions.execute(dto=None)
+
+            return [
+                HTTPProduceDecisionResponse(
+                    event_id=d.event_id,
+                    rule_id=d.rule_id,
+                    status=d.status,
+                    traces=d.traces,
+                    decision_id=d.decision_id,
+                )
+                for d in response
+            ]
+        except Exception as exception:
+            raise map_http_exception(exception=exception) from exception
+
     @router.post("/")
     def produce_decision(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPProduceDecisionRequest,

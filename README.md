@@ -90,10 +90,13 @@ with `correlation_id`, timestamp, and log level injected automatically by the pr
 | HTTP | `http.request` | `method`, `path` |
 | HTTP | `http.response` | `method`, `path`, `status_code` |
 | Use case | `event.registered` | `event_id`, `event_type` |
+| Use case | `events.listed` | `count` |
 | Use case | `rule.registered` | `rule_id`, `name`, `outcome` |
+| Use case | `rules.listed` | `count` |
 | Use case | `decision.produced` | `event_id`, `rule_id`, `outcome` |
+| Use case | `decisions.listed` | `count` |
 
-All five events for a `POST /decisions/` call share the same `correlation_id`, making it possible to trace a full
+All events within a single request share the same `correlation_id`, making it possible to trace a full
 request end-to-end from a single log query.
 
 ## Design
@@ -129,7 +132,7 @@ The architectural decisions behind these choices are documented in [`docs/adr/`]
 uv run pytest
 ```
 
-~100 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends. Schema
+~160 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends. Schema
 lifecycle is managed by Alembic (`upgrade head` at session start, `downgrade base` on teardown).
 
 ## Setup
@@ -170,6 +173,12 @@ curl -X POST http://localhost:8000/events/ \
   -d '{"event_type": "PURCHASE", "payload": {"amount": 1500, "country": "BR"}, "occurred_at": 1000000000}'
 ```
 
+### List events
+
+```bash
+curl http://localhost:8000/events/
+```
+
 ### Register a rule
 
 ```bash
@@ -197,10 +206,22 @@ curl -X POST http://localhost:8000/rules/ \
   }'
 ```
 
+### List rules
+
+```bash
+curl http://localhost:8000/rules/
+```
+
 ### Produce a decision
 
 ```bash
 curl -X POST http://localhost:8000/decisions/ \
   -H "Content-Type: application/json" \
   -d '{"event_id": "<event-id>"}'
+```
+
+### List decisions
+
+```bash
+curl http://localhost:8000/decisions/
 ```

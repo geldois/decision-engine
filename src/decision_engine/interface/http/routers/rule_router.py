@@ -21,6 +21,24 @@ from decision_engine.interface.http.schemas.responses.http_register_rule_respons
 def build_rule_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/rules")
 
+    @router.get("/")
+    def list_rules() -> list[HTTPRegisterRuleResponse]:  # pyright: ignore[reportUnusedFunction]
+        try:
+            response = container.use_cases.list_rules.execute(dto=None)
+
+            return [
+                HTTPRegisterRuleResponse(
+                    name=r.name,
+                    condition=r.condition,
+                    outcome=r.outcome,
+                    priority=r.priority,
+                    rule_id=r.rule_id,
+                )
+                for r in response
+            ]
+        except Exception as exception:
+            raise map_http_exception(exception=exception) from exception
+
     @router.post("/")
     def register_rule(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPRegisterRuleRequest,

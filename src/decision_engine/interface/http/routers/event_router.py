@@ -18,6 +18,23 @@ from decision_engine.interface.http.schemas.responses.http_register_event_respon
 def build_event_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/events")
 
+    @router.get("/")
+    def list_events() -> list[HTTPRegisterEventResponse]:  # pyright: ignore[reportUnusedFunction]
+        try:
+            response = container.use_cases.list_events.execute(dto=None)
+
+            return [
+                HTTPRegisterEventResponse(
+                    event_type=e.event_type,
+                    payload=e.payload,
+                    occurred_at=e.occurred_at,
+                    event_id=e.event_id,
+                )
+                for e in response
+            ]
+        except Exception as exception:
+            raise map_http_exception(exception=exception) from exception
+
     @router.post("/")
     def register_event(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPRegisterEventRequest,

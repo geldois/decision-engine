@@ -25,8 +25,9 @@ Replace callable conditions with a recursive Abstract Syntax Tree (AST):
 `evaluate(event)` returns a `SimpleDecisionTrace` with the actual field value, the expected value, and the comparison
 result.
 - `CompositeCondition` — branch node. Holds a `LogicalOperator` (`AND` / `OR`) and a sequence of child `Condition`
-nodes. `evaluate(event)` uses short-circuit evaluation via a generator passed to `LogicalOperator.evaluate`, then
-returns a `CompositeDecisionTrace` containing the nested traces.
+nodes. `evaluate_result(event)` uses short-circuit evaluation via a generator passed to `LogicalOperator.evaluate` to
+determine the result efficiently. `evaluate(event)` intentionally evaluates all children regardless, returning a
+`CompositeDecisionTrace` with the complete set of nested traces.
 
 Both implement `accept(visitor)`, exposing the Visitor pattern for structural operations that must not live in the
 domain — primarily JSON serialization. Codecs implement `ConditionVisitor` and `DecisionTraceVisitor` without touching
@@ -40,10 +41,11 @@ evaluation sequence across all rules.
 
 - Conditions are fully serializable to and from JSON without loss of structure. The entire rule definition round-trips
 through the database as a JSONB column.
-- Every decision carries a complete, recursive audit trail that reflects the evaluation tree exactly — short-circuited
-branches are visible as absent traces.
-- Short-circuit evaluation is structurally enforced: `LogicalOperator.evaluate` accepts a generator, so AND stops at the
-first false and OR stops at the first true without special-casing.
+- Every decision carries a complete, recursive audit trail covering all branches of the condition tree — not just the
+path that determined the result. This is a deliberate choice: auditability takes precedence over trace minimalism.
+- Short-circuit evaluation is structurally enforced for result computation: `LogicalOperator.evaluate` accepts a
+generator, so AND stops at the first false and OR stops at the first true. Trace collection is a separate concern and
+always exhaustive.
 - Adding a new condition type requires exactly three changes: implement `Condition`, register it in `ConditionRegistry`,
 and add a `visit_*` method to existing visitors. No existing condition or trace code changes.
 - Trade-off: the AST introduces two parallel hierarchies — one for conditions and one for traces — which must be kept

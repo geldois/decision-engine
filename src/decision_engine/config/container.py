@@ -5,6 +5,11 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from decision_engine.application.protocols.db_protocol import DBProtocol
+    from decision_engine.application.use_cases.list_decisions import (
+        ListDecisionsUseCase,
+    )
+    from decision_engine.application.use_cases.list_events import ListEventsUseCase
+    from decision_engine.application.use_cases.list_rules import ListRulesUseCase
     from decision_engine.application.use_cases.produce_decision import (
         ProduceDecisionUseCase,
     )
@@ -22,6 +27,9 @@ class UseCaseSet:
     produce_decision: ProduceDecisionUseCase
     register_event: RegisterEventUseCase
     register_rule: RegisterRuleUseCase
+    list_decisions: ListDecisionsUseCase
+    list_events: ListEventsUseCase
+    list_rules: ListRulesUseCase
 
 
 @dataclass(frozen=True)

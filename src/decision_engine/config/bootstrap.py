@@ -5,6 +5,9 @@ import os
 from dotenv import load_dotenv
 
 from alembic import command, config
+from decision_engine.application.use_cases.list_decisions import ListDecisionsUseCase
+from decision_engine.application.use_cases.list_events import ListEventsUseCase
+from decision_engine.application.use_cases.list_rules import ListRulesUseCase
 from decision_engine.application.use_cases.produce_decision import (
     ProduceDecisionUseCase,
 )
@@ -51,6 +54,9 @@ def build_container(
         produce_decision=ProduceDecisionUseCase(uow_factory=db.uow_factory),
         register_event=RegisterEventUseCase(uow_factory=db.uow_factory),
         register_rule=RegisterRuleUseCase(uow_factory=db.uow_factory),
+        list_decisions=ListDecisionsUseCase(uow_factory=db.uow_factory),
+        list_events=ListEventsUseCase(uow_factory=db.uow_factory),
+        list_rules=ListRulesUseCase(uow_factory=db.uow_factory),
     )
 
     return Container(settings=settings, db=db, use_cases=use_cases)
