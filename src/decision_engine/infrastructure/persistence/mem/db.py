@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Callable
 
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage

@@ -20,18 +20,18 @@ class DecisionTrace(ABC):
 
     @abstractmethod
     def __eq__(self, other: object) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def accept(
         self, visitor: type[DecisionTraceVisitor[VisitorReturnType]]
     ) -> VisitorReturnType:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def from_dict(cls, data: dict[str, Any]) -> DecisionTrace:
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 @dataclass(frozen=True)
@@ -109,12 +109,12 @@ class DecisionTraceVisitor[VisitorReturnType](ABC):
     @classmethod
     @abstractmethod
     def visit_composite(cls, element: CompositeDecisionTrace) -> VisitorReturnType:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def visit_simple(cls, element: SimpleDecisionTrace) -> VisitorReturnType:
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class DecisionTraceRegistry:

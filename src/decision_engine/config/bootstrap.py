@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 import os
 
 from dotenv import load_dotenv
 
-from decision_engine.application.use_cases.produce_decision import ProduceDecisionUseCase
+from decision_engine.application.use_cases.produce_decision import (
+    ProduceDecisionUseCase,
+)
 from decision_engine.application.use_cases.register_event import RegisterEventUseCase
 from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
 from decision_engine.config.container import Container, ContainerOverride, UseCaseSet

@@ -1,11 +1,17 @@
+from __future__ import annotations
+
 from typing import cast
 
 from fastapi import APIRouter
 
 from decision_engine.application.dto.condition import DTOCondition
-from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
+from decision_engine.application.dto.requests.register_rule import (
+    RegisterRuleDTORequest,
+)
 from decision_engine.config.container import Container
-from decision_engine.interface.http.mappers.http_error_code_mapper import map_http_exception
+from decision_engine.interface.http.mappers.http_error_code_mapper import (
+    map_http_exception,
+)
 from decision_engine.interface.http.schemas.requests.http_register_rule_request import (
     HTTPRegisterRuleRequest,
 )
@@ -24,7 +30,7 @@ def build_rule_router(container: Container) -> APIRouter:
         try:
             request = RegisterRuleDTORequest(
                 name=http_request.name,
-                condition=cast(DTOCondition, http_request.condition),
+                condition=cast("DTOCondition", http_request.condition),
                 outcome=http_request.outcome,
                 priority=http_request.priority,
             )

@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from decision_engine.application.protocols.db_protocol import DBProtocol
-from decision_engine.application.use_cases.produce_decision import ProduceDecisionUseCase
+from decision_engine.application.use_cases.produce_decision import (
+    ProduceDecisionUseCase,
+)
 from decision_engine.application.use_cases.register_event import RegisterEventUseCase
 from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
 from decision_engine.config.settings import Settings

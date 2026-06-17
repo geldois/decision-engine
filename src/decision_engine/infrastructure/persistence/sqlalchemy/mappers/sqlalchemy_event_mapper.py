@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 from decision_engine.domain.entities.event import Event
 from decision_engine.infrastructure.persistence.sqlalchemy.codecs.payload_codec import (
     PayloadDeserializer,
     PayloadSerializer,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.models.event_model import EventModel
+from decision_engine.infrastructure.persistence.sqlalchemy.models.event_model import (
+    EventModel,
+)
 
 
 def domain_to_model(event: Event) -> EventModel:

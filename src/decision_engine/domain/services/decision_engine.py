@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from operator import attrgetter
 
 from decision_engine.domain.entities.decision import Decision

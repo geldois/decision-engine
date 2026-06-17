@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import RedirectResponse
 

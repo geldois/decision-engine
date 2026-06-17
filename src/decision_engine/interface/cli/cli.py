@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import socket
 import time
@@ -48,5 +50,4 @@ def wait_db() -> None:
             print("waiting for database...")
 
             time.sleep(1)
-    else:
-        raise RuntimeError("database not ready")
+    raise RuntimeError("database not ready")

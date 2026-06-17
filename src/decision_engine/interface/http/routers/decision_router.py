@@ -1,8 +1,14 @@
+from __future__ import annotations
+
 from fastapi import APIRouter
 
-from decision_engine.application.dto.requests.produce_decision import ProduceDecisionDTORequest
+from decision_engine.application.dto.requests.produce_decision import (
+    ProduceDecisionDTORequest,
+)
 from decision_engine.config.container import Container
-from decision_engine.interface.http.mappers.http_error_code_mapper import map_http_exception
+from decision_engine.interface.http.mappers.http_error_code_mapper import (
+    map_http_exception,
+)
 from decision_engine.interface.http.schemas.requests.http_produce_decision_request import (
     HTTPProduceDecisionRequest,
 )

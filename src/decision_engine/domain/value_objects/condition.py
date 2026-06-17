@@ -26,26 +26,26 @@ from decision_engine.domain.value_objects.operators.logical_operator import (
 class Condition(ABC):
     @abstractmethod
     def __eq__(self, other: object) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def accept(
         self, visitor: type[ConditionVisitor[VisitorReturnType]]
     ) -> VisitorReturnType:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def evaluate_result(self, event: Event) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def evaluate(self, event: Event) -> DecisionTrace:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def from_dict(cls, data: dict[str, Any]) -> Condition:
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class CompositeCondition(Condition):
@@ -163,12 +163,12 @@ class ConditionVisitor[VisitorReturnType](ABC):
     @classmethod
     @abstractmethod
     def visit_composite(cls, element: CompositeCondition) -> VisitorReturnType:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @classmethod
     @abstractmethod
     def visit_simple(cls, element: SimpleCondition) -> VisitorReturnType:
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class ConditionRegistry:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from decision_engine.application.contracts.uow import UoW
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (

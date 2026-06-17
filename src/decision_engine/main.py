@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from decision_engine.config.bootstrap import load_environment, run_migrations
 from decision_engine.interface.http.app import create_app
 

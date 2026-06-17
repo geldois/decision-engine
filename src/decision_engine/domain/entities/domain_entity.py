@@ -14,7 +14,7 @@ class DomainEntity(ABC):
         else:
             self.created_at = created_at
 
-        self.id = entity_id if entity_id else uuid4()
+        self.id = entity_id or uuid4()
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
@@ -24,4 +24,4 @@ class DomainEntity(ABC):
 
     @abstractmethod
     def is_structurally_equal(self, other: DomainEntity) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError

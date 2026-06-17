@@ -1,6 +1,12 @@
+from __future__ import annotations
+
 from decision_engine.application.contracts.use_case import UseCase
-from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
-from decision_engine.application.dto.responses.register_event import RegisterEventDTOResponse
+from decision_engine.application.dto.requests.register_event import (
+    RegisterEventDTORequest,
+)
+from decision_engine.application.dto.responses.register_event import (
+    RegisterEventDTOResponse,
+)
 from decision_engine.domain.entities.event import Event
 
 

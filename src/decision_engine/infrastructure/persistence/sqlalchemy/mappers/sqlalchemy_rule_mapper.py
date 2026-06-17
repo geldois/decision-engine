@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 from decision_engine.domain.entities.rule import Rule
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.infrastructure.persistence.sqlalchemy.codecs.condition_codec import (
     ConditionDeserializer,
     ConditionSerializer,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.models.rule_model import RuleModel
+from decision_engine.infrastructure.persistence.sqlalchemy.models.rule_model import (
+    RuleModel,
+)
 
 
 def domain_to_model(rule: Rule) -> RuleModel:

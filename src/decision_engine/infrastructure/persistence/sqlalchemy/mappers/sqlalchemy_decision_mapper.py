@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from decision_engine.domain.entities.decision import Decision
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.infrastructure.persistence.sqlalchemy.codecs.decision_trace_codec import (

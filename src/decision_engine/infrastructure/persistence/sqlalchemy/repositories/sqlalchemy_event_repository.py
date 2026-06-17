@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import UUID
 
 from sqlalchemy import select
@@ -9,7 +11,9 @@ from decision_engine.infrastructure.persistence.sqlalchemy.mappers.sqlalchemy_ev
     domain_to_model,
     model_to_domain,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.models.event_model import EventModel
+from decision_engine.infrastructure.persistence.sqlalchemy.models.event_model import (
+    EventModel,
+)
 
 
 class SQLAlchemyEventRepository(EventRepository):

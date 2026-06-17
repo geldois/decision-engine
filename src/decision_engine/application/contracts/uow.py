@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Self
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from types import TracebackType
 
     from decision_engine.application.contracts.repository import (
@@ -41,3 +42,6 @@ class UoW(ABC):
     @abstractmethod
     def rollback(self) -> None:
         raise NotImplementedError
+
+
+type UoWFactory = Callable[[], UoW]
