@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import structlog
+
 from decision_engine.application.contracts.use_case import UseCase
 from decision_engine.application.dto.requests.register_rule import (
     RegisterRuleDTORequest,
@@ -16,6 +18,8 @@ from decision_engine.application.presenters.condition_presenter import (
 )
 from decision_engine.domain.entities.rule import Rule
 
+logger = structlog.get_logger()
+
 
 class RegisterRuleUseCase(UseCase[RegisterRuleDTORequest, RegisterRuleDTOResponse]):
     def execute(self, dto: RegisterRuleDTORequest) -> RegisterRuleDTOResponse:
@@ -27,6 +31,13 @@ class RegisterRuleUseCase(UseCase[RegisterRuleDTORequest, RegisterRuleDTORespons
                 priority=dto.priority,
             )
             saved_rule = uow.rules.save(rule=rule)
+
+            logger.info(
+                "rule.registered",
+                rule_id=str(saved_rule.id),
+                name=saved_rule.name,
+                outcome=saved_rule.outcome.value,
+            )
 
             return RegisterRuleDTOResponse(
                 name=saved_rule.name,

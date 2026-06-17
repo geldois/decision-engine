@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import structlog
+
 from decision_engine.application.contracts.use_case import UseCase
 from decision_engine.application.dto.requests.produce_decision import (
     ProduceDecisionDTORequest,
@@ -12,6 +14,8 @@ from decision_engine.application.presenters.decision_trace_presenter import (
 )
 from decision_engine.domain.errors.event_error import NotFoundEventError
 from decision_engine.domain.services.decision_engine import DecisionEngine
+
+logger = structlog.get_logger()
 
 
 class ProduceDecisionUseCase(
@@ -27,6 +31,13 @@ class ProduceDecisionUseCase(
             rules = uow.rules.list_all()
             decision = DecisionEngine.decide(event=event, rules=rules)
             saved_decision = uow.decisions.save(decision=decision)
+
+            logger.info(
+                "decision.produced",
+                event_id=str(saved_decision.event_id),
+                rule_id=str(saved_decision.rule_id) if saved_decision.rule_id else None,
+                outcome=saved_decision.outcome.value,
+            )
 
             return ProduceDecisionDTOResponse(
                 event_id=saved_decision.event_id,

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import cast
+
 from decision_engine.domain.value_objects.condition import (
     CompositeCondition,
     Condition,
@@ -12,7 +14,8 @@ from decision_engine.domain.value_objects.condition import (
 class ConditionDeserializer:
     @staticmethod
     def deserialize(data: dict[str, object]) -> Condition:
-        return ConditionRegistry.get_class(data["type"]).from_dict(data=data)
+        condition_type = cast("str", data["type"])
+        return ConditionRegistry.get_class(condition_type).from_dict(data=data)
 
 
 class ConditionSerializer(ConditionVisitor[dict[str, object]]):

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import cast
+
 from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     DecisionTrace,
@@ -13,7 +15,9 @@ class DecisionTraceDeserializer:
     @staticmethod
     def deserialize(data: list[dict[str, object]]) -> tuple[DecisionTrace, ...]:
         return tuple(
-            DecisionTraceRegistry.get_class(name=trace["type"]).from_dict(data=trace)
+            DecisionTraceRegistry.get_class(
+                name=cast("str", trace["type"])
+            ).from_dict(data=trace)
             for trace in data
         )
 

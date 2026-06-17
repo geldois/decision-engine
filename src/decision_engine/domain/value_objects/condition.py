@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, TypeVar, cast
 
 from decision_engine.domain.errors.condition_error import (
     InvalidConditionError,
@@ -33,7 +33,7 @@ class Condition(ABC):
 
     @abstractmethod
     def __hash__(self) -> int:
-        return NotImplementedError
+        raise NotImplementedError
 
     @abstractmethod
     def accept(
@@ -99,13 +99,14 @@ class CompositeCondition(Condition):
 
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> Condition:
+        conditions_data = cast("list[dict[str, object]]", data["conditions"])
         return cls(
             operator=LogicalOperator(data["operator"]),
             conditions=[
-                ConditionRegistry.get_class(name=condition["type"]).from_dict(
-                    data=condition
+                ConditionRegistry.get_class(name=cast("str", cond["type"])).from_dict(
+                    data=cond
                 )
-                for condition in data["conditions"]
+                for cond in conditions_data
             ],
         )
 

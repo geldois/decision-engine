@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, TypeVar, cast
 
 from decision_engine.domain.value_objects.event_field import EventField
 from decision_engine.domain.value_objects.operators.comparison_operator import (
@@ -65,14 +65,15 @@ class CompositeDecisionTrace(DecisionTrace):
 
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> DecisionTrace:
+        traces_data = cast("list[dict[str, object]]", data["traces"])
         return cls(
-            result=data["result"],
+            result=cast("bool", data["result"]),
             operator=LogicalOperator(data["operator"]),
             traces=tuple(
-                DecisionTraceRegistry.get_class(name=trace["type"]).from_dict(
-                    data=trace
-                )
-                for trace in data["traces"]
+                DecisionTraceRegistry.get_class(
+                    name=cast("str", trace["type"])
+                ).from_dict(data=trace)
+                for trace in traces_data
             ),
         )
 
@@ -108,7 +109,7 @@ class SimpleDecisionTrace(DecisionTrace):
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> DecisionTrace:
         return cls(
-            result=data["result"],
+            result=cast("bool", data["result"]),
             operator=ComparisonOperator(data["operator"]),
             field=EventField(data["field"]),
             expected_value=data["expected_value"],
