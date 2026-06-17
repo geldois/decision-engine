@@ -21,7 +21,7 @@ def build_event_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/events")
 
     @router.post("/", response_model=HTTPRegisterEventResponse)
-    def register_event(
+    def register_event(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPRegisterEventRequest,
     ) -> HTTPRegisterEventResponse:
         try:

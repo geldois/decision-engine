@@ -24,7 +24,7 @@ def build_rule_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/rules")
 
     @router.post("/", response_model=HTTPRegisterRuleResponse)
-    def register_rule(
+    def register_rule(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPRegisterRuleRequest,
     ) -> HTTPRegisterRuleResponse:
         try:

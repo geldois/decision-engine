@@ -29,11 +29,11 @@ def create_app(
     app.include_router(router=build_rule_router(container=container))
 
     @app.get("/", include_in_schema=False)
-    async def root():
+    async def root() -> RedirectResponse:  # pyright: ignore[reportUnusedFunction]
         return RedirectResponse(url="/docs")
 
     @app.get("/health")
-    async def health() -> dict[str, str]:
+    async def health() -> dict[str, str]:  # pyright: ignore[reportUnusedFunction]
         if container.db.check_health():
             return {"status": "ok"}
 

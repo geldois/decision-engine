@@ -52,10 +52,6 @@ def build_container(
                 raise RuntimeError(
                     "DATABASE_URL mismatch between settings and injected DB"
                 )
-        case _:
-            raise RuntimeError(
-                f"error building container | $PERSISTENCE: {settings.persistence}"
-            )
 
     use_cases = UseCaseSet(
         produce_decision=ProduceDecisionUseCase(uow_factory=db.uow_factory),

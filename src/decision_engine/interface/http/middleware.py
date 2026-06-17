@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 def register_correlation_id_middleware(app: FastAPI) -> None:
     @app.middleware("http")
-    async def set_correlation_id(
+    async def set_correlation_id(  # pyright: ignore[reportUnusedFunction]
         request: Request,
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:

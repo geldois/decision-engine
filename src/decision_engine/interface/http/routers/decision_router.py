@@ -21,7 +21,7 @@ def build_decision_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/decisions")
 
     @router.post("/", response_model=HTTPProduceDecisionResponse)
-    def produce_decision(
+    def produce_decision(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPProduceDecisionRequest,
     ) -> HTTPProduceDecisionResponse:
         try:

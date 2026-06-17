@@ -32,7 +32,7 @@ def wait_db() -> None:
 
     for _ in range(60):
         try:
-            socket.gethostbyname(os.getenv("DB_HOST"))
+            socket.gethostbyname(os.getenv("DB_HOST", ""))
 
             engine = create_engine(
                 build_database_url(),
