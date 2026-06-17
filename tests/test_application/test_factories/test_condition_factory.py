@@ -1,18 +1,18 @@
 import pytest
 
-from app.application.dto.dto_condition import DTOCompositeCondition, DTOSimpleCondition
-from app.application.factories.condition_factory import build_condition
-from app.domain.exceptions.condition_exception import ConditionException
-from app.domain.value_objects.condition import CompositeCondition, SimpleCondition
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.application.dto.condition import CompositeConditionDTO, SimpleConditionDTO
+from decision_engine.application.factories.condition_factory import build_condition
+from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
 
 # VALID CASES
 
 
 def test_condition_factory_builds_simple_condition() -> None:
-    dto = DTOSimpleCondition(
+    dto = SimpleConditionDTO(
         {
             "type": "simple",
             "field": "event_type",
@@ -29,7 +29,7 @@ def test_condition_factory_builds_simple_condition() -> None:
 
 
 def test_condition_factory_builds_composite_condition() -> None:
-    dto = DTOCompositeCondition(
+    dto = CompositeConditionDTO(
         {
             "type": "composite",
             "operator": "and",
@@ -70,7 +70,7 @@ def test_condition_factory_builds_composite_condition() -> None:
 def test_condition_factory_raises_on_invalid_dto_type() -> None:
     with pytest.raises(ConditionException):
         build_condition(
-            dto=DTOSimpleCondition(
+            dto=SimpleConditionDTO(
                 {
                     "type": "TEST",
                     "field": "event_type",
@@ -84,7 +84,7 @@ def test_condition_factory_raises_on_invalid_dto_type() -> None:
 def test_condition_factory_raises_on_invalid_conditions_length() -> None:
     with pytest.raises(ConditionException):
         build_condition(
-            dto=DTOCompositeCondition(
+            dto=CompositeConditionDTO(
                 {
                     "type": "composite",
                     "operator": "and",
@@ -104,7 +104,7 @@ def test_condition_factory_raises_on_invalid_conditions_length() -> None:
 def test_condition_factory_raises_on_empty_string_value() -> None:
     with pytest.raises(ConditionException):
         build_condition(
-            dto=DTOSimpleCondition(
+            dto=SimpleConditionDTO(
                 {
                     "type": "simple",
                     "field": "event_type",

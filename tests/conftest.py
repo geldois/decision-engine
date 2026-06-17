@@ -7,20 +7,20 @@ from fastapi.testclient import TestClient
 from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 
-from app.config.bootstrap import build_container, load_environment
-from app.config.container import Container, ContainerOverride
-from app.config.settings import Settings
-from app.infrastructure.config.db import build_database_url
-from app.infrastructure.persistence.in_memory.db import InMemoryDB
-from app.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
-from app.infrastructure.persistence.in_memory.in_memory_unit_of_work import (
+from decision_engine.config.bootstrap import build_container, load_environment
+from decision_engine.config.container import Container, ContainerOverride
+from decision_engine.config.settings import Settings
+from decision_engine.infrastructure.config.db import build_database_url
+from decision_engine.infrastructure.persistence.in_memory.db import InMemoryDB
+from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
+from decision_engine.infrastructure.persistence.in_memory.in_memory_unit_of_work import (
     InMemoryUnitOfWork,
 )
-from app.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
-from app.infrastructure.persistence.sqlalchemy.sqlalchemy_unit_of_work import (
+from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
+from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_unit_of_work import (
     SQLAlchemyUnitOfWork,
 )
-from app.interface.http.app import create_app
+from decision_engine.interface.http.app import create_app
 
 pytest_plugins = [
     "tests.fixtures.condition",

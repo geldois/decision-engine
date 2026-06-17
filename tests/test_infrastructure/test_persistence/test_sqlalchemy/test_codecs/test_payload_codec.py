@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from app.infrastructure.persistence.sqlalchemy.codecs.payload_codec import (
+from decision_engine.infrastructure.persistence.sqlalchemy.codecs.payload_codec import (
     PayloadDeserializer,
     PayloadSerializer,
 )

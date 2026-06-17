@@ -1,7 +1,7 @@
 import pytest
 
-from app.domain.entities.event import Event
-from app.domain.exceptions.event_exception import EventException
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.exceptions.event_exception import EventException
 
 # INVALID CASES
 

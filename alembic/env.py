@@ -1,9 +1,9 @@
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-from app.config.bootstrap import load_environment
-from app.infrastructure.config.db import build_database_url
-from app.infrastructure.persistence.sqlalchemy.models.model import Model
+from decision_engine.config.bootstrap import load_environment
+from decision_engine.infrastructure.config.db import build_database_url
+from decision_engine.infrastructure.persistence.sqlalchemy.models.model import Model
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

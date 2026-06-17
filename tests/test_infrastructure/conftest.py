@@ -1,23 +1,23 @@
 import pytest
 from sqlalchemy.orm import Session
 
-from app.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
-from app.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
+from decision_engine.infrastructure.persistence.in_memory.in_memory_storage import InMemoryStorage
+from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_decision_repository import (
     InMemoryDecisionRepository,
 )
-from app.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
+from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
     InMemoryEventRepository,
 )
-from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
+from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
     InMemoryRuleRepository,
 )
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
     SQLAlchemyDecisionRepository,
 )
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
     SQLAlchemyEventRepository,
 )
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
     SQLAlchemyRuleRepository,
 )
 

@@ -1,7 +1,7 @@
 from collections.abc import Callable
 
-from app.domain.entities.rule import Rule
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
     SQLAlchemyRuleRepository,
 )
 

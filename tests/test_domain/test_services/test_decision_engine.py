@@ -1,17 +1,17 @@
 from collections.abc import Callable
 
-from app.domain.entities.event import Event
-from app.domain.entities.rule import Rule
-from app.domain.services.decision_engine import DecisionEngine
-from app.domain.value_objects.condition import CompositeCondition, SimpleCondition
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.value_objects.decision_trace import (
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.domain.services.decision_engine import DecisionEngine
+from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
+from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     SimpleDecisionTrace,
 )
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
 
 # VALID CASES
 

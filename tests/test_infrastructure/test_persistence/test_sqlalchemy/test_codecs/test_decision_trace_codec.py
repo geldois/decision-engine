@@ -2,13 +2,13 @@ from collections.abc import Callable
 
 import pytest
 
-from app.domain.value_objects.decision_trace import (
+from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     DecisionTrace,
     SimpleDecisionTrace,
 )
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
-from app.infrastructure.persistence.sqlalchemy.codecs.decision_trace_codec import (
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.infrastructure.persistence.sqlalchemy.codecs.decision_trace_codec import (
     DecisionTraceDeserializer,
     DecisionTraceSerializer,
 )

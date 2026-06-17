@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from app.domain.entities.event import Event
-from app.domain.value_objects.event_field import EventField
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.value_objects.event_field import EventField
 
 
 class FakeType:

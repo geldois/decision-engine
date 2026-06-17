@@ -1,7 +1,7 @@
 from collections.abc import Callable
 
-from app.domain.entities.rule import Rule
-from app.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_rule_repository import (
     InMemoryRuleRepository,
 )
 

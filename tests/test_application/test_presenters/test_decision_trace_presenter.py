@@ -1,11 +1,11 @@
-from app.application.presenters.decision_trace_presenter import DecisionTracePresenter
-from app.domain.value_objects.decision_trace import (
+from decision_engine.application.presenters.decision_trace_presenter import DecisionTracePresenter
+from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     SimpleDecisionTrace,
 )
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
 
 # VALID CASES
 

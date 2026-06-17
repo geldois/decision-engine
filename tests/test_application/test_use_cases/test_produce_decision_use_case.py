@@ -2,11 +2,11 @@ from uuid import uuid4
 
 import pytest
 
-from app.application.dto.dto_produce_decision_request import DTOProduceDecisionRequest
-from app.application.dto.dto_register_event_request import DTORegisterEventRequest
-from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
-from app.config.container import Container
-from app.domain.exceptions.event_exception import EventException
+from decision_engine.application.dto.requests.produce_decision import ProduceDecisionDTORequest
+from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
+from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
+from decision_engine.config.container import Container
+from decision_engine.domain.exceptions.event_exception import EventException
 
 # VALID CASES
 
@@ -14,12 +14,12 @@ from app.domain.exceptions.event_exception import EventException
 def test_produce_decision_use_case_returns_valid_dto_response(
     container: Container,
 ) -> None:
-    dto_register_event_request = DTORegisterEventRequest(
+    dto_register_event_request = RegisterEventDTORequest(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
         occurred_at=1700000000,
     )
-    dto_register_rule_request = DTORegisterRuleRequest(
+    dto_register_rule_request = RegisterRuleDTORequest(
         name="ALWAYS_APPLIES",
         condition={
             "type": "simple",
@@ -36,7 +36,7 @@ def test_produce_decision_use_case_returns_valid_dto_response(
     dto_register_rule_response = container.use_cases.register_rule.execute(
         dto=dto_register_rule_request
     )
-    dto_produce_decision_request = DTOProduceDecisionRequest(
+    dto_produce_decision_request = ProduceDecisionDTORequest(
         event_id=dto_register_event_response.event_id
     )
 
@@ -63,7 +63,7 @@ def test_produce_decision_use_case_returns_valid_dto_response(
 def test_produce_decision_use_case_raises_on_not_found_event(
     container: Container,
 ) -> None:
-    dto_produce_decision_request = DTOProduceDecisionRequest(event_id=uuid4())
+    dto_produce_decision_request = ProduceDecisionDTORequest(event_id=uuid4())
 
     with pytest.raises(EventException):
         container.use_cases.produce_decision.execute(dto=dto_produce_decision_request)

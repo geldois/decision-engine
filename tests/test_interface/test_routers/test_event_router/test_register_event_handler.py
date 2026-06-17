@@ -3,14 +3,14 @@ from collections.abc import Callable
 import pytest
 from fastapi.testclient import TestClient
 
-from app.application.dto.dto_register_event_request import DTORegisterEventRequest
-from app.application.dto.dto_register_event_response import DTORegisterEventResponse
-from app.application.use_cases.register_event_use_case import RegisterEventUseCase
-from app.config.container import Container
+from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
+from decision_engine.application.dto.responses.register_event import RegisterEventDTOResponse
+from decision_engine.application.use_cases.register_event import RegisterEventUseCase
+from decision_engine.config.container import Container
 
 
 class BrokenRegisterEventUseCase(RegisterEventUseCase):
-    def execute(self, dto: DTORegisterEventRequest) -> DTORegisterEventResponse:
+    def execute(self, dto: RegisterEventDTORequest) -> RegisterEventDTOResponse:
         raise RuntimeError("boom")
 
 

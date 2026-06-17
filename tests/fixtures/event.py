@@ -3,7 +3,7 @@ from typing import Any
 
 import pytest
 
-from app.domain.entities.event import Event
+from decision_engine.domain.entities.event import Event
 
 
 @pytest.fixture(scope="function")

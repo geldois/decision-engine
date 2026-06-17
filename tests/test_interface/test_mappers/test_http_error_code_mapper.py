@@ -1,9 +1,9 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from app.domain.exceptions.domain_exception import DomainException
-from app.domain.exceptions.error_code import ErrorCode
-from app.interface.http.mappers.http_error_code_mapper import (
+from decision_engine.domain.exceptions.domain_exception import DomainException
+from decision_engine.domain.exceptions.error_code import ErrorCode
+from decision_engine.interface.http.mappers.http_error_code_mapper import (
     map_http_error_code,
     map_http_exception,
 )

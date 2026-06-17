@@ -2,12 +2,12 @@ from uuid import uuid4
 
 import pytest
 
-from app.domain.entities.event import Event
-from app.domain.exceptions.condition_exception import ConditionException
-from app.domain.value_objects.condition import CompositeCondition, SimpleCondition
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
 
 # VALID CASES
 

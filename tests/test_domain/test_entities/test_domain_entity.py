@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
-from app.domain.entities.domain_entity import DomainEntity
+from decision_engine.domain.entities.domain_entity import DomainEntity
 
 
 class ConcreteDomainEntity(DomainEntity):

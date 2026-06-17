@@ -3,9 +3,9 @@ from typing import Any
 
 import pytest
 
-from app.domain.value_objects.condition import SimpleCondition
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.condition import SimpleCondition
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 @pytest.fixture(scope="function")

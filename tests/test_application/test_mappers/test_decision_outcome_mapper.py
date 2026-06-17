@@ -1,8 +1,8 @@
 import pytest
 
-from app.application.mappers.decision_outcome_mapper import parse_decision_outcome
-from app.domain.exceptions.decision_exception import DecisionException
-from app.domain.value_objects.decision_outcome import DecisionOutcome
+from decision_engine.application.mappers.decision_outcome_mapper import parse_decision_outcome
+from decision_engine.domain.exceptions.decision_exception import DecisionException
+from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 
 # VALID CASES
 

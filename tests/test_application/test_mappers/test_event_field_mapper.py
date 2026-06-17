@@ -1,8 +1,8 @@
 import pytest
 
-from app.application.mappers.event_field_mapper import parse_event_field
-from app.domain.exceptions.event_exception import EventException
-from app.domain.value_objects.event_field import EventField
+from decision_engine.application.mappers.event_field_mapper import parse_event_field
+from decision_engine.domain.exceptions.event_exception import EventException
+from decision_engine.domain.value_objects.event_field import EventField
 
 # VALID CASES
 

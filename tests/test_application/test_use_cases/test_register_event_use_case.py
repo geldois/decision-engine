@@ -1,5 +1,5 @@
-from app.application.dto.dto_register_event_request import DTORegisterEventRequest
-from app.config.container import Container
+from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
+from decision_engine.config.container import Container
 
 # VALID CASES
 
@@ -7,7 +7,7 @@ from app.config.container import Container
 def test_register_event_use_case_returns_valid_dto_response(
     container: Container,
 ) -> None:
-    dto_register_event_request = DTORegisterEventRequest(
+    dto_register_event_request = RegisterEventDTORequest(
         event_type="USER_CREATED",
         payload={"user_id": 123, "email": "user@email.com"},
         occurred_at=1700000000,

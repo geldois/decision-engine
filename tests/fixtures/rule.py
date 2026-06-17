@@ -3,9 +3,9 @@ from typing import Any
 
 import pytest
 
-from app.domain.entities.rule import Rule
-from app.domain.value_objects.condition import Condition, SimpleCondition
-from app.domain.value_objects.decision_outcome import DecisionOutcome
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.domain.value_objects.condition import Condition, SimpleCondition
+from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 
 
 @pytest.fixture(scope="function")

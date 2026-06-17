@@ -2,10 +2,10 @@ from collections.abc import Callable
 
 import pytest
 
-from app.domain.entities.event import Event
-from app.domain.value_objects.condition import CompositeCondition, SimpleCondition
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
-from app.infrastructure.persistence.sqlalchemy.codecs.condition_codec import (
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.infrastructure.persistence.sqlalchemy.codecs.condition_codec import (
     ConditionDeserializer,
     ConditionSerializer,
 )

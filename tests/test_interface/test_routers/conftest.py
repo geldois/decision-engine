@@ -5,8 +5,8 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
-from app.config.container import Container
-from app.interface.http.app import create_app
+from decision_engine.config.container import Container
+from decision_engine.interface.http.app import create_app
 
 
 @pytest.fixture(scope="function")

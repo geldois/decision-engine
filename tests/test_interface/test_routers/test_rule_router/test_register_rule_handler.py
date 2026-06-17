@@ -3,14 +3,14 @@ from collections.abc import Callable
 import pytest
 from fastapi.testclient import TestClient
 
-from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
-from app.application.dto.dto_register_rule_response import DTORegisterRuleResponse
-from app.application.use_cases.register_rule_use_case import RegisterRuleUseCase
-from app.config.container import Container
+from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
+from decision_engine.application.dto.responses.register_rule import RegisterRuleDTOResponse
+from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
+from decision_engine.config.container import Container
 
 
 class BrokenRegisterRuleUseCase(RegisterRuleUseCase):
-    def execute(self, dto: DTORegisterRuleRequest) -> DTORegisterRuleResponse:
+    def execute(self, dto: RegisterRuleDTORequest) -> RegisterRuleDTOResponse:
         raise RuntimeError("boom")
 
 

@@ -1,0 +1,29 @@
+from dataclasses import dataclass
+
+from decision_engine.application.protocols.db_protocol import DBProtocol
+from decision_engine.application.use_cases.produce_decision import ProduceDecisionUseCase
+from decision_engine.application.use_cases.register_event import RegisterEventUseCase
+from decision_engine.application.use_cases.register_rule import RegisterRuleUseCase
+from decision_engine.config.settings import Settings
+from decision_engine.infrastructure.persistence.in_memory.db import InMemoryDB
+from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
+
+
+@dataclass(frozen=True)
+class UseCaseSet:
+    produce_decision: ProduceDecisionUseCase
+    register_event: RegisterEventUseCase
+    register_rule: RegisterRuleUseCase
+
+
+@dataclass(frozen=True)
+class Container:
+    settings: Settings
+    db: DBProtocol
+    use_cases: UseCaseSet
+
+
+@dataclass(frozen=True)
+class ContainerOverride:
+    in_memory_db: InMemoryDB | None = None
+    sqlalchemy_db: SQLAlchemyDB | None = None

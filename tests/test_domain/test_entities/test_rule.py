@@ -1,11 +1,11 @@
 import pytest
 
-from app.domain.entities.rule import Rule
-from app.domain.exceptions.rule_exception import RuleException
-from app.domain.value_objects.condition import SimpleCondition
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.domain.exceptions.rule_exception import RuleException
+from decision_engine.domain.value_objects.condition import SimpleCondition
+from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 # INVALID CASES
 

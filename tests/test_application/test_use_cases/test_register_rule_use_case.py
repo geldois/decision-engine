@@ -1,5 +1,5 @@
-from app.application.dto.dto_register_rule_request import DTORegisterRuleRequest
-from app.config.container import Container
+from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
+from decision_engine.config.container import Container
 
 # VALID CASES
 
@@ -7,7 +7,7 @@ from app.config.container import Container
 def test_register_rule_use_case_returns_valid_dto_response(
     container: Container,
 ) -> None:
-    dto_register_rule_request = DTORegisterRuleRequest(
+    dto_register_rule_request = RegisterRuleDTORequest(
         name="ALWAYS_APPLIES",
         condition={
             "type": "simple",

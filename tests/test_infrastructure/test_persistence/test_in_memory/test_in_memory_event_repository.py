@@ -1,7 +1,7 @@
 from collections.abc import Callable
 
-from app.domain.entities.event import Event
-from app.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
+from decision_engine.domain.entities.event import Event
+from decision_engine.infrastructure.persistence.in_memory.repositories.in_memory_event_repository import (
     InMemoryEventRepository,
 )
 

@@ -2,16 +2,16 @@ from collections.abc import Callable
 
 import pytest
 
-from app.domain.entities.decision import Decision
-from app.domain.entities.event import Event
-from app.domain.entities.rule import Rule
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
+from decision_engine.domain.entities.decision import Decision
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
     SQLAlchemyDecisionRepository,
 )
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
     SQLAlchemyEventRepository,
 )
-from app.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
     SQLAlchemyRuleRepository,
 )
 

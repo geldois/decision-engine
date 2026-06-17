@@ -2,10 +2,10 @@ from collections.abc import Callable
 
 import pytest
 
-from app.domain.entities.decision import Decision
-from app.domain.entities.event import Event
-from app.domain.entities.rule import Rule
-from app.domain.services.decision_engine import DecisionEngine
+from decision_engine.domain.entities.decision import Decision
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.domain.services.decision_engine import DecisionEngine
 
 
 @pytest.fixture(scope="function")

@@ -2,9 +2,9 @@ from collections.abc import Callable
 
 import pytest
 
-from app.domain.value_objects.decision_trace import SimpleDecisionTrace
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.decision_trace import SimpleDecisionTrace
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 
 @pytest.fixture(scope="function")

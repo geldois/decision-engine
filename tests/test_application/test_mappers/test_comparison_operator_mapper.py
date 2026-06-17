@@ -1,8 +1,8 @@
 import pytest
 
-from app.application.mappers.comparison_operator_mapper import parse_comparison_operator
-from app.domain.exceptions.condition_exception import ConditionException
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.application.mappers.comparison_operator_mapper import parse_comparison_operator
+from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 # VALID CASES
 

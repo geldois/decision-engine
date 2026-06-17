@@ -1,4 +1,4 @@
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
 
 # VALID CASES
 

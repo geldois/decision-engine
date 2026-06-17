@@ -1,8 +1,8 @@
 import pytest
 
-from app.application.mappers.logical_operator_mapper import parse_logical_operator
-from app.domain.exceptions.condition_exception import ConditionException
-from app.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.application.mappers.logical_operator_mapper import parse_logical_operator
+from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
 
 # VALID CASES
 

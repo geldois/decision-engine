@@ -2,12 +2,12 @@ from uuid import uuid4
 
 import pytest
 
-from app.domain.entities.decision import Decision
-from app.domain.exceptions.decision_exception import DecisionException
-from app.domain.value_objects.decision_outcome import DecisionOutcome
-from app.domain.value_objects.decision_trace import SimpleDecisionTrace
-from app.domain.value_objects.event_field import EventField
-from app.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.entities.decision import Decision
+from decision_engine.domain.exceptions.decision_exception import DecisionException
+from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
+from decision_engine.domain.value_objects.decision_trace import SimpleDecisionTrace
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 # INVALID CASES
 

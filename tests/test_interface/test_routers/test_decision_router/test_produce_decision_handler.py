@@ -3,16 +3,16 @@ from collections.abc import Callable
 import pytest
 from fastapi.testclient import TestClient
 
-from app.application.dto.dto_produce_decision_request import DTOProduceDecisionRequest
-from app.application.dto.dto_produce_decision_response import DTOProduceDecisionResponse
-from app.application.use_cases.produce_decision_use_case import ProduceDecisionUseCase
-from app.config.container import Container
-from app.domain.entities.event import Event
-from app.domain.entities.rule import Rule
+from decision_engine.application.dto.requests.produce_decision import ProduceDecisionDTORequest
+from decision_engine.application.dto.responses.produce_decision import ProduceDecisionDTOResponse
+from decision_engine.application.use_cases.produce_decision import ProduceDecisionUseCase
+from decision_engine.config.container import Container
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.entities.rule import Rule
 
 
 class BrokenProduceDecisionUseCase(ProduceDecisionUseCase):
-    def execute(self, dto: DTOProduceDecisionRequest) -> DTOProduceDecisionResponse:
+    def execute(self, dto: ProduceDecisionDTORequest) -> ProduceDecisionDTOResponse:
         raise RuntimeError("boom")
 
 
