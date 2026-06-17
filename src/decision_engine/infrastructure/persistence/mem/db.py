@@ -1,18 +1,7 @@
 from collections.abc import Callable
 
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
-from decision_engine.infrastructure.persistence.mem.mem_uow import (
-    MemUoW,
-)
-from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (
-    MemDecisionRepository,
-)
-from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (
-    MemEventRepository,
-)
-from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_repository import (
-    MemRuleRepository,
-)
+from decision_engine.infrastructure.persistence.mem.mem_uow import MemUoW
 
 
 class MemDB:
@@ -40,15 +29,8 @@ class MemDBBuilder:
         return MemStorage()
 
     @staticmethod
-    def create_uow_factory(
-        storage: MemStorage,
-    ) -> Callable[[], MemUoW]:
-        return lambda: MemUoW(
-            storage=storage,
-            decision_repo_factory=MemDecisionRepository,
-            event_repo_factory=MemEventRepository,
-            rule_repo_factory=MemRuleRepository,
-        )
+    def create_uow_factory(storage: MemStorage) -> Callable[[], MemUoW]:
+        return lambda: MemUoW(storage=storage)
 
     @classmethod
     def build(cls) -> MemDB:

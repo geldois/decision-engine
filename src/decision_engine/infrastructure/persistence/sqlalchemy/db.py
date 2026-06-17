@@ -4,15 +4,6 @@ from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from decision_engine.config.settings import Settings
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
-    SQLAlchemyDecisionRepository,
-)
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
-    SQLAlchemyEventRepository,
-)
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
-    SQLAlchemyRuleRepository,
-)
 from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
     SQLAlchemyUoW,
 )
@@ -67,12 +58,7 @@ class SQLAlchemyDBBuilder:
     def create_uow_factory(
         session_factory: Callable[[], Session],
     ) -> Callable[[], SQLAlchemyUoW]:
-        return lambda: SQLAlchemyUoW(
-            session_factory=session_factory,
-            decision_repo_factory=SQLAlchemyDecisionRepository,
-            event_repo_factory=SQLAlchemyEventRepository,
-            rule_repo_factory=SQLAlchemyRuleRepository,
-        )
+        return lambda: SQLAlchemyUoW(session_factory=session_factory)
 
     @classmethod
     def build(cls, settings: Settings) -> SQLAlchemyDB:

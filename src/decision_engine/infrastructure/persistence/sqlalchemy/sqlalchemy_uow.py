@@ -2,11 +2,6 @@ from collections.abc import Callable
 
 from sqlalchemy.orm import Session
 
-from decision_engine.application.contracts.repository import (
-    DecisionRepository,
-    EventRepository,
-    RuleRepository,
-)
 from decision_engine.application.contracts.uow import UoW
 from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
     SQLAlchemyDecisionRepository,
@@ -20,30 +15,15 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 
 
 class SQLAlchemyUoW(UoW):
-    def __init__(
-        self,
-        session_factory: Callable[[], Session],
-        decision_repo_factory: Callable[
-            [Session], DecisionRepository
-        ] = SQLAlchemyDecisionRepository,
-        event_repo_factory: Callable[
-            [Session], EventRepository
-        ] = SQLAlchemyEventRepository,
-        rule_repo_factory: Callable[
-            [Session], RuleRepository
-        ] = SQLAlchemyRuleRepository,
-    ) -> None:
+    def __init__(self, *, session_factory: Callable[[], Session]) -> None:
         self.session_factory = session_factory
-        self.decision_repo_factory = decision_repo_factory
-        self.event_repo_factory = event_repo_factory
-        self.rule_repo_factory = rule_repo_factory
 
     def __enter__(self) -> UoW:
         self.session = self.session_factory()
 
-        self.decisions = self.decision_repo_factory(self.session)
-        self.events = self.event_repo_factory(self.session)
-        self.rules = self.rule_repo_factory(self.session)
+        self.decisions = SQLAlchemyDecisionRepository(session=self.session)
+        self.events = SQLAlchemyEventRepository(session=self.session)
+        self.rules = SQLAlchemyRuleRepository(session=self.session)
 
         return super().__enter__()
 
