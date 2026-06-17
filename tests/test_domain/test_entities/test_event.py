@@ -1,25 +1,25 @@
 import pytest
 
 from decision_engine.domain.entities.event import Event
-from decision_engine.domain.exceptions.event_exception import EventException
+from decision_engine.domain.errors.event_error import EventError
 
 # INVALID CASES
 
 
 def test_event_raises_on_empty_payload() -> None:
-    with pytest.raises(EventException):
+    with pytest.raises(EventError):
         Event(event_type="USER_CREATED", payload={}, occurred_at=1700000000)
 
 
 def test_event_raises_on_negative_or_zero_occurred_at():
-    with pytest.raises(EventException):
+    with pytest.raises(EventError):
         Event(
             event_type="USER_CREATED",
             payload={"user_id": 123, "email": "user@email.com"},
             occurred_at=-1,
         )
 
-    with pytest.raises(EventException):
+    with pytest.raises(EventError):
         Event(
             event_type="USER_CREATED",
             payload={"user_id": 123, "email": "user@email.com"},
@@ -28,7 +28,7 @@ def test_event_raises_on_negative_or_zero_occurred_at():
 
 
 def test_event_raises_on_empty_event_type() -> None:
-    with pytest.raises(EventException):
+    with pytest.raises(EventError):
         Event(
             event_type=" ",
             payload={"user_id": 123, "email": "user@email.com"},

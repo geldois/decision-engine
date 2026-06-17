@@ -10,7 +10,7 @@ from decision_engine.application.dto.responses.produce_decision import (
 from decision_engine.application.presenters.decision_trace_presenter import (
     DecisionTracePresenter,
 )
-from decision_engine.domain.exceptions.event_exception import EventException
+from decision_engine.domain.errors.event_error import NotFoundEventError
 from decision_engine.domain.services.decision_engine import DecisionEngine
 
 
@@ -22,7 +22,7 @@ class ProduceDecisionUseCase(
             event = uow.events.get_by_id(event_id=dto.event_id)
 
             if not event:
-                raise EventException.event_not_found()
+                raise NotFoundEventError(event_id=dto.event_id)
 
             rules = uow.rules.list_all()
             decision = DecisionEngine.decide(event=event, rules=rules)

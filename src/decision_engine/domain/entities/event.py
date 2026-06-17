@@ -3,7 +3,12 @@ from typing import Any
 from uuid import UUID
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
-from decision_engine.domain.exceptions.event_exception import EventException
+from decision_engine.domain.errors.event_error import (
+    EmptyEventPayloadError,
+    EmptyEventTypeError,
+    NegativeEventOccurredAtError,
+    ZeroEventOccurredAtError,
+)
 
 
 class Event(DomainEntity):
@@ -17,24 +22,16 @@ class Event(DomainEntity):
         event_id: UUID | None = None,
     ) -> None:
         if not event_type.strip():
-            raise EventException.event_type_cannot_be_empty(
-                details={"event_type": event_type}
-            )
+            raise EmptyEventTypeError
 
         if not payload:
-            raise EventException.event_payload_cannot_be_empty(
-                details={"payload": payload}
-            )
+            raise EmptyEventPayloadError
 
         if not occurred_at:
-            raise EventException.event_occurred_at_cannot_be_zero(
-                details={"occurred_at": occurred_at}
-            )
+            raise ZeroEventOccurredAtError
 
         if occurred_at < 0:
-            raise EventException.event_occurred_at_cannot_be_negative(
-                details={"occurred_at": occurred_at}
-            )
+            raise NegativeEventOccurredAtError(occurred_at=occurred_at)
 
         self.event_type = event_type
         self.payload = payload

@@ -6,7 +6,7 @@ from decision_engine.application.dto.requests.produce_decision import ProduceDec
 from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
 from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
 from decision_engine.config.container import Container
-from decision_engine.domain.exceptions.event_exception import EventException
+from decision_engine.domain.errors.event_error import EventError
 
 # VALID CASES
 
@@ -65,5 +65,5 @@ def test_produce_decision_use_case_raises_on_not_found_event(
 ) -> None:
     dto_produce_decision_request = ProduceDecisionDTORequest(event_id=uuid4())
 
-    with pytest.raises(EventException):
+    with pytest.raises(EventError):
         container.use_cases.produce_decision.execute(dto=dto_produce_decision_request)

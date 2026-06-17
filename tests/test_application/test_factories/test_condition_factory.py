@@ -2,7 +2,7 @@ import pytest
 
 from decision_engine.application.dto.condition import CompositeConditionDTO, SimpleConditionDTO
 from decision_engine.application.factories.condition_factory import build_condition
-from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.errors.condition_error import ConditionError
 from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
 from decision_engine.domain.value_objects.event_field import EventField
 from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
@@ -68,7 +68,7 @@ def test_condition_factory_builds_composite_condition() -> None:
 
 
 def test_condition_factory_raises_on_invalid_dto_type() -> None:
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         build_condition(
             dto=SimpleConditionDTO(
                 {
@@ -82,7 +82,7 @@ def test_condition_factory_raises_on_invalid_dto_type() -> None:
 
 
 def test_condition_factory_raises_on_invalid_conditions_length() -> None:
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         build_condition(
             dto=CompositeConditionDTO(
                 {
@@ -102,7 +102,7 @@ def test_condition_factory_raises_on_invalid_conditions_length() -> None:
 
 
 def test_condition_factory_raises_on_empty_string_value() -> None:
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         build_condition(
             dto=SimpleConditionDTO(
                 {

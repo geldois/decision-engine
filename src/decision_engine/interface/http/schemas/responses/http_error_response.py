@@ -7,4 +7,4 @@ from pydantic import BaseModel
 class HTTPErrorResponse(BaseModel):
     error: str
     message: str
-    details: Mapping[str, Any] | Sequence[Any] | None
+    details: Mapping[str, Any] | Sequence[Any] | None = None

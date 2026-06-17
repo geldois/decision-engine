@@ -5,7 +5,10 @@ from collections.abc import Callable, Sequence
 from typing import Any, TypeVar
 
 from decision_engine.domain.entities.event import Event
-from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.errors.condition_error import (
+    InvalidConditionError,
+    InvalidConditionTypeError,
+)
 from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     DecisionTrace,
@@ -50,7 +53,7 @@ class CompositeCondition(Condition):
         self, operator: LogicalOperator, conditions: Sequence[Condition]
     ) -> None:
         if len(conditions) < 2:
-            raise ConditionException.condition_is_invalid(details={"condition": self})
+            raise InvalidConditionError
 
         self.operator = operator
         self.conditions = conditions
@@ -103,9 +106,7 @@ class SimpleCondition(Condition):
         value: Any,
     ) -> None:
         if not field.validate(value=value):
-            raise ConditionException.condition_is_invalid(
-                details={"field": field, "operator": operator, "value": value}
-            )
+            raise InvalidConditionError
 
         self.operator = operator
         self.field = field
@@ -130,13 +131,7 @@ class SimpleCondition(Condition):
         field_value = self.field.get_field_value(event=event)
 
         if not self.operator.validate(field=field_value, value=self.value):
-            raise ConditionException.condition_is_invalid(
-                details={
-                    "field": self.field,
-                    "operator": self.operator,
-                    "value": self.value,
-                }
-            )
+            raise InvalidConditionError
 
         return self.operator.evaluate(
             left=field_value,
@@ -191,7 +186,7 @@ class ConditionRegistry:
     @classmethod
     def get_class(cls, name: str) -> type[Condition]:
         if name not in cls._mapping:
-            raise ConditionException.condition_type_is_invalid(details={"type": name})
+            raise InvalidConditionTypeError(condition_type=name)
 
         return cls._mapping[name]
 

@@ -1,7 +1,7 @@
 import pytest
 
 from decision_engine.domain.entities.rule import Rule
-from decision_engine.domain.exceptions.rule_exception import RuleException
+from decision_engine.domain.errors.rule_error import RuleError
 from decision_engine.domain.value_objects.condition import SimpleCondition
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.domain.value_objects.event_field import EventField
@@ -11,7 +11,7 @@ from decision_engine.domain.value_objects.operators.comparison_operator import C
 
 
 def test_rule_raises_on_empty_name() -> None:
-    with pytest.raises(RuleException):
+    with pytest.raises(RuleError):
         Rule(
             name=" ",
             condition=SimpleCondition(
@@ -25,7 +25,7 @@ def test_rule_raises_on_empty_name() -> None:
 
 
 def test_rule_raises_on_negative_priority() -> None:
-    with pytest.raises(RuleException):
+    with pytest.raises(RuleError):
         Rule(
             name="ALWAYS_APPLIES",
             condition=SimpleCondition(

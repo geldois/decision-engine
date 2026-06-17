@@ -2,7 +2,10 @@ from datetime import datetime
 from uuid import UUID
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
-from decision_engine.domain.exceptions.decision_exception import DecisionException
+from decision_engine.domain.errors.decision_error import (
+    MatchedRuleWithNoMatchOutcomeError,
+    UnmatchedRuleWithoutNoMatchOutcomeError,
+)
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.domain.value_objects.decision_trace import DecisionTrace
 
@@ -19,14 +22,10 @@ class Decision(DomainEntity):
         decision_id: UUID | None = None,
     ) -> None:
         if rule_id and outcome is DecisionOutcome.NO_MATCH:
-            raise DecisionException.decision_with_rule_cannot_be_no_match(
-                details={"rule_id": rule_id, "outcome": outcome}
-            )
+            raise MatchedRuleWithNoMatchOutcomeError
 
         if not rule_id and outcome is not DecisionOutcome.NO_MATCH:
-            raise DecisionException.decision_without_rule_must_be_no_match(
-                details={"rule_id": rule_id, "outcome": outcome}
-            )
+            raise UnmatchedRuleWithoutNoMatchOutcomeError
 
         self.event_id = event_id
         self.rule_id = rule_id

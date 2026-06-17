@@ -9,7 +9,11 @@ from decision_engine.application.mappers.event_field_mapper import parse_event_f
 from decision_engine.application.mappers.logical_operator_mapper import (
     parse_logical_operator,
 )
-from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.errors.condition_error import (
+    EmptyConditionValueError,
+    InvalidConditionError,
+    InvalidConditionTypeError,
+)
 from decision_engine.domain.value_objects.condition import (
     CompositeCondition,
     Condition,
@@ -53,25 +57,19 @@ _builders: dict[str, Callable[..., Condition]] = {
 
 def _validate(dto: DTOCondition) -> None:
     if dto["type"] not in _builders:
-        raise ConditionException.condition_type_is_invalid(
-            details={"type": dto["type"]}
-        )
+        raise InvalidConditionTypeError(condition_type=dto["type"])
 
 
 def _validate_composite(dto: CompositeConditionDTO) -> None:
     const = 2
 
     if len(dto["conditions"]) < const:
-        raise ConditionException.condition_is_invalid(
-            details={"conditions": dto["conditions"]}
-        )
+        raise InvalidConditionError
 
 
 def _validate_simple(dto: SimpleConditionDTO) -> None:
     if isinstance(dto["value"], str) and not dto["value"].strip():
-        raise ConditionException.condition_value_cannot_be_empty(
-            details={"value": dto["value"]}
-        )
+        raise EmptyConditionValueError
 
 
 def build_condition(dto: DTOCondition) -> Condition:

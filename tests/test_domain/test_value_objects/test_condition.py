@@ -3,7 +3,7 @@ from uuid import uuid4
 import pytest
 
 from decision_engine.domain.entities.event import Event
-from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.errors.condition_error import ConditionError
 from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
 from decision_engine.domain.value_objects.event_field import EventField
 from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
@@ -183,7 +183,7 @@ def test_simple_condition_returns_valid_bool() -> None:
 
 
 def test_composite_condition_raises_on_invalid_conditions_length() -> None:
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         CompositeCondition(
             operator=LogicalOperator.AND,
             conditions=[
@@ -197,7 +197,7 @@ def test_composite_condition_raises_on_invalid_conditions_length() -> None:
 
 
 def test_simple_condition_raises_on_invalid_value_type_for_field() -> None:
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         SimpleCondition(
             operator=ComparisonOperator.EQUALS, field=EventField.PAYLOAD, value="TEST"
         )
@@ -210,7 +210,7 @@ def test_simple_condition_raises_on_invalid_field_or_value_type_for_operator() -
         occurred_at=1700000000,
     )
 
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         SimpleCondition(
             operator=ComparisonOperator.GREATER_THAN,
             field=EventField.PAYLOAD,

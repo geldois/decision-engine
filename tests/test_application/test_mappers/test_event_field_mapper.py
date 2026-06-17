@@ -1,7 +1,7 @@
 import pytest
 
 from decision_engine.application.mappers.event_field_mapper import parse_event_field
-from decision_engine.domain.exceptions.event_exception import EventException
+from decision_engine.domain.errors.event_error import EventError
 from decision_engine.domain.value_objects.event_field import EventField
 
 # VALID CASES
@@ -16,5 +16,5 @@ def test_parse_event_field_returns_valid_event_fields() -> None:
 
 
 def test_parse_event_field_raises_when_value_is_invalid() -> None:
-    with pytest.raises(EventException):
+    with pytest.raises(EventError):
         parse_event_field(value="TEST")

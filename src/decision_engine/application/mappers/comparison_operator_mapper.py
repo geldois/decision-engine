@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.errors.condition_error import (
+    EmptyConditionOperatorError,
+    InvalidConditionOperatorError,
+)
 from decision_engine.domain.value_objects.operators.comparison_operator import (
     ComparisonOperator,
 )
@@ -10,13 +13,9 @@ def parse_comparison_operator(
     value: str,
 ) -> ComparisonOperator:
     if not value.strip():
-        raise ConditionException.condition_operator_cannot_be_empty(
-            details={"condition_operator": value}
-        )
+        raise EmptyConditionOperatorError
 
     try:
         return ComparisonOperator(value)
     except ValueError as exception:
-        raise ConditionException.condition_operator_is_invalid(
-            details={"condition_operator": value}
-        ) from exception
+        raise InvalidConditionOperatorError(operator=value) from exception

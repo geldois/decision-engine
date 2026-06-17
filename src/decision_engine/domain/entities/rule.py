@@ -2,7 +2,10 @@ from datetime import datetime
 from uuid import UUID
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
-from decision_engine.domain.exceptions.rule_exception import RuleException
+from decision_engine.domain.errors.rule_error import (
+    EmptyRuleNameError,
+    InvalidRulePriorityError,
+)
 from decision_engine.domain.value_objects.condition import Condition
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 
@@ -19,10 +22,10 @@ class Rule(DomainEntity):
         rule_id: UUID | None = None,
     ) -> None:
         if not name.strip():
-            raise RuleException.rule_name_cannot_be_empty(details={"name": name})
+            raise EmptyRuleNameError
 
         if priority < 0:
-            raise RuleException.rule_priority_is_invalid(details={"priority": priority})
+            raise InvalidRulePriorityError(priority=priority)
 
         self.name = name
         self.condition = condition

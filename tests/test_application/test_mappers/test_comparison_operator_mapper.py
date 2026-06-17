@@ -1,7 +1,7 @@
 import pytest
 
 from decision_engine.application.mappers.comparison_operator_mapper import parse_comparison_operator
-from decision_engine.domain.exceptions.condition_exception import ConditionException
+from decision_engine.domain.errors.condition_error import ConditionError
 from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
 
 # VALID CASES
@@ -16,5 +16,5 @@ def test_parse_comparison_operator_returns_valid_comparison_operators() -> None:
 
 
 def test_parse_comparison_operator_raises_when_value_is_invalid() -> None:
-    with pytest.raises(ConditionException):
+    with pytest.raises(ConditionError):
         parse_comparison_operator(value="TEST")
