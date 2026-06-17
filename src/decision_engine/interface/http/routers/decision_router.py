@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from fastapi import APIRouter
 
 from decision_engine.application.dto.requests.produce_decision import (
@@ -9,10 +7,10 @@ from decision_engine.config.container import Container
 from decision_engine.interface.http.mappers.http_error_code_mapper import (
     map_http_exception,
 )
-from decision_engine.interface.http.schemas.requests.http_produce_decision_request import (
+from decision_engine.interface.http.schemas.requests.http_produce_decision_request import (  # noqa: E501
     HTTPProduceDecisionRequest,
 )
-from decision_engine.interface.http.schemas.responses.http_produce_decision_response import (
+from decision_engine.interface.http.schemas.responses.http_produce_decision_response import (  # noqa: E501
     HTTPProduceDecisionResponse,
 )
 
@@ -20,7 +18,7 @@ from decision_engine.interface.http.schemas.responses.http_produce_decision_resp
 def build_decision_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/decisions")
 
-    @router.post("/", response_model=HTTPProduceDecisionResponse)
+    @router.post("/")
     def produce_decision(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPProduceDecisionRequest,
     ) -> HTTPProduceDecisionResponse:

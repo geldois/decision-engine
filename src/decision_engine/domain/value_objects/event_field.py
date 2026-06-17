@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 from uuid import UUID
 
 if TYPE_CHECKING:
@@ -18,7 +18,7 @@ class EventField(Enum):
 
     def __new__(
         cls, event_field: str, expected_types: tuple[type[object], ...]
-    ) -> EventField:
+    ) -> Self:
         obj = object.__new__(cls)
         obj._value_ = event_field
         obj.expected_types = expected_types

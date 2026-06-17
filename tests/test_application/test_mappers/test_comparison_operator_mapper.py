@@ -1,8 +1,14 @@
+from __future__ import annotations
+
 import pytest
 
-from decision_engine.application.mappers.comparison_operator_mapper import parse_comparison_operator
+from decision_engine.application.mappers.comparison_operator_mapper import (
+    parse_comparison_operator,
+)
 from decision_engine.domain.errors.condition_error import ConditionError
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
 
 # VALID CASES
 

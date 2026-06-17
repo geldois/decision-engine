@@ -24,7 +24,9 @@ class Settings:
             return value in args
 
         if env is None or not _is_env(value=env):
-            raise RuntimeError(f"invalid $ENV: {env}")
+            message = f"invalid $ENV: {env}"
+
+            raise RuntimeError(message)
 
         return env
 
@@ -36,12 +38,14 @@ class Settings:
             return value in args
 
         if persistence is None or not _is_persistence(value=persistence):
-            raise RuntimeError(f"invalid $PERSISTENCE: {persistence}")
+            message = f"invalid $PERSISTENCE: {persistence}"
+
+            raise RuntimeError(message)
 
         return persistence
 
     @classmethod
-    def build(
+    def build(  # noqa: PLR0913
         cls,
         *,
         env: str | None = None,

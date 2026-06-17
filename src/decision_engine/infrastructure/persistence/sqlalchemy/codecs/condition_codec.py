@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 from decision_engine.domain.value_objects.condition import (
     CompositeCondition,
     Condition,
@@ -13,16 +11,16 @@ from decision_engine.domain.value_objects.condition import (
 
 class ConditionDeserializer:
     @staticmethod
-    def deserialize(data: dict[str, Any]) -> Condition:
+    def deserialize(data: dict[str, object]) -> Condition:
         return ConditionRegistry.get_class(data["type"]).from_dict(data=data)
 
 
-class ConditionSerializer(ConditionVisitor[dict[str, Any]]):
+class ConditionSerializer(ConditionVisitor[dict[str, object]]):
     @classmethod
     def visit_composite(
         cls,
         element: CompositeCondition,
-    ) -> dict[str, Any]:
+    ) -> dict[str, object]:
         return {
             "type": "composite",
             "operator": element.operator.value,
@@ -32,7 +30,7 @@ class ConditionSerializer(ConditionVisitor[dict[str, Any]]):
         }
 
     @classmethod
-    def visit_simple(cls, element: SimpleCondition) -> dict[str, Any]:
+    def visit_simple(cls, element: SimpleCondition) -> dict[str, object]:
         return {
             "type": "simple",
             "field": element.field.value,
@@ -41,5 +39,5 @@ class ConditionSerializer(ConditionVisitor[dict[str, Any]]):
         }
 
     @classmethod
-    def serialize(cls, condition: Condition) -> dict[str, Any]:
+    def serialize(cls, condition: Condition) -> dict[str, object]:
         return condition.accept(visitor=cls)

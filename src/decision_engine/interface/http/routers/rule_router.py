@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 from typing import cast
 
 from fastapi import APIRouter
 
-from decision_engine.application.dto.condition import DTOCondition
+from decision_engine.application.dto.condition import ConditionDTO  # noqa: TC001
 from decision_engine.application.dto.requests.register_rule import (
     RegisterRuleDTORequest,
 )
@@ -15,7 +13,7 @@ from decision_engine.interface.http.mappers.http_error_code_mapper import (
 from decision_engine.interface.http.schemas.requests.http_register_rule_request import (
     HTTPRegisterRuleRequest,
 )
-from decision_engine.interface.http.schemas.responses.http_register_rule_response import (
+from decision_engine.interface.http.schemas.responses.http_register_rule_response import (  # noqa: E501
     HTTPRegisterRuleResponse,
 )
 
@@ -23,14 +21,14 @@ from decision_engine.interface.http.schemas.responses.http_register_rule_respons
 def build_rule_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/rules")
 
-    @router.post("/", response_model=HTTPRegisterRuleResponse)
+    @router.post("/")
     def register_rule(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPRegisterRuleRequest,
     ) -> HTTPRegisterRuleResponse:
         try:
             request = RegisterRuleDTORequest(
                 name=http_request.name,
-                condition=cast("DTOCondition", http_request.condition),
+                condition=cast("ConditionDTO", http_request.condition),
                 outcome=http_request.outcome,
                 priority=http_request.priority,
             )

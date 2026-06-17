@@ -1,9 +1,11 @@
-from collections.abc import Callable
+from __future__ import annotations
 
-from decision_engine.domain.entities.decision import Decision
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
+from typing import TYPE_CHECKING
+
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
+
+if TYPE_CHECKING:
+    from tests.conftest import MakeDecision, MakeEvent, MakeRule
 
 # VALID CASES
 
@@ -19,9 +21,9 @@ def test_mem_storage_creates_empty_dicts() -> None:
 
 
 def test_mem_storage_creates_new_dict_when_backups(
-    make_decision: Callable[..., Decision],
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_decision: MakeDecision,
+    make_event: MakeEvent,
+    make_rule: MakeRule,
 ) -> None:
     storage = MemStorage()
 
@@ -61,9 +63,9 @@ def test_mem_storage_cleans_storage() -> None:
 
 
 def test_mem_storage_updates_storage(
-    make_decision: Callable[..., Decision],
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_decision: MakeDecision,
+    make_event: MakeEvent,
+    make_rule: MakeRule,
 ) -> None:
     storage = MemStorage()
     new_storage = MemStorage()

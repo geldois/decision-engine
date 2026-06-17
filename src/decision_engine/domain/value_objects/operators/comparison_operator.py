@@ -3,7 +3,7 @@ from __future__ import annotations
 import operator
 from enum import Enum
 from numbers import Number
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 from uuid import UUID
 
 if TYPE_CHECKING:
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class ComparisonOperator(Enum):
-    _function: Callable[..., bool]
+    func: Callable[..., bool]
     accepted_types: tuple[type[object], ...]
 
     EQUALS = "==", operator.eq, (dict, Number, str, UUID)
@@ -24,10 +24,10 @@ class ComparisonOperator(Enum):
         operator: str,
         _function: Callable[..., bool],
         accepted_types: tuple[type[object], ...],
-    ) -> ComparisonOperator:
+    ) -> Self:
         obj = object.__new__(cls)
         obj._value_ = operator
-        obj._function = _function
+        obj.func = _function
         obj.accepted_types = accepted_types
 
         return obj
@@ -63,4 +63,4 @@ class ComparisonOperator(Enum):
         return typ in self.accepted_types
 
     def evaluate(self, left: object, right: object) -> bool:
-        return self._function(left, right)
+        return self.func(left, right)

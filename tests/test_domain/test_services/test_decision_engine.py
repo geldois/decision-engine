@@ -1,37 +1,49 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from decision_engine.domain.entities.event import Event
 from decision_engine.domain.entities.rule import Rule
 from decision_engine.domain.services.decision_engine import DecisionEngine
-from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.condition import (
+    CompositeCondition,
+    SimpleCondition,
+)
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     SimpleDecisionTrace,
 )
 from decision_engine.domain.value_objects.event_field import EventField
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
+
+if TYPE_CHECKING:
+    from tests.conftest import MakeEvent, MakeRule
 
 # VALID CASES
 
 
 def test_decision_engine_returns_sorted_list_of_rules_by_priority(
-    make_rule: Callable[..., Rule],
+    make_rule: MakeRule,
 ) -> None:
-    third_priority_rule = make_rule(priority=0)
-    second_priority_rule = make_rule(priority=1)
-    first_priority_rule = make_rule(priority=2)
+    rule_3rd_prior = make_rule(priority=0)
+    rule_2nd_prior = make_rule(priority=1)
+    rule_1st_prior = make_rule(priority=2)
 
     sorted_rules = DecisionEngine.sort_by_priority(
-        rules=[third_priority_rule, second_priority_rule, first_priority_rule]
+        rules=[rule_3rd_prior, rule_2nd_prior, rule_1st_prior]
     )
 
-    assert (
-        sorted_rules[0] == first_priority_rule
-        and sorted_rules[1] == second_priority_rule
-        and sorted_rules[2] == third_priority_rule
-    )
+    assert sorted_rules[0] == rule_1st_prior
+
+    assert sorted_rules[1] == rule_2nd_prior
+
+    assert sorted_rules[2] == rule_3rd_prior
 
 
 def test_decision_engine_returns_valid_decision_when_rule_applies() -> None:
@@ -187,7 +199,7 @@ def test_decision_engine_returns_valid_decision_when_no_rule_applies() -> None:
 
 
 def test_decision_engine_returns_valid_decision_when_list_of_rules_is_empty(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
 ) -> None:
     event = make_event()
     decision = DecisionEngine.decide(event=event, rules=[])

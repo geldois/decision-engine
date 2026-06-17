@@ -1,5 +1,13 @@
-from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
-from decision_engine.config.container import Container
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from decision_engine.application.dto.requests.register_rule import (
+    RegisterRuleDTORequest,
+)
+
+if TYPE_CHECKING:
+    from decision_engine.config.container import Container
 
 # VALID CASES
 

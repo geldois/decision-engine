@@ -1,22 +1,36 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
-from fastapi.testclient import TestClient
 
-from decision_engine.application.dto.requests.produce_decision import ProduceDecisionDTORequest
-from decision_engine.application.dto.responses.produce_decision import ProduceDecisionDTOResponse
-from decision_engine.application.use_cases.produce_decision import ProduceDecisionUseCase
-from decision_engine.config.container import Container
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
+from decision_engine.application.use_cases.produce_decision import (
+    ProduceDecisionUseCase,
+)
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from fastapi.testclient import TestClient
+
+    from decision_engine.application.dto.requests.produce_decision import (
+        ProduceDecisionDTORequest,
+    )
+    from decision_engine.application.dto.responses.produce_decision import (
+        ProduceDecisionDTOResponse,
+    )
+    from decision_engine.config.container import Container
+    from tests.conftest import MakeEvent, MakeRule
 
 
 class BrokenProduceDecisionUseCase(ProduceDecisionUseCase):
-    def execute(self, dto: ProduceDecisionDTORequest) -> ProduceDecisionDTOResponse:
-        raise RuntimeError("boom")
+    def execute(self, dto: ProduceDecisionDTORequest) -> ProduceDecisionDTOResponse:  # noqa: ARG002
+        message = "boom"
+
+        raise RuntimeError(message)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def broken_produce_decision(container: Container) -> BrokenProduceDecisionUseCase:
     return BrokenProduceDecisionUseCase(uow_factory=container.db.uow_factory)
 
@@ -25,8 +39,8 @@ def broken_produce_decision(container: Container) -> BrokenProduceDecisionUseCas
 
 
 def test_produce_decision_handler_returns_200_and_valid_http_response(
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_event: MakeEvent,
+    make_rule: MakeRule,
     container: Container,
     fastapi_testclient: TestClient,
 ) -> None:
@@ -68,7 +82,7 @@ def test_produce_decision_handler_returns_422_when_info_is_missing(
 
 
 def test_produce_decision_handler_returns_500_on_internal_error(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     broken_fastapi_testclient_factory: Callable[..., TestClient],
     broken_produce_decision: BrokenProduceDecisionUseCase,
 ) -> None:

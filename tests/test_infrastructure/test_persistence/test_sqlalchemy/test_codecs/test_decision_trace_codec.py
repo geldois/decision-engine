@@ -1,22 +1,28 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
 
 from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     DecisionTrace,
-    SimpleDecisionTrace,
 )
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
-from decision_engine.infrastructure.persistence.sqlalchemy.codecs.decision_trace_codec import (
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
+from decision_engine.infrastructure.persistence.sqlalchemy.codecs.decision_trace_codec import (  # noqa: E501
     DecisionTraceDeserializer,
     DecisionTraceSerializer,
 )
 
+if TYPE_CHECKING:
+    from tests.conftest import MakeSimpleDecisionTrace
 
-@pytest.fixture(scope="function")
+
+@pytest.fixture
 def decision_traces(
-    make_simple_decision_trace: Callable[..., SimpleDecisionTrace],
+    make_simple_decision_trace: MakeSimpleDecisionTrace,
 ) -> tuple[DecisionTrace, ...]:
     return (
         CompositeDecisionTrace(

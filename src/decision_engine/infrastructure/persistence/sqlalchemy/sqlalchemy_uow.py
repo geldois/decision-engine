@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from decision_engine.application.contracts.uow import UoW
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (  # noqa: E501
     SQLAlchemyDecisionRepository,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (  # noqa: E501
     SQLAlchemyEventRepository,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
+from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (  # noqa: E501
     SQLAlchemyRuleRepository,
 )
 

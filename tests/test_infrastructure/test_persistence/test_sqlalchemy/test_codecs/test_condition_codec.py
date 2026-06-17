@@ -1,19 +1,25 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
 
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
-from decision_engine.infrastructure.persistence.sqlalchemy.codecs.condition_codec import (
+from decision_engine.domain.value_objects.condition import CompositeCondition
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
+from decision_engine.infrastructure.persistence.sqlalchemy.codecs.condition_codec import (  # noqa: E501
     ConditionDeserializer,
     ConditionSerializer,
 )
 
+if TYPE_CHECKING:
+    from tests.conftest import MakeEvent, MakeSimpleCondition
 
-@pytest.fixture(scope="function")
+
+@pytest.fixture
 def composite_condition(
-    make_simple_condition: Callable[..., SimpleCondition],
+    make_simple_condition: MakeSimpleCondition,
 ) -> CompositeCondition:
     return CompositeCondition(
         operator=LogicalOperator.AND,
@@ -43,7 +49,7 @@ def test_condition_codec_roundtrip_preserves_structure(
 
 
 def test_condition_codec_roundtrip_preserves_semantics(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     composite_condition: CompositeCondition,
 ) -> None:
     event = make_event()

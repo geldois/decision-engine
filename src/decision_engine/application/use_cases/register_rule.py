@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import decision_engine.application.factories.condition_factory as ConditionFactory
 from decision_engine.application.contracts.use_case import UseCase
 from decision_engine.application.dto.requests.register_rule import (
     RegisterRuleDTORequest,
@@ -8,6 +7,7 @@ from decision_engine.application.dto.requests.register_rule import (
 from decision_engine.application.dto.responses.register_rule import (
     RegisterRuleDTOResponse,
 )
+from decision_engine.application.factories.condition_factory import build_condition
 from decision_engine.application.mappers.decision_outcome_mapper import (
     parse_decision_outcome,
 )
@@ -22,7 +22,7 @@ class RegisterRuleUseCase(UseCase[RegisterRuleDTORequest, RegisterRuleDTORespons
         with self.uow_factory() as uow:
             rule = Rule(
                 name=dto.name,
-                condition=ConditionFactory.build_condition(dto=dto.condition),
+                condition=build_condition(dto=dto.condition),
                 outcome=parse_decision_outcome(dto.outcome),
                 priority=dto.priority,
             )

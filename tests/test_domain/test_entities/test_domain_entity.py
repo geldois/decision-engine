@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
@@ -5,7 +7,7 @@ from decision_engine.domain.entities.domain_entity import DomainEntity
 
 
 class ConcreteDomainEntity(DomainEntity):
-    def is_structurally_equal(self, other: DomainEntity) -> bool:
+    def is_structurally_equal(self, other: DomainEntity) -> bool:  # noqa: ARG002
         return True
 
 

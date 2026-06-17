@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
     from decision_engine.application.dto.condition import (
         CompositeConditionDTO,
-        DTOCondition,
+        ConditionDTO,
         SimpleConditionDTO,
     )
 
@@ -55,15 +55,15 @@ _builders: dict[str, Callable[..., Condition]] = {
 }
 
 
-def _validate(dto: DTOCondition) -> None:
+def _validate(dto: ConditionDTO) -> None:
     if dto["type"] not in _builders:
         raise InvalidConditionTypeError(condition_type=dto["type"])
 
 
 def _validate_composite(dto: CompositeConditionDTO) -> None:
-    const = 2
+    min_length = 2
 
-    if len(dto["conditions"]) < const:
+    if len(dto["conditions"]) < min_length:
         raise InvalidConditionError
 
 
@@ -72,7 +72,7 @@ def _validate_simple(dto: SimpleConditionDTO) -> None:
         raise EmptyConditionValueError
 
 
-def build_condition(dto: DTOCondition) -> Condition:
+def build_condition(dto: ConditionDTO) -> Condition:
     _validate(dto=dto)
 
     return _builders[dto["type"]](dto)

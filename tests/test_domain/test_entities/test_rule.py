@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from decision_engine.domain.entities.rule import Rule
@@ -5,7 +7,9 @@ from decision_engine.domain.errors.rule_error import RuleError
 from decision_engine.domain.value_objects.condition import SimpleCondition
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.domain.value_objects.event_field import EventField
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
 
 # INVALID CASES
 

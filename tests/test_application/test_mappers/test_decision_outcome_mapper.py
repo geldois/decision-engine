@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 import pytest
 
-from decision_engine.application.mappers.decision_outcome_mapper import parse_decision_outcome
+from decision_engine.application.mappers.decision_outcome_mapper import (
+    parse_decision_outcome,
+)
 from decision_engine.domain.errors.decision_error import DecisionError
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 

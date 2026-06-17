@@ -1,26 +1,28 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
 
-from decision_engine.domain.entities.decision import Decision
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (
-    SQLAlchemyDecisionRepository,
-)
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
-    SQLAlchemyEventRepository,
-)
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (
-    SQLAlchemyRuleRepository,
-)
+if TYPE_CHECKING:
+    from decision_engine.domain.entities.decision import Decision
+    from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_decision_repository import (  # noqa: E501
+        SQLAlchemyDecisionRepository,
+    )
+    from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (  # noqa: E501
+        SQLAlchemyEventRepository,
+    )
+    from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_rule_repository import (  # noqa: E501
+        SQLAlchemyRuleRepository,
+    )
+    from tests.conftest import MakeDecision, MakeEvent, MakeRule
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def decision_with_scenario(
-    make_decision: Callable[..., Decision],
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_decision: MakeDecision,
+    make_event: MakeEvent,
+    make_rule: MakeRule,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> Decision:

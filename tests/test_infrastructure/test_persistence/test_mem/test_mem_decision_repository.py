@@ -1,26 +1,28 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
 
-from decision_engine.domain.entities.decision import Decision
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
-from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (
-    MemDecisionRepository,
-)
-from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (
-    MemEventRepository,
-)
-from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_repository import (
-    MemRuleRepository,
-)
+if TYPE_CHECKING:
+    from decision_engine.domain.entities.decision import Decision
+    from decision_engine.infrastructure.persistence.mem.repositories.mem_decision_repository import (  # noqa: E501
+        MemDecisionRepository,
+    )
+    from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (  # noqa: E501
+        MemEventRepository,
+    )
+    from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_repository import (  # noqa: E501
+        MemRuleRepository,
+    )
+    from tests.conftest import MakeDecision, MakeEvent, MakeRule
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def decision_with_scenario(
-    make_decision: Callable[..., Decision],
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_decision: MakeDecision,
+    make_event: MakeEvent,
+    make_rule: MakeRule,
     mem_event_repo: MemEventRepository,
     mem_rule_repo: MemRuleRepository,
 ) -> Decision:

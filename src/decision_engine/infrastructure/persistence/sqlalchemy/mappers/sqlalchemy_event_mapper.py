@@ -11,7 +11,7 @@ from decision_engine.infrastructure.persistence.sqlalchemy.models.event_model im
 
 
 def domain_to_model(event: Event) -> EventModel:
-    event_model = EventModel(
+    return EventModel(
         id=event.id,
         event_type=event.event_type,
         payload=PayloadSerializer.serialize(payload=event.payload),
@@ -19,16 +19,12 @@ def domain_to_model(event: Event) -> EventModel:
         created_at=event.created_at,
     )
 
-    return event_model
-
 
 def model_to_domain(event_model: EventModel) -> Event:
-    event = Event(
+    return Event(
         event_type=event_model.event_type,
         payload=PayloadDeserializer.deserialize(data=event_model.payload),
         occurred_at=event_model.occurred_at,
         created_at=event_model.created_at,
         event_id=event_model.id,
     )
-
-    return event

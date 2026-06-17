@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from typing import Any
-
 
 class PayloadDeserializer:
     @staticmethod
-    def deserialize(data: dict[str, Any]) -> dict[str, Any]:
+    def deserialize(data: dict[str, object]) -> dict[str, object]:
         return data
 
 
 class PayloadSerializer:
     @staticmethod
-    def serialize(payload: dict[str, Any]) -> dict[str, Any]:
+    def serialize(payload: dict[str, object]) -> dict[str, object]:
         return payload

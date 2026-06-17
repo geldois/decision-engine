@@ -22,10 +22,7 @@ class MemDB:
         return True
 
     def clear_db(self) -> None:
-        try:
-            self.storage.clear()
-        except Exception as exception:
-            raise exception
+        self.storage.clear()
 
 
 class MemDBBuilder:

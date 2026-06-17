@@ -39,7 +39,7 @@ flowchart LR
     UoWFactory --> UnitOfWorkMem("MemUoW")
     UoWFactory --> UnitOfWorkSQL("SQLAlchemyUoW")
 
-    UnitOfWorkMem --> RepositoriesMem("Repositories (Mem)")
+    UnitOfWorkMem --> RepositoriesMem("Repositories (Memory)")
     UnitOfWorkMem --> MemStorage("MemStorage")
 
     RepositoriesMem --> MemStorage

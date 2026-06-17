@@ -22,6 +22,9 @@ class DomainEntity(ABC):
 
         return self.id == other.id
 
+    def __hash__(self) -> int:
+        return self.id.int
+
     @abstractmethod
     def is_structurally_equal(self, other: DomainEntity) -> bool:
         raise NotImplementedError

@@ -45,10 +45,10 @@ class SQLAlchemyDB:
                 session.execute(text("TRUNCATE TABLE rules CASCADE"))
 
                 session.commit()
-            except Exception as exception:
+            except Exception:
                 session.rollback()
 
-                raise exception
+                raise
 
 
 class SQLAlchemyDBBuilder:

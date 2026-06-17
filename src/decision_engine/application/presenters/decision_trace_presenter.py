@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 from decision_engine.domain.value_objects.decision_trace import (
     CompositeDecisionTrace,
     DecisionTrace,
@@ -10,9 +8,9 @@ from decision_engine.domain.value_objects.decision_trace import (
 )
 
 
-class DecisionTracePresenter(DecisionTraceVisitor[dict[str, Any]]):
+class DecisionTracePresenter(DecisionTraceVisitor[dict[str, object]]):
     @classmethod
-    def visit_composite(cls, element: CompositeDecisionTrace) -> dict[str, Any]:
+    def visit_composite(cls, element: CompositeDecisionTrace) -> dict[str, object]:
         return {
             "type": "composite",
             "result": element.result,
@@ -21,7 +19,7 @@ class DecisionTracePresenter(DecisionTraceVisitor[dict[str, Any]]):
         }
 
     @classmethod
-    def visit_simple(cls, element: SimpleDecisionTrace) -> dict[str, Any]:
+    def visit_simple(cls, element: SimpleDecisionTrace) -> dict[str, object]:
         return {
             "type": "simple",
             "result": element.result,
@@ -32,5 +30,5 @@ class DecisionTracePresenter(DecisionTraceVisitor[dict[str, Any]]):
         }
 
     @classmethod
-    def present(cls, element: tuple[DecisionTrace, ...]) -> list[dict[str, Any]]:
+    def present(cls, element: tuple[DecisionTrace, ...]) -> list[dict[str, object]]:
         return [trace.accept(visitor=cls) for trace in element]

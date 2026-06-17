@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from decision_engine.domain.entities.event import Event
@@ -11,7 +13,7 @@ def test_event_raises_on_empty_payload() -> None:
         Event(event_type="USER_CREATED", payload={}, occurred_at=1700000000)
 
 
-def test_event_raises_on_negative_or_zero_occurred_at():
+def test_event_raises_on_negative_or_zero_occurred_at() -> None:
     with pytest.raises(EventError):
         Event(
             event_type="USER_CREATED",

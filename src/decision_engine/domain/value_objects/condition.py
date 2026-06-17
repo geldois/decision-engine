@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from decision_engine.domain.errors.condition_error import (
     InvalidConditionError,
@@ -32,9 +32,13 @@ class Condition(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def __hash__(self) -> int:
+        return NotImplementedError
+
+    @abstractmethod
     def accept(
-        self, visitor: type[ConditionVisitor[VisitorReturnType]]
-    ) -> VisitorReturnType:
+        self, visitor: type[ConditionVisitor[VisitorReturnType_co]]
+    ) -> VisitorReturnType_co:
         raise NotImplementedError
 
     @abstractmethod
@@ -47,7 +51,7 @@ class Condition(ABC):
 
     @classmethod
     @abstractmethod
-    def from_dict(cls, data: dict[str, Any]) -> Condition:
+    def from_dict(cls, data: dict[str, object]) -> Condition:
         raise NotImplementedError
 
 
@@ -55,7 +59,9 @@ class CompositeCondition(Condition):
     def __init__(
         self, operator: LogicalOperator, conditions: Sequence[Condition]
     ) -> None:
-        if len(conditions) < 2:
+        min_length = 2
+
+        if len(conditions) < min_length:
             raise InvalidConditionError
 
         self.operator = operator
@@ -67,9 +73,12 @@ class CompositeCondition(Condition):
 
         return self.operator is other.operator and self.conditions == other.conditions
 
+    def __hash__(self) -> int:
+        return hash((self.conditions, self.operator))
+
     def accept(
-        self, visitor: type[ConditionVisitor[VisitorReturnType]]
-    ) -> VisitorReturnType:
+        self, visitor: type[ConditionVisitor[VisitorReturnType_co]]
+    ) -> VisitorReturnType_co:
         return visitor.visit_composite(element=self)
 
     def evaluate_result(self, event: Event) -> bool:
@@ -89,7 +98,7 @@ class CompositeCondition(Condition):
         )
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> Condition:
+    def from_dict(cls, data: dict[str, object]) -> Condition:
         return cls(
             operator=LogicalOperator(data["operator"]),
             conditions=[
@@ -106,7 +115,7 @@ class SimpleCondition(Condition):
         self,
         operator: ComparisonOperator,
         field: EventField,
-        value: Any,
+        value: object,
     ) -> None:
         if not field.validate(value=value):
             raise InvalidConditionError
@@ -125,9 +134,12 @@ class SimpleCondition(Condition):
             and self.value == other.value
         )
 
+    def __hash__(self) -> int:
+        return hash((self.field, self.operator, self.value))
+
     def accept(
-        self, visitor: type[ConditionVisitor[VisitorReturnType]]
-    ) -> VisitorReturnType:
+        self, visitor: type[ConditionVisitor[VisitorReturnType_co]]
+    ) -> VisitorReturnType_co:
         return visitor.visit_simple(element=self)
 
     def evaluate_result(self, event: Event) -> bool:
@@ -151,7 +163,7 @@ class SimpleCondition(Condition):
         )
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> Condition:
+    def from_dict(cls, data: dict[str, object]) -> Condition:
         return cls(
             operator=ComparisonOperator(data["operator"]),
             field=EventField(data["field"]),
@@ -159,7 +171,7 @@ class SimpleCondition(Condition):
         )
 
 
-VisitorReturnType = TypeVar("VisitorReturnType", covariant=True)
+VisitorReturnType_co = TypeVar("VisitorReturnType_co", covariant=True)
 
 
 class ConditionVisitor[VisitorReturnType](ABC):

@@ -4,6 +4,7 @@ import os
 
 from dotenv import load_dotenv
 
+from alembic import command, config
 from decision_engine.application.use_cases.produce_decision import (
     ProduceDecisionUseCase,
 )
@@ -23,8 +24,6 @@ def load_environment() -> None:
 
 
 def run_migrations() -> None:
-    from alembic import command, config
-
     alembic_config = config.Config("alembic.ini")
     command.upgrade(alembic_config, "head")
 
@@ -47,11 +46,6 @@ def build_container(
                 if overrides and overrides.sqlalchemy_db
                 else SQLAlchemyDBBuilder.build(settings=settings)
             )
-
-            if db.database_url != settings.database_url:
-                raise RuntimeError(
-                    "DATABASE_URL mismatch between settings and injected DB"
-                )
 
     use_cases = UseCaseSet(
         produce_decision=ProduceDecisionUseCase(uow_factory=db.uow_factory),

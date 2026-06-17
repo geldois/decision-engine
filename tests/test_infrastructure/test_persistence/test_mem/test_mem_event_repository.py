@@ -1,15 +1,18 @@
-from collections.abc import Callable
+from __future__ import annotations
 
-from decision_engine.domain.entities.event import Event
-from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (
-    MemEventRepository,
-)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from decision_engine.infrastructure.persistence.mem.repositories.mem_event_repository import (  # noqa: E501
+        MemEventRepository,
+    )
+    from tests.conftest import MakeEvent
 
 # VALID CASES
 
 
 def test_mem_event_repository_returns_saved_event(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     mem_event_repo: MemEventRepository,
 ) -> None:
     event = make_event()
@@ -20,7 +23,7 @@ def test_mem_event_repository_returns_saved_event(
 
 
 def test_mem_event_repository_returns_event_when_id_exists(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     mem_event_repo: MemEventRepository,
 ) -> None:
     event = make_event()
@@ -33,7 +36,7 @@ def test_mem_event_repository_returns_event_when_id_exists(
 
 
 def test_mem_event_repository_returns_none_when_id_does_not_exist(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     mem_event_repo: MemEventRepository,
 ) -> None:
     event = make_event()
@@ -44,7 +47,7 @@ def test_mem_event_repository_returns_none_when_id_does_not_exist(
 
 
 def test_mem_event_repository_returns_true_when_event_is_deleted(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     mem_event_repo: MemEventRepository,
 ) -> None:
     event = make_event()
@@ -61,7 +64,7 @@ def test_mem_event_repository_returns_true_when_event_is_deleted(
 
 
 def test_mem_event_repository_returns_false_when_event_is_not_deleted(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     mem_event_repo: MemEventRepository,
 ) -> None:
     event = make_event()
@@ -72,7 +75,7 @@ def test_mem_event_repository_returns_false_when_event_is_not_deleted(
 
 
 def test_mem_event_repository_returns_list_of_events(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     mem_event_repo: MemEventRepository,
 ) -> None:
     event = make_event()

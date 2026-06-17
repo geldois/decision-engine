@@ -1,12 +1,23 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import pytest
 
-from decision_engine.application.dto.requests.produce_decision import ProduceDecisionDTORequest
-from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
-from decision_engine.application.dto.requests.register_rule import RegisterRuleDTORequest
-from decision_engine.config.container import Container
+from decision_engine.application.dto.requests.produce_decision import (
+    ProduceDecisionDTORequest,
+)
+from decision_engine.application.dto.requests.register_event import (
+    RegisterEventDTORequest,
+)
+from decision_engine.application.dto.requests.register_rule import (
+    RegisterRuleDTORequest,
+)
 from decision_engine.domain.errors.event_error import EventError
+
+if TYPE_CHECKING:
+    from decision_engine.config.container import Container
 
 # VALID CASES
 

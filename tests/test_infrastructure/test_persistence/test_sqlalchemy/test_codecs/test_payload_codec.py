@@ -1,4 +1,4 @@
-from typing import Any
+from __future__ import annotations
 
 import pytest
 
@@ -8,15 +8,17 @@ from decision_engine.infrastructure.persistence.sqlalchemy.codecs.payload_codec 
 )
 
 
-@pytest.fixture(scope="function")
-def payload() -> dict[str, Any]:
+@pytest.fixture
+def payload() -> dict[str, object]:
     return {"test": True, "int": 0, "str": "Hello World!"}
 
 
 # VALID CASES
 
 
-def test_payload_codec_roundtrip_preserves_structure(payload: dict[str, Any]) -> None:
+def test_payload_codec_roundtrip_preserves_structure(
+    payload: dict[str, object],
+) -> None:
     encoded = PayloadSerializer.serialize(payload=payload)
     decoded = PayloadDeserializer.deserialize(data=encoded)
 

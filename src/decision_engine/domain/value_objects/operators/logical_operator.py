@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -15,8 +15,8 @@ class LogicalOperator(Enum):
     OR = "or", True, (bool,)
 
     def __new__(
-        cls, operator: str, stop_value: bool, accepted_types: tuple[type[object], ...]
-    ) -> LogicalOperator:
+        cls, operator: str, stop_value: bool, accepted_types: tuple[type[object], ...]  # noqa: FBT001
+    ) -> Self:
         obj = object.__new__(cls)
         obj._value_ = operator
         obj.stop_value = stop_value

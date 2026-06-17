@@ -1,8 +1,19 @@
-from decision_engine.application.presenters.condition_presenter import ConditionPresenter
-from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from __future__ import annotations
+
+from decision_engine.application.presenters.condition_presenter import (
+    ConditionPresenter,
+)
+from decision_engine.domain.value_objects.condition import (
+    CompositeCondition,
+    SimpleCondition,
+)
 from decision_engine.domain.value_objects.event_field import EventField
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
 
 # VALID CASES
 
@@ -41,7 +52,7 @@ def test_condition_presenter_presents_composite_condition() -> None:
         ],
     )
 
-    data = data = ConditionPresenter.present(element=condition)
+    data = ConditionPresenter.present(element=condition)
 
     assert data == {
         "type": "composite",
@@ -90,7 +101,7 @@ def test_condition_presenter_presents_nested_composite_condition() -> None:
         ],
     )
 
-    data = data = ConditionPresenter.present(element=condition)
+    data = ConditionPresenter.present(element=condition)
 
     assert data == {
         "type": "composite",

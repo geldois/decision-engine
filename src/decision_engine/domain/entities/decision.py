@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class Decision(DomainEntity):
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         *,
         event_id: UUID,

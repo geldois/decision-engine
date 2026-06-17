@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 
-def build_database_url(
+def build_database_url(  # noqa: PLR0913
     *,
     database_url: str | None = None,
     db_prefix: str | None = None,
@@ -24,7 +24,9 @@ def build_database_url(
     if not database_url and not all(
         [db_prefix, db_user, db_pass, db_host, db_port, db_name]
     ):
-        raise RuntimeError("invalid DB config")
+        message = "Invalid DB config."
+
+        raise RuntimeError(message)
 
     return (
         database_url

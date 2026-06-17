@@ -1,12 +1,8 @@
-from __future__ import annotations
-
-from typing import Any
-
 from pydantic import BaseModel
 
 
 class HTTPRegisterRuleRequest(BaseModel):
     name: str
-    condition: dict[str, Any]
+    condition: dict[str, object]
     outcome: str
     priority: int

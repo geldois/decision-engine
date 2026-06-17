@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from fastapi import APIRouter
 
 from decision_engine.application.dto.requests.register_event import (
@@ -9,10 +7,10 @@ from decision_engine.config.container import Container
 from decision_engine.interface.http.mappers.http_error_code_mapper import (
     map_http_exception,
 )
-from decision_engine.interface.http.schemas.requests.http_register_event_request import (
+from decision_engine.interface.http.schemas.requests.http_register_event_request import (  # noqa: E501
     HTTPRegisterEventRequest,
 )
-from decision_engine.interface.http.schemas.responses.http_register_event_response import (
+from decision_engine.interface.http.schemas.responses.http_register_event_response import (  # noqa: E501
     HTTPRegisterEventResponse,
 )
 
@@ -20,7 +18,7 @@ from decision_engine.interface.http.schemas.responses.http_register_event_respon
 def build_event_router(container: Container) -> APIRouter:
     router = APIRouter(prefix="/events")
 
-    @router.post("/", response_model=HTTPRegisterEventResponse)
+    @router.post("/")
     def register_event(  # pyright: ignore[reportUnusedFunction]
         http_request: HTTPRegisterEventRequest,
     ) -> HTTPRegisterEventResponse:

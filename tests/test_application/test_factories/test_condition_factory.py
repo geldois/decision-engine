@@ -1,12 +1,24 @@
+from __future__ import annotations
+
 import pytest
 
-from decision_engine.application.dto.condition import CompositeConditionDTO, SimpleConditionDTO
+from decision_engine.application.dto.condition import (
+    CompositeConditionDTO,
+    SimpleConditionDTO,
+)
 from decision_engine.application.factories.condition_factory import build_condition
 from decision_engine.domain.errors.condition_error import ConditionError
-from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.condition import (
+    CompositeCondition,
+    SimpleCondition,
+)
 from decision_engine.domain.value_objects.event_field import EventField
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
 
 # VALID CASES
 
@@ -72,7 +84,7 @@ def test_condition_factory_raises_on_invalid_dto_type() -> None:
         build_condition(
             dto=SimpleConditionDTO(
                 {
-                    "type": "TEST",
+                    "type": "TEST",  # pyright: ignore[reportArgumentType]
                     "field": "event_type",
                     "operator": "==",
                     "value": "TEST",

@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import os
 from collections.abc import Callable, Generator
+from typing import TYPE_CHECKING
 
 import pytest
-from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 
+from alembic import command, config
 from decision_engine.config.bootstrap import build_container, load_environment
 from decision_engine.config.container import Container, ContainerOverride
 from decision_engine.config.settings import Settings
@@ -32,6 +33,9 @@ from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import
     SQLAlchemyUoW,
 )
 from decision_engine.interface.http.app import create_app
+
+if TYPE_CHECKING:
+    from fastapi import FastAPI
 
 type MakeDecision = Callable[..., Decision]
 type MakeEvent = Callable[..., Event]
@@ -134,13 +138,13 @@ def setup_environment() -> Generator[None, None, None]:
         os.environ["ENV"] = old_env
 
 
-@pytest.fixture(scope="function", params=["mem", "postgresql"])
+@pytest.fixture(params=["mem", "postgresql"])
 def persistence(request: pytest.FixtureRequest) -> str:
     return request.param
 
 
-@pytest.fixture(scope="function")
-def settings(setup_environment: None, persistence: str) -> Settings:
+@pytest.fixture
+def settings(setup_environment: None, persistence: str) -> Settings:  # noqa: ARG001
     env = os.getenv("ENV")
     db_prefix = os.getenv("DB_PREFIX")
     db_user = os.getenv("DB_USER")
@@ -162,9 +166,7 @@ def settings(setup_environment: None, persistence: str) -> Settings:
 
 
 @pytest.fixture(scope="session")
-def setup_migrations(setup_environment: None) -> Generator[None, None, None]:
-    from alembic import command, config
-
+def setup_migrations(setup_environment: None) -> Generator[None, None, None]:  # noqa: ARG001
     alembic_config = config.Config("alembic.ini")
     alembic_config.set_main_option("sqlalchemy.url", build_database_url())
 
@@ -175,7 +177,7 @@ def setup_migrations(setup_environment: None) -> Generator[None, None, None]:
     command.downgrade(alembic_config, "base")
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def mem_storage() -> Generator[MemStorage, None, None]:
     storage = MemStorage()
 
@@ -184,14 +186,14 @@ def mem_storage() -> Generator[MemStorage, None, None]:
     storage.clear()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def mem_uow_factory(
     mem_storage: MemStorage,
 ) -> Callable[[], MemUoW]:
     return lambda: MemUoW(storage=mem_storage)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def mem_db(
     mem_uow_factory: Callable[[], MemUoW],
     mem_storage: MemStorage,
@@ -199,8 +201,8 @@ def mem_db(
     return MemDB(uow_factory=mem_uow_factory, storage=mem_storage)
 
 
-@pytest.fixture(scope="function")
-def engine(settings: Settings, setup_migrations: None) -> Generator[Engine, None, None]:
+@pytest.fixture
+def engine(settings: Settings, setup_migrations: None) -> Generator[Engine, None, None]:  # noqa: ARG001
     engine = create_engine(url=settings.database_url)
 
     yield engine
@@ -208,7 +210,7 @@ def engine(settings: Settings, setup_migrations: None) -> Generator[Engine, None
     engine.dispose()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def connection(engine: Engine) -> Generator[Connection, None, None]:
     connection = engine.connect()
     transaction = connection.begin()
@@ -219,7 +221,7 @@ def connection(engine: Engine) -> Generator[Connection, None, None]:
     connection.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def session(connection: Connection) -> Generator[Session, None, None]:
     session = Session(bind=connection, join_transaction_mode="create_savepoint")
 
@@ -229,14 +231,14 @@ def session(connection: Connection) -> Generator[Session, None, None]:
         session.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def sqlalchemy_uow_factory(
     session: Session,
 ) -> Callable[[], SQLAlchemyUoW]:
     return lambda: SQLAlchemyUoW(session_factory=lambda: session)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def sqlalchemy_db(
     settings: Settings,
     connection: Connection,
@@ -251,7 +253,7 @@ def sqlalchemy_db(
     )
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def container_override(
     settings: Settings, request: pytest.FixtureRequest
 ) -> ContainerOverride:
@@ -262,22 +264,18 @@ def container_override(
             return ContainerOverride(
                 sqlalchemy_db=request.getfixturevalue("sqlalchemy_db")
             )
-        case _:
-            raise RuntimeError(
-                f"error building container override | $PERSISTENCE: {settings.persistence}"
-            )
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def container(settings: Settings, container_override: ContainerOverride) -> Container:
     return build_container(settings=settings, overrides=container_override)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def fastapi_app(container: Container) -> FastAPI:
     return create_app(container=container)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def fastapi_testclient(fastapi_app: FastAPI) -> TestClient:
     return TestClient(app=fastapi_app, raise_server_exceptions=False)

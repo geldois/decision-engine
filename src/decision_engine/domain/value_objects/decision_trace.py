@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from decision_engine.domain.value_objects.event_field import EventField
 from decision_engine.domain.value_objects.operators.comparison_operator import (
@@ -25,14 +25,18 @@ class DecisionTrace(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def __hash__(self) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
     def accept(
-        self, visitor: type[DecisionTraceVisitor[VisitorReturnType]]
-    ) -> VisitorReturnType:
+        self, visitor: type[DecisionTraceVisitor[VisitorReturnType_co]]
+    ) -> VisitorReturnType_co:
         raise NotImplementedError
 
     @classmethod
     @abstractmethod
-    def from_dict(cls, data: dict[str, Any]) -> DecisionTrace:
+    def from_dict(cls, data: dict[str, object]) -> DecisionTrace:
         raise NotImplementedError
 
 
@@ -51,13 +55,16 @@ class CompositeDecisionTrace(DecisionTrace):
             and self.traces == other.traces
         )
 
+    def __hash__(self) -> int:
+        return hash((self.operator, self.result, self.traces))
+
     def accept(
-        self, visitor: type[DecisionTraceVisitor[VisitorReturnType]]
-    ) -> VisitorReturnType:
+        self, visitor: type[DecisionTraceVisitor[VisitorReturnType_co]]
+    ) -> VisitorReturnType_co:
         return visitor.visit_composite(element=self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> DecisionTrace:
+    def from_dict(cls, data: dict[str, object]) -> DecisionTrace:
         return cls(
             result=data["result"],
             operator=LogicalOperator(data["operator"]),
@@ -88,13 +95,18 @@ class SimpleDecisionTrace(DecisionTrace):
             and self.actual_value == other.actual_value
         )
 
+    def __hash__(self) -> int:
+        return hash(
+            (self.actual_value, self.expected_value, self.operator, self.result)
+        )
+
     def accept(
-        self, visitor: type[DecisionTraceVisitor[VisitorReturnType]]
-    ) -> VisitorReturnType:
+        self, visitor: type[DecisionTraceVisitor[VisitorReturnType_co]]
+    ) -> VisitorReturnType_co:
         return visitor.visit_simple(element=self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> DecisionTrace:
+    def from_dict(cls, data: dict[str, object]) -> DecisionTrace:
         return cls(
             result=data["result"],
             operator=ComparisonOperator(data["operator"]),
@@ -104,7 +116,7 @@ class SimpleDecisionTrace(DecisionTrace):
         )
 
 
-VisitorReturnType = TypeVar("VisitorReturnType", covariant=True)
+VisitorReturnType_co = TypeVar("VisitorReturnType_co", covariant=True)
 
 
 class DecisionTraceVisitor[VisitorReturnType](ABC):
@@ -136,7 +148,9 @@ class DecisionTraceRegistry:
     @classmethod
     def get_class(cls, name: str) -> type[DecisionTrace]:
         if name not in cls._mapping:
-            raise ValueError(f"Decision trace type '{name}' is invalid")  # tmp
+            message = f"Decision trace type '{name}' is invalid"
+
+            raise ValueError(message)
 
         return cls._mapping[name]
 

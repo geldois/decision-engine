@@ -1,7 +1,3 @@
-from __future__ import annotations
-
-from typing import Any
-
 from sqlalchemy import CheckConstraint, Integer, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
@@ -12,10 +8,8 @@ from decision_engine.infrastructure.persistence.sqlalchemy.models.model import M
 class RuleModel(Model):
     __tablename__ = "rules"
 
-    name: Mapped[str] = mapped_column(
-        String, nullable=False, index=True, unique=True
-    )  # tmp
-    condition: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False, index=True, unique=True)
+    condition: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
     outcome: Mapped[str] = mapped_column(String, nullable=False)
     priority: Mapped[int] = mapped_column(Integer, nullable=False)
 

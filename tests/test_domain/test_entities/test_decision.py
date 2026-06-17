@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from uuid import uuid4
 
 import pytest
@@ -7,7 +9,9 @@ from decision_engine.domain.errors.decision_error import DecisionError
 from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
 from decision_engine.domain.value_objects.decision_trace import SimpleDecisionTrace
 from decision_engine.domain.value_objects.event_field import EventField
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
 
 # INVALID CASES
 

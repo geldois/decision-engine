@@ -16,14 +16,14 @@ cli = Typer()
 
 @cli.command("dev")
 def dev() -> None:
-    PORT = os.getenv("PORT", 8000)
-    uvicorn.run("decision_engine.main:app", host="0.0.0.0", port=int(PORT), reload=True)
+    port = os.getenv("PORT", "8000")
+    uvicorn.run("decision_engine.main:app", host="0.0.0.0", port=int(port), reload=True)
 
 
 @cli.command("run")
 def run() -> None:
-    PORT = os.getenv("PORT", 8000)
-    uvicorn.run("decision_engine.main:app", host="0.0.0.0", port=int(PORT))
+    port = os.getenv("PORT", "8000")
+    uvicorn.run("decision_engine.main:app", host="0.0.0.0", port=int(port))
 
 
 @cli.command("wait-db")
@@ -43,11 +43,14 @@ def wait_db() -> None:
             with engine.connect() as connection:
                 connection.execute(text("SELECT 1"))
 
-            print("database ready")
+            print("database ready")  # noqa: T201
 
             return
         except Exception:
             print("waiting for database...")
 
             time.sleep(1)
-    raise RuntimeError("database not ready")
+
+    message = "database not ready"
+
+    raise RuntimeError(message)

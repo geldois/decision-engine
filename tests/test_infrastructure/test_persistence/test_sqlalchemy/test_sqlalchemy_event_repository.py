@@ -1,15 +1,18 @@
-from collections.abc import Callable
+from __future__ import annotations
 
-from decision_engine.domain.entities.event import Event
-from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (
-    SQLAlchemyEventRepository,
-)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalchemy_event_repository import (  # noqa: E501
+        SQLAlchemyEventRepository,
+    )
+    from tests.conftest import MakeEvent
 
 # VALID CASES
 
 
 def test_sql_event_repository_returns_saved_event(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
     event = make_event()
@@ -20,7 +23,7 @@ def test_sql_event_repository_returns_saved_event(
 
 
 def test_sql_event_repository_returns_event_when_id_exists(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
     event = make_event()
@@ -37,7 +40,7 @@ def test_sql_event_repository_returns_event_when_id_exists(
 
 
 def test_sql_event_repository_returns_none_when_id_does_not_exist(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
     event = make_event()
@@ -48,7 +51,7 @@ def test_sql_event_repository_returns_none_when_id_does_not_exist(
 
 
 def test_sql_event_repository_returns_true_when_event_is_deleted(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
     event = make_event()
@@ -65,7 +68,7 @@ def test_sql_event_repository_returns_true_when_event_is_deleted(
 
 
 def test_sql_event_repository_returns_false_when_event_is_not_deleted(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
     event = make_event()
@@ -76,7 +79,7 @@ def test_sql_event_repository_returns_false_when_event_is_not_deleted(
 
 
 def test_sql_event_repository_returns_list_of_rules(
-    make_event: Callable[..., Event],
+    make_event: MakeEvent,
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
     event = make_event()

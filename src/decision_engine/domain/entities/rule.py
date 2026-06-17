@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class Rule(DomainEntity):
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         *,
         name: str,

@@ -1,7 +1,4 @@
-from __future__ import annotations
-
 import uuid
-from typing import Any
 
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -20,7 +17,7 @@ class DecisionModel(Model):
         UUID(as_uuid=True), ForeignKey("rules.id"), nullable=True, index=True
     )
     outcome: Mapped[str] = mapped_column(String, nullable=False, index=True)
-    traces: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, nullable=False)
+    traces: Mapped[list[dict[str, object]]] = mapped_column(JSONB, nullable=False)
 
     event = relationship("EventModel", lazy="joined")
     rule = relationship("RuleModel", lazy="joined")

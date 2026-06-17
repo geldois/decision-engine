@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 from decision_engine.domain.value_objects.condition import (
     CompositeCondition,
     Condition,
@@ -10,12 +8,12 @@ from decision_engine.domain.value_objects.condition import (
 )
 
 
-class ConditionPresenter(ConditionVisitor[dict[str, Any]]):
+class ConditionPresenter(ConditionVisitor[dict[str, object]]):
     @classmethod
     def visit_composite(
         cls,
         element: CompositeCondition,
-    ) -> dict[str, Any]:
+    ) -> dict[str, object]:
         return {
             "type": "composite",
             "operator": element.operator.value,
@@ -25,7 +23,7 @@ class ConditionPresenter(ConditionVisitor[dict[str, Any]]):
         }
 
     @classmethod
-    def visit_simple(cls, element: SimpleCondition) -> dict[str, Any]:
+    def visit_simple(cls, element: SimpleCondition) -> dict[str, object]:
         return {
             "type": "simple",
             "field": element.field.value,
@@ -34,5 +32,5 @@ class ConditionPresenter(ConditionVisitor[dict[str, Any]]):
         }
 
     @classmethod
-    def present(cls, element: Condition) -> dict[str, Any]:
+    def present(cls, element: Condition) -> dict[str, object]:
         return element.accept(visitor=cls)

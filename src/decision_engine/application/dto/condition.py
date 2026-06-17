@@ -6,7 +6,7 @@ from typing import Literal, TypedDict
 class CompositeConditionDTO(TypedDict):
     type: Literal["composite"]
     operator: Literal["and", "or"]
-    conditions: list[DTOCondition]
+    conditions: list[ConditionDTO]
 
 
 class SimpleConditionDTO(TypedDict):
@@ -15,4 +15,4 @@ class SimpleConditionDTO(TypedDict):
     operator: Literal["==", ">", "<", "!="]
     value: object
 
-DTOCondition = SimpleConditionDTO | CompositeConditionDTO
+ConditionDTO = SimpleConditionDTO | CompositeConditionDTO

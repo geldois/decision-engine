@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from decision_engine.application.mappers.event_field_mapper import parse_event_field

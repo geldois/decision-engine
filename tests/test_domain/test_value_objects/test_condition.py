@@ -1,13 +1,22 @@
+from __future__ import annotations
+
 from uuid import uuid4
 
 import pytest
 
 from decision_engine.domain.entities.event import Event
 from decision_engine.domain.errors.condition_error import ConditionError
-from decision_engine.domain.value_objects.condition import CompositeCondition, SimpleCondition
+from decision_engine.domain.value_objects.condition import (
+    CompositeCondition,
+    SimpleCondition,
+)
 from decision_engine.domain.value_objects.event_field import EventField
-from decision_engine.domain.value_objects.operators.comparison_operator import ComparisonOperator
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
 
 # VALID CASES
 

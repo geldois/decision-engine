@@ -1,20 +1,33 @@
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
-from fastapi.testclient import TestClient
 
-from decision_engine.application.dto.requests.register_event import RegisterEventDTORequest
-from decision_engine.application.dto.responses.register_event import RegisterEventDTOResponse
 from decision_engine.application.use_cases.register_event import RegisterEventUseCase
-from decision_engine.config.container import Container
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from fastapi.testclient import TestClient
+
+    from decision_engine.application.dto.requests.register_event import (
+        RegisterEventDTORequest,
+    )
+    from decision_engine.application.dto.responses.register_event import (
+        RegisterEventDTOResponse,
+    )
+    from decision_engine.config.container import Container
 
 
 class BrokenRegisterEventUseCase(RegisterEventUseCase):
-    def execute(self, dto: RegisterEventDTORequest) -> RegisterEventDTOResponse:
-        raise RuntimeError("boom")
+    def execute(self, dto: RegisterEventDTORequest) -> RegisterEventDTOResponse:  # noqa: ARG002
+        message = "boom"
+
+        raise RuntimeError(message)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def broken_register_event(container: Container) -> BrokenRegisterEventUseCase:
     return BrokenRegisterEventUseCase(uow_factory=container.db.uow_factory)
 

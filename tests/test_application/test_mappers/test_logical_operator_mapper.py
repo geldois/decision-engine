@@ -1,8 +1,14 @@
+from __future__ import annotations
+
 import pytest
 
-from decision_engine.application.mappers.logical_operator_mapper import parse_logical_operator
+from decision_engine.application.mappers.logical_operator_mapper import (
+    parse_logical_operator,
+)
 from decision_engine.domain.errors.condition_error import ConditionError
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
 
 # VALID CASES
 

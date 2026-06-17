@@ -1,4 +1,8 @@
-from decision_engine.domain.value_objects.operators.logical_operator import LogicalOperator
+from __future__ import annotations
+
+from decision_engine.domain.value_objects.operators.logical_operator import (
+    LogicalOperator,
+)
 
 # VALID CASES
 

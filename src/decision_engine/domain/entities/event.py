@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from decision_engine.domain.entities.domain_entity import DomainEntity
 from decision_engine.domain.errors.event_error import (
@@ -20,7 +20,7 @@ class Event(DomainEntity):
         self,
         *,
         event_type: str,
-        payload: dict[str, Any],
+        payload: dict[str, object],
         occurred_at: int,
         created_at: datetime | None = None,
         event_id: UUID | None = None,

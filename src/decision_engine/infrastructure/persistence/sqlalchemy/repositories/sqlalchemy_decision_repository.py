@@ -5,11 +5,11 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 
 from decision_engine.application.contracts.repository import DecisionRepository
-from decision_engine.infrastructure.persistence.sqlalchemy.mappers.sqlalchemy_decision_mapper import (
+from decision_engine.infrastructure.persistence.sqlalchemy.mappers.sqlalchemy_decision_mapper import (  # noqa: E501
     domain_to_model,
     model_to_domain,
 )
-from decision_engine.infrastructure.persistence.sqlalchemy.models.decision_model import (
+from decision_engine.infrastructure.persistence.sqlalchemy.models.decision_model import (  # noqa: E501
     DecisionModel,
 )
 

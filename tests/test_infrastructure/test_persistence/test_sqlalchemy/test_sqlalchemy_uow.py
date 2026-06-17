@@ -1,19 +1,24 @@
-from collections.abc import Callable
+from __future__ import annotations
 
-from decision_engine.domain.entities.decision import Decision
-from decision_engine.domain.entities.event import Event
-from decision_engine.domain.entities.rule import Rule
-from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
-    SQLAlchemyUoW,
-)
+from typing import TYPE_CHECKING
+
+import pytest
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
+        SQLAlchemyUoW,
+    )
+    from tests.conftest import MakeDecision, MakeEvent, MakeRule
 
 # VALID CASES
 
 
 def test_sqlalchemy_uow_commits(
-    make_decision: Callable[..., Decision],
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_decision: MakeDecision,
+    make_event: MakeEvent,
+    make_rule: MakeRule,
     sqlalchemy_uow_factory: Callable[[], SQLAlchemyUoW],
 ) -> None:
     event = make_event()
@@ -35,24 +40,25 @@ def test_sqlalchemy_uow_commits(
 
 
 def test_sqlalchemy_uow_rolls_back(
-    make_decision: Callable[..., Decision],
-    make_event: Callable[..., Event],
-    make_rule: Callable[..., Rule],
+    make_decision: MakeDecision,
+    make_event: MakeEvent,
+    make_rule: MakeRule,
     sqlalchemy_uow_factory: Callable[[], SQLAlchemyUoW],
 ) -> None:
     event = make_event()
     rule = make_rule()
     decision = make_decision(event=event, rules=[rule])
 
-    try:
+    def run_transaction_with_error() -> None:
         with sqlalchemy_uow_factory() as uow:
             uow.events.save(event=event)
             uow.rules.save(rule=rule)
             uow.decisions.save(decision=decision)
 
-            raise Exception
-    except Exception:
-        pass
+            raise RuntimeError
+
+    with pytest.raises(RuntimeError):
+        run_transaction_with_error()
 
     with sqlalchemy_uow_factory() as uow:
         assert uow.decisions.get_by_id(decision_id=decision.id) is None
