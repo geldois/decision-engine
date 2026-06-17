@@ -1,14 +1,20 @@
-# decision-engine
+# Decision Engine
 
 [![CI](https://github.com/geldois/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/geldois/decision-engine/actions)
 
-A deterministic rule engine with full execution traceability. Events are evaluated against composable, AST-based rules and produce a complete audit trail — every condition's result, the actual vs. expected values, and the full evaluation path, in order.
+A deterministic rule engine with full execution traceability.
 
-**Live API:** https://decision-engine.angelitochagas.com &nbsp;·&nbsp; **Swagger:** https://decision-engine.angelitochagas.com/docs
+Events are evaluated against composable, AST-based rules and produce a complete audit trail — every condition's result,
+the actual vs. expected values, and the full evaluation path, in order.
+
+**Live API:** <https://decision-engine.angelitochagas.com>
 
 ## Overview
 
-An **Event** carries an arbitrary JSON payload and a timestamp. **Rules** define composable condition trees (simple comparisons or nested AND/OR logic) and an outcome. When a decision is requested, the engine sorts rules by priority, evaluates each condition tree with short-circuit logic, and returns a **Decision** containing a **DecisionTrace** — a recursive structure mirroring the condition AST that captures the full evaluation path.
+An **Event** carries an arbitrary JSON payload and a timestamp. **Rules** define composable condition trees (simple
+comparisons or nested AND/OR logic) and an outcome. When a decision is requested, the engine sorts rules by priority,
+evaluates each condition tree with short-circuit logic, and returns a **Decision** containing a **DecisionTrace** — a
+recursive structure mirroring the condition AST that captures the full evaluation path.
 
 ## Architecture
 
@@ -75,15 +81,26 @@ flowchart LR
 
 ### AST-based composable conditions
 
-Rules are not flat field/operator/value tuples — they are recursive Abstract Syntax Trees. `SimpleCondition` evaluates a single field against a value using a `ComparisonOperator`. `CompositeCondition` combines multiple conditions with `AND` / `OR` and short-circuits via a generator, halting evaluation the moment the result is determined. Both types implement a Visitor pattern that decouples JSON serialization from the domain — conditions serialize to JSONB and round-trip through the database without loss of structure. `DecisionTrace` mirrors this AST exactly, capturing actual vs. expected values at every leaf.
+Rules are not flat field/operator/value tuples — they are recursive Abstract Syntax Trees. `SimpleCondition` evaluates a
+single field against a value using a `ComparisonOperator`. `CompositeCondition` combines multiple conditions with
+`AND` / `OR` and short-circuits via a generator, halting evaluation the moment the result is determined. Both types
+implement a Visitor pattern that decouples JSON serialization from the domain — conditions serialize to JSONB and
+round-trip through the database without loss of structure. `DecisionTrace` mirrors this AST exactly, capturing
+actual vs. expected values at every leaf.
 
 ### Explicit composition root over framework DI
 
-FastAPI's `Depends()` was removed in favor of an explicit `bootstrap.py` that builds all dependencies eagerly at startup. Use cases are plain Python — no HTTP context, no framework coupling — callable from tests or a CLI with zero server setup. Tests inject a `ContainerOverride` struct rather than patching `app.dependency_overrides`, so the test setup is isolated and the application's wiring remains untouched.
+FastAPI's `Depends()` was removed in favor of an explicit `bootstrap.py` that builds all dependencies eagerly at
+startup. Use cases are plain Python — no HTTP context, no framework coupling — callable from tests or a CLI with zero
+server setup. Tests inject a `ContainerOverride` struct rather than patching `app.dependency_overrides`, so the test
+setup is isolated and the application's wiring remains untouched.
 
 ### Dual-backend test parameterization
 
-Every integration test runs against both the in-memory backend and PostgreSQL in the same test run. Isolation uses transaction rollback — no table truncation or schema resets between tests. Any behavioral divergence between backends (codec bugs, constraint ordering, query semantics) fails during development, not in production. CI provisions a containerized PostgreSQL on every push and runs the full parameterized suite.
+Every integration test runs against both the in-memory backend and PostgreSQL in the same test run. Isolation uses
+transaction rollback — no table truncation or schema resets between tests. Any behavioral divergence between backends
+(codec bugs, constraint ordering, query semantics) fails during development, not in production. CI provisions a
+containerized PostgreSQL on every push and runs the full parameterized suite.
 
 The architectural decisions behind these choices are documented in [`docs/adr/`](docs/adr/).
 
@@ -93,7 +110,8 @@ The architectural decisions behind these choices are documented in [`docs/adr/`]
 uv run pytest
 ```
 
-~100 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends. Schema lifecycle is managed by Alembic (`upgrade head` at session start, `downgrade base` on teardown).
+~100 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends. Schema
+lifecycle is managed by Alembic (`upgrade head` at session start, `downgrade base` on teardown).
 
 ## Setup
 
