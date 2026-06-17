@@ -1,3 +1,29 @@
+## v1.1.0 (2026-06-17)
+
+### Feat
+
+- **observability**: add structured logging across all use cases and HTTP layer
+- **observability**: add structlog logging with correlation id
+
+### Fix
+
+- **readme**: correct rule example to use valid operators
+
+### Refactor
+
+- enforce strict Ruff and basedpyright rules across the codebase
+- **typing**: move type-only imports under TYPE_CHECKING
+- **tests**: consolidate scattered factories into conftest make_* fixtures
+- resolve basedpyright strict findings in src
+- **domain**: replace Any with object in operator and field value objects
+- **typing**: add from __future__ and replace UoW Protocol with a type alias
+- **interface**: move cli into the interface layer
+- **persistence**: instantiate repositories inside the unit of work
+- **persistence**: rename in_memory to mem
+- **errors**: adopt frozen DomainError hierarchy with error_code contract
+- rename package to decision_engine and reorganize modules
+- **repo**: remove roadmap and obsolete tooling
+
 ## v1.0.0 (2026-05-05)
 
 ### BREAKING CHANGE
