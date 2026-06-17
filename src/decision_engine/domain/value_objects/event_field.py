@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from decision_engine.domain.entities.event import Event
+if TYPE_CHECKING:
+    from decision_engine.domain.entities.event import Event
 
 
 class EventField(Enum):
-    expected_types: tuple[type[Any], ...]
+    expected_types: tuple[type[object], ...]
 
     EVENT_ID = "id", (UUID,)
     EVENT_TYPE = "event_type", (str,)
@@ -16,7 +17,7 @@ class EventField(Enum):
     PAYLOAD = "payload", (dict,)
 
     def __new__(
-        cls, event_field: str, expected_types: tuple[type[Any], ...]
+        cls, event_field: str, expected_types: tuple[type[object], ...]
     ) -> EventField:
         obj = object.__new__(cls)
         obj._value_ = event_field
@@ -24,11 +25,11 @@ class EventField(Enum):
 
         return obj
 
-    def _is_valid_type(self, obj: Any) -> bool:
+    def _is_valid_type(self, obj: object) -> bool:
         return isinstance(obj, self.expected_types)
 
-    def validate(self, value: Any) -> bool:
+    def validate(self, value: object) -> bool:
         return self._is_valid_type(obj=value)
 
-    def get_field_value(self, event: Event):
+    def get_field_value(self, event: Event) -> object:
         return getattr(event, self._value_)

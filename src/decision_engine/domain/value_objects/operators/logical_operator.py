@@ -2,18 +2,17 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from enum import Enum
-from typing import Any
 
 
 class LogicalOperator(Enum):
     stop_value: bool
-    accepted_types: tuple[type[Any], ...]
+    accepted_types: tuple[type[object], ...]
 
     AND = "and", False, (bool,)
     OR = "or", True, (bool,)
 
     def __new__(
-        cls, operator: str, stop_value: bool, accepted_types: tuple[type[Any], ...]
+        cls, operator: str, stop_value: bool, accepted_types: tuple[type[object], ...]
     ) -> LogicalOperator:
         obj = object.__new__(cls)
         obj._value_ = operator

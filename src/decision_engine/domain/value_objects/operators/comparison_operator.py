@@ -4,13 +4,12 @@ import operator
 from collections.abc import Callable
 from enum import Enum
 from numbers import Number
-from typing import Any
 from uuid import UUID
 
 
 class ComparisonOperator(Enum):
-    _function: Callable[[Any, Any], bool]
-    accepted_types: tuple[type[Any], ...]
+    _function: Callable[..., bool]
+    accepted_types: tuple[type[object], ...]
 
     EQUALS = "==", operator.eq, (dict, Number, str, UUID)
     GREATER_THAN = ">", operator.gt, (Number,)
@@ -20,8 +19,8 @@ class ComparisonOperator(Enum):
     def __new__(
         cls,
         operator: str,
-        _function: Callable[[Any, Any], bool],
-        accepted_types: tuple[type[Any], ...],
+        _function: Callable[..., bool],
+        accepted_types: tuple[type[object], ...],
     ) -> ComparisonOperator:
         obj = object.__new__(cls)
         obj._value_ = operator
@@ -30,13 +29,16 @@ class ComparisonOperator(Enum):
 
         return obj
 
-    def _is_number(self, obj: Any) -> bool:
-        return isinstance(obj, Number) and not isinstance(obj, bool)
+    def _is_number(self, obj: object) -> bool:
+        if isinstance(obj, bool):
+            return False
 
-    def _is_valid_type(self, obj: Any) -> bool:
+        return isinstance(obj, Number)
+
+    def _is_valid_type(self, obj: object) -> bool:
         return isinstance(obj, self.accepted_types)
 
-    def validate(self, field: Any, value: Any) -> bool:
+    def validate(self, field: object, value: object) -> bool:
         if not self._is_valid_type(obj=field) or not self._is_valid_type(obj=value):
             return False
 
@@ -54,8 +56,8 @@ class ComparisonOperator(Enum):
 
         return False
 
-    def accepts_type(self, typ: type[Any]) -> bool:
+    def accepts_type(self, typ: type[object]) -> bool:
         return typ in self.accepted_types
 
-    def evaluate(self, left: Any, right: Any) -> bool:
+    def evaluate(self, left: object, right: object) -> bool:
         return self._function(left, right)
