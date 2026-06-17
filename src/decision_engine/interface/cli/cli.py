@@ -15,13 +15,13 @@ cli = Typer()
 @cli.command("dev")
 def dev() -> None:
     PORT = os.getenv("PORT", 8000)
-    uvicorn.run("app.main:app", host="0.0.0.0", port=int(PORT), reload=True)
+    uvicorn.run("decision_engine.main:app", host="0.0.0.0", port=int(PORT), reload=True)
 
 
 @cli.command("run")
 def run() -> None:
     PORT = os.getenv("PORT", 8000)
-    uvicorn.run("app.main:app", host="0.0.0.0", port=int(PORT))
+    uvicorn.run("decision_engine.main:app", host="0.0.0.0", port=int(PORT))
 
 
 @cli.command("wait-db")

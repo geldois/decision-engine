@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-decision-engine = "decision_engine.cli:cli"
+decision-engine = "decision_engine.interface.cli.cli:cli"
 
 [dependency-groups]
 dev = [
