@@ -32,17 +32,17 @@ flowchart LR
 
     UseCase --> UoWFactory("UoWFactory")
 
-    Container --> InMemoryDB("InMemoryDB")
+    Container --> MemDB("MemDB")
     Container --> SQLAlchemyDB("SQLAlchemyDB")
     Container --> UseCase
 
-    UoWFactory --> UnitOfWorkMem("UnitOfWork (InMemory)")
-    UoWFactory --> UnitOfWorkSQL("UnitOfWork (SQLAlchemy)")
+    UoWFactory --> UnitOfWorkMem("MemUoW")
+    UoWFactory --> UnitOfWorkSQL("SQLAlchemyUoW")
 
-    UnitOfWorkMem --> RepositoriesMem("Repositories (InMemory)")
-    UnitOfWorkMem --> InMemoryStorage("InMemoryStorage")
+    UnitOfWorkMem --> RepositoriesMem("Repositories (Mem)")
+    UnitOfWorkMem --> MemStorage("MemStorage")
 
-    RepositoriesMem --> InMemoryStorage
+    RepositoriesMem --> MemStorage
     RepositoriesMem --> Decision
     RepositoriesMem --> Event
     RepositoriesMem --> Rule
@@ -63,8 +63,8 @@ flowchart LR
     Session --> Engine
     Engine --> PostgreSQL
 
-    InMemoryDB --> UoWFactory
-    InMemoryDB --> InMemoryStorage
+    MemDB --> UoWFactory
+    MemDB --> MemStorage
 
     Alembic("Alembic") --> PostgreSQL
     Docker("Docker") --> PostgreSQL
