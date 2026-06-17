@@ -19,15 +19,15 @@ def test_mem_storage_creates_empty_dicts() -> None:
 
 
 def test_mem_storage_creates_new_dict_when_backups(
-    decision_factory: Callable[..., Decision],
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_decision: Callable[..., Decision],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
 ) -> None:
     storage = MemStorage()
 
-    event = event_factory()
-    rule = rule_factory()
-    decision = decision_factory(event=event, rules=[rule])
+    event = make_event()
+    rule = make_rule()
+    decision = make_decision(event=event, rules=[rule])
 
     storage.decisions = {decision.id: decision}
     storage.events = {event.id: event}
@@ -61,16 +61,16 @@ def test_mem_storage_cleans_storage() -> None:
 
 
 def test_mem_storage_updates_storage(
-    decision_factory: Callable[..., Decision],
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_decision: Callable[..., Decision],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
 ) -> None:
     storage = MemStorage()
     new_storage = MemStorage()
 
-    event = event_factory()
-    rule = rule_factory()
-    decision = decision_factory(event=event, rules=[rule])
+    event = make_event()
+    rule = make_rule()
+    decision = make_decision(event=event, rules=[rule])
 
     new_storage.decisions = {decision.id: decision}
     new_storage.events = {event.id: event}

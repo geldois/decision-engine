@@ -11,14 +11,14 @@ from decision_engine.infrastructure.persistence.mem.mem_uow import (
 
 
 def test_mem_uow_commits(
-    decision_factory: Callable[..., Decision],
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_decision: Callable[..., Decision],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
     mem_uow_factory: Callable[[], MemUoW],
 ) -> None:
-    event = event_factory()
-    rule = rule_factory()
-    decision = decision_factory(event=event, rules=[rule])
+    event = make_event()
+    rule = make_rule()
+    decision = make_decision(event=event, rules=[rule])
 
     with mem_uow_factory() as uow:
         uow.events.save(event=event)
@@ -35,14 +35,14 @@ def test_mem_uow_commits(
 
 
 def test_mem_uow_rolls_back(
-    decision_factory: Callable[..., Decision],
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_decision: Callable[..., Decision],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
     mem_uow_factory: Callable[[], MemUoW],
 ) -> None:
-    event = event_factory()
-    rule = rule_factory()
-    decision = decision_factory(event=event, rules=[rule])
+    event = make_event()
+    rule = make_rule()
+    decision = make_decision(event=event, rules=[rule])
 
     try:
         with mem_uow_factory() as uow:

@@ -17,11 +17,11 @@ from decision_engine.domain.value_objects.operators.logical_operator import Logi
 
 
 def test_decision_engine_returns_sorted_list_of_rules_by_priority(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
 ) -> None:
-    third_priority_rule = rule_factory(priority=0)
-    second_priority_rule = rule_factory(priority=1)
-    first_priority_rule = rule_factory(priority=2)
+    third_priority_rule = make_rule(priority=0)
+    second_priority_rule = make_rule(priority=1)
+    first_priority_rule = make_rule(priority=2)
 
     sorted_rules = DecisionEngine.sort_by_priority(
         rules=[third_priority_rule, second_priority_rule, first_priority_rule]
@@ -187,9 +187,9 @@ def test_decision_engine_returns_valid_decision_when_no_rule_applies() -> None:
 
 
 def test_decision_engine_returns_valid_decision_when_list_of_rules_is_empty(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
 ) -> None:
-    event = event_factory()
+    event = make_event()
     decision = DecisionEngine.decide(event=event, rules=[])
 
     assert decision.event_id == event.id

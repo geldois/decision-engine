@@ -25,13 +25,13 @@ def broken_produce_decision(container: Container) -> BrokenProduceDecisionUseCas
 
 
 def test_produce_decision_handler_returns_200_and_valid_http_response(
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
     container: Container,
     fastapi_testclient: TestClient,
 ) -> None:
-    event = event_factory()
-    rule = rule_factory()
+    event = make_event()
+    rule = make_rule()
 
     with container.db.uow_factory() as uow:
         uow.events.save(event=event)
@@ -68,11 +68,11 @@ def test_produce_decision_handler_returns_422_when_info_is_missing(
 
 
 def test_produce_decision_handler_returns_500_on_internal_error(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     broken_fastapi_testclient_factory: Callable[..., TestClient],
     broken_produce_decision: BrokenProduceDecisionUseCase,
 ) -> None:
-    event = event_factory()
+    event = make_event()
     broken_fastapi_testclient = broken_fastapi_testclient_factory(
         produce_decision=broken_produce_decision
     )

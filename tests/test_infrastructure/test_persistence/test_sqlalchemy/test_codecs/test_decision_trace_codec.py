@@ -16,18 +16,18 @@ from decision_engine.infrastructure.persistence.sqlalchemy.codecs.decision_trace
 
 @pytest.fixture(scope="function")
 def decision_traces(
-    simple_decision_trace_factory: Callable[..., SimpleDecisionTrace],
+    make_simple_decision_trace: Callable[..., SimpleDecisionTrace],
 ) -> tuple[DecisionTrace, ...]:
     return (
         CompositeDecisionTrace(
             result=False,
             operator=LogicalOperator.AND,
             traces=(
-                simple_decision_trace_factory(),
-                simple_decision_trace_factory(),
+                make_simple_decision_trace(),
+                make_simple_decision_trace(),
             ),
         ),
-        simple_decision_trace_factory(),
+        make_simple_decision_trace(),
     )
 
 

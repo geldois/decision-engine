@@ -9,10 +9,10 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 
 
 def test_sql_event_repository_returns_saved_event(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     saved = sqlalchemy_event_repo.save(event=event)
 
@@ -20,10 +20,10 @@ def test_sql_event_repository_returns_saved_event(
 
 
 def test_sql_event_repository_returns_event_when_id_exists(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     sqlalchemy_event_repo.save(event=event)
 
@@ -37,10 +37,10 @@ def test_sql_event_repository_returns_event_when_id_exists(
 
 
 def test_sql_event_repository_returns_none_when_id_does_not_exist(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     returned = sqlalchemy_event_repo.get_by_id(event_id=event.id)
 
@@ -48,10 +48,10 @@ def test_sql_event_repository_returns_none_when_id_does_not_exist(
 
 
 def test_sql_event_repository_returns_true_when_event_is_deleted(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     sqlalchemy_event_repo.save(event=event)
 
@@ -65,10 +65,10 @@ def test_sql_event_repository_returns_true_when_event_is_deleted(
 
 
 def test_sql_event_repository_returns_false_when_event_is_not_deleted(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     it_was_deleted = sqlalchemy_event_repo.delete(event=event)
 
@@ -76,10 +76,10 @@ def test_sql_event_repository_returns_false_when_event_is_not_deleted(
 
 
 def test_sql_event_repository_returns_list_of_rules(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     sqlalchemy_event_repo.save(event=event)
 

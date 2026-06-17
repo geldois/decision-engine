@@ -18,15 +18,15 @@ from decision_engine.infrastructure.persistence.mem.repositories.mem_rule_reposi
 
 @pytest.fixture(scope="function")
 def decision_with_scenario(
-    decision_factory: Callable[..., Decision],
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_decision: Callable[..., Decision],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
     mem_event_repo: MemEventRepository,
     mem_rule_repo: MemRuleRepository,
 ) -> Decision:
-    event = event_factory()
-    rule = rule_factory()
-    decision = decision_factory(event=event, rules=[rule])
+    event = make_event()
+    rule = make_rule()
+    decision = make_decision(event=event, rules=[rule])
 
     mem_event_repo.save(event=event)
     mem_rule_repo.save(rule=rule)

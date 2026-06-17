@@ -9,10 +9,10 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 
 
 def test_sql_rule_repository_returns_saved_rule(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> None:
-    rule = rule_factory()
+    rule = make_rule()
 
     saved = sqlalchemy_rule_repo.save(rule=rule)
 
@@ -20,10 +20,10 @@ def test_sql_rule_repository_returns_saved_rule(
 
 
 def test_sql_rule_repository_returns_rule_when_id_exists(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> None:
-    rule = rule_factory()
+    rule = make_rule()
 
     sqlalchemy_rule_repo.save(rule=rule)
 
@@ -37,10 +37,10 @@ def test_sql_rule_repository_returns_rule_when_id_exists(
 
 
 def test_sql_rule_repository_returns_none_when_id_does_not_exist(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> None:
-    rule = rule_factory()
+    rule = make_rule()
 
     returned = sqlalchemy_rule_repo.get_by_id(rule_id=rule.id)
 
@@ -48,10 +48,10 @@ def test_sql_rule_repository_returns_none_when_id_does_not_exist(
 
 
 def test_sql_rule_repository_returns_true_when_rule_is_deleted(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> None:
-    rule = rule_factory()
+    rule = make_rule()
 
     sqlalchemy_rule_repo.save(rule=rule)
 
@@ -65,10 +65,10 @@ def test_sql_rule_repository_returns_true_when_rule_is_deleted(
 
 
 def test_sql_rule_repository_returns_false_when_rule_is_not_deleted(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> None:
-    rule = rule_factory()
+    rule = make_rule()
 
     it_was_deleted = sqlalchemy_rule_repo.delete(rule=rule)
 
@@ -76,10 +76,10 @@ def test_sql_rule_repository_returns_false_when_rule_is_not_deleted(
 
 
 def test_sql_rule_repository_returns_list_of_rules(
-    rule_factory: Callable[..., Rule],
+    make_rule: Callable[..., Rule],
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> None:
-    rule = rule_factory()
+    rule = make_rule()
 
     sqlalchemy_rule_repo.save(rule=rule)
 

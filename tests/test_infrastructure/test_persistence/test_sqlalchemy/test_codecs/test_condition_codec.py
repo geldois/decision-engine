@@ -13,17 +13,17 @@ from decision_engine.infrastructure.persistence.sqlalchemy.codecs.condition_code
 
 @pytest.fixture(scope="function")
 def composite_condition(
-    simple_condition_factory: Callable[..., SimpleCondition],
+    make_simple_condition: Callable[..., SimpleCondition],
 ) -> CompositeCondition:
     return CompositeCondition(
         operator=LogicalOperator.AND,
         conditions=[
-            simple_condition_factory(),
+            make_simple_condition(),
             CompositeCondition(
                 operator=LogicalOperator.AND,
                 conditions=[
-                    simple_condition_factory(),
-                    simple_condition_factory(),
+                    make_simple_condition(),
+                    make_simple_condition(),
                 ],
             ),
         ],
@@ -43,10 +43,10 @@ def test_condition_codec_roundtrip_preserves_structure(
 
 
 def test_condition_codec_roundtrip_preserves_semantics(
-    event_factory: Callable[..., Event],
+    make_event: Callable[..., Event],
     composite_condition: CompositeCondition,
 ) -> None:
-    event = event_factory()
+    event = make_event()
 
     encoded = ConditionSerializer.serialize(condition=composite_condition)
     decoded = ConditionDeserializer.deserialize(data=encoded)

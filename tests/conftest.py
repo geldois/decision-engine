@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from collections.abc import Callable, Generator
 
@@ -10,25 +12,110 @@ from sqlalchemy.orm import Session
 from decision_engine.config.bootstrap import build_container, load_environment
 from decision_engine.config.container import Container, ContainerOverride
 from decision_engine.config.settings import Settings
+from decision_engine.domain.entities.decision import Decision
+from decision_engine.domain.entities.event import Event
+from decision_engine.domain.entities.rule import Rule
+from decision_engine.domain.services.decision_engine import DecisionEngine
+from decision_engine.domain.value_objects.condition import Condition, SimpleCondition
+from decision_engine.domain.value_objects.decision_outcome import DecisionOutcome
+from decision_engine.domain.value_objects.decision_trace import SimpleDecisionTrace
+from decision_engine.domain.value_objects.event_field import EventField
+from decision_engine.domain.value_objects.operators.comparison_operator import (
+    ComparisonOperator,
+)
 from decision_engine.infrastructure.config.db import build_database_url
 from decision_engine.infrastructure.persistence.mem.db import MemDB
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
-from decision_engine.infrastructure.persistence.mem.mem_uow import (
-    MemUoW,
-)
+from decision_engine.infrastructure.persistence.mem.mem_uow import MemUoW
 from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyDB
 from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
     SQLAlchemyUoW,
 )
 from decision_engine.interface.http.app import create_app
 
-pytest_plugins = [
-    "tests.fixtures.condition",
-    "tests.fixtures.decision",
-    "tests.fixtures.decision_trace",
-    "tests.fixtures.event",
-    "tests.fixtures.rule",
-]
+type MakeDecision = Callable[..., Decision]
+type MakeEvent = Callable[..., Event]
+type MakeRule = Callable[..., Rule]
+type MakeSimpleCondition = Callable[..., SimpleCondition]
+type MakeSimpleDecisionTrace = Callable[..., SimpleDecisionTrace]
+
+
+@pytest.fixture
+def make_decision() -> MakeDecision:
+    def decision(*, event: Event, rules: list[Rule]) -> Decision:
+        return DecisionEngine.decide(event=event, rules=rules)
+
+    return decision
+
+
+@pytest.fixture
+def make_event() -> MakeEvent:
+    def event(
+        *,
+        event_type: str = "TEST",
+        payload: dict[str, object] | None = None,
+        occurred_at: int = 1000000000,
+    ) -> Event:
+        return Event(
+            event_type=event_type,
+            payload=payload if payload is not None else {"test": True, "info": "TEST"},
+            occurred_at=occurred_at,
+        )
+
+    return event
+
+
+@pytest.fixture
+def make_rule(make_simple_condition: MakeSimpleCondition) -> MakeRule:
+    def rule(
+        *,
+        name: str = "TEST",
+        condition: Condition | None = None,
+        outcome: DecisionOutcome = DecisionOutcome.APPROVED,
+        priority: int = 0,
+    ) -> Rule:
+        return Rule(
+            name=name,
+            condition=condition if condition is not None else make_simple_condition(),
+            outcome=outcome,
+            priority=priority,
+        )
+
+    return rule
+
+
+@pytest.fixture
+def make_simple_condition() -> MakeSimpleCondition:
+    def simple_condition(
+        *,
+        operator: ComparisonOperator = ComparisonOperator.EQUALS,
+        field: EventField = EventField.EVENT_TYPE,
+        value: object = "TEST",
+    ) -> SimpleCondition:
+        return SimpleCondition(operator=operator, field=field, value=value)
+
+    return simple_condition
+
+
+@pytest.fixture
+def make_simple_decision_trace() -> MakeSimpleDecisionTrace:
+    def simple_decision_trace(
+        *,
+        result: bool = False,
+        operator: ComparisonOperator = ComparisonOperator.EQUALS,
+        field: EventField = EventField.EVENT_TYPE,
+        expected_value: object = "USER_CREATED",
+        actual_value: object = "TEST",
+    ) -> SimpleDecisionTrace:
+        return SimpleDecisionTrace(
+            result=result,
+            operator=operator,
+            field=field,
+            expected_value=expected_value,
+            actual_value=actual_value,
+        )
+
+    return simple_decision_trace
 
 
 @pytest.fixture(scope="session")
@@ -170,9 +257,7 @@ def container_override(
 ) -> ContainerOverride:
     match settings.persistence:
         case "mem":
-            return ContainerOverride(
-                mem_db=request.getfixturevalue("mem_db")
-            )
+            return ContainerOverride(mem_db=request.getfixturevalue("mem_db"))
         case "postgresql":
             return ContainerOverride(
                 sqlalchemy_db=request.getfixturevalue("sqlalchemy_db")

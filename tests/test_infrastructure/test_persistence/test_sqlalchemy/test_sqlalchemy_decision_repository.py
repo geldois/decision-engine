@@ -18,15 +18,15 @@ from decision_engine.infrastructure.persistence.sqlalchemy.repositories.sqlalche
 
 @pytest.fixture(scope="function")
 def decision_with_scenario(
-    decision_factory: Callable[..., Decision],
-    event_factory: Callable[..., Event],
-    rule_factory: Callable[..., Rule],
+    make_decision: Callable[..., Decision],
+    make_event: Callable[..., Event],
+    make_rule: Callable[..., Rule],
     sqlalchemy_event_repo: SQLAlchemyEventRepository,
     sqlalchemy_rule_repo: SQLAlchemyRuleRepository,
 ) -> Decision:
-    event = event_factory()
-    rule = rule_factory()
-    decision = decision_factory(event=event, rules=[rule])
+    event = make_event()
+    rule = make_rule()
+    decision = make_decision(event=event, rules=[rule])
 
     sqlalchemy_event_repo.save(event=event)
     sqlalchemy_rule_repo.save(rule=rule)
