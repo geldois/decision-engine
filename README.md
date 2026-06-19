@@ -144,7 +144,8 @@ git clone https://github.com/geldois/decision-engine.git && cd decision-engine
 docker compose up --build
 ```
 
-The API is available at `http://localhost:8000` once the container is up.
+Postgres starts, the full test suite runs (~160 tests across mem and PostgreSQL backends), and the API
+starts at `http://localhost:8000` — only if all tests pass.
 
 ## Setup
 
@@ -156,8 +157,9 @@ Requires [uv](https://docs.astral.sh/uv/) and Docker.
 git clone https://github.com/geldois/decision-engine.git && cd decision-engine
 uv sync
 cp .env.dev.example .env.dev && cp .env.test.example .env.test
-docker compose up -d && uv run decision-engine wait-db
-uv run alembic upgrade head && uv run decision-engine dev
+docker compose up -d postgres && uv run decision-engine wait-db
+uv run pytest
+uv run decision-engine dev
 ```
 
 ### Windows
@@ -168,9 +170,9 @@ cd decision-engine
 uv sync
 copy .env.dev.example .env.dev
 copy .env.test.example .env.test
-docker compose up -d
+docker compose up -d postgres
 uv run decision-engine wait-db
-uv run alembic upgrade head
+uv run pytest
 uv run decision-engine dev
 ```
 

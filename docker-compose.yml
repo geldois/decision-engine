@@ -17,6 +17,20 @@ services:
       retries: 5
       start_period: 30s
 
+  test:
+    build: .
+    command: uv run pytest
+    environment:
+      DB_PREFIX: postgresql+psycopg
+      DB_USER: user
+      DB_PASS: pass
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: decision_engine_test
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   app:
     build: .
     ports:
@@ -33,6 +47,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      test:
+        condition: service_completed_successfully
     restart: on-failure
 
 volumes:
