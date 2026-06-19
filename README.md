@@ -135,6 +135,17 @@ uv run pytest
 ~160 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends. Schema
 lifecycle is managed by Alembic (`upgrade head` at session start, `downgrade base` on teardown).
 
+## Quickstart
+
+Requires [Docker](https://docs.docker.com/get-docker/).
+
+```bash
+git clone https://github.com/geldois/decision-engine.git && cd decision-engine
+docker compose up --build
+```
+
+The API is available at `http://localhost:8000` once the container is up.
+
 ## Setup
 
 Requires [uv](https://docs.astral.sh/uv/) and Docker.
