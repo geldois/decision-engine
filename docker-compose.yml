@@ -22,6 +22,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      ENV: dev
       PERSISTENCE: postgresql
       DB_PREFIX: postgresql+psycopg
       DB_USER: user
