@@ -129,6 +129,7 @@ The architectural decisions behind these choices are documented in [`docs/adr/`]
 ## Testing
 
 ```bash
+docker compose up -d --no-recreate && uv run decision-engine wait-db
 uv run pytest
 ```
 
@@ -141,6 +142,7 @@ Requires [Docker](https://docs.docker.com/get-docker/).
 
 ```bash
 git clone https://github.com/geldois/decision-engine.git && cd decision-engine
+cp .env.dev.example .env.dev && cp .env.test.example .env.test
 docker compose up --build
 ```
 

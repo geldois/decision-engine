@@ -21,6 +21,7 @@ services:
     build: .
     command: uv run pytest
     environment:
+      ENV: test
       DB_PREFIX: postgresql+psycopg
       DB_USER: user
       DB_PASS: pass

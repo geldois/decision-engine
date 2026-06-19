@@ -4,5 +4,7 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .git/
-.env*
+.env.dev
+.env.test
+.env.prod
 docs/

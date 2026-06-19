@@ -10,10 +10,12 @@ COPY alembic/ ./alembic/
 COPY alembic.ini ./
 COPY tests/ ./tests/
 
+COPY .env.dev.example .env.dev
+COPY .env.test.example .env.test
 RUN uv sync --frozen
 
 ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 
-CMD ["decision-engine", "dev"]
+CMD ["decision-engine", "run"]
