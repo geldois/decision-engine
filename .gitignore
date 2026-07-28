@@ -209,8 +209,3 @@ __marimo__/
 # Local databases
 *.db
 *.sqlite
-
-##########
-.env.dev
-.env.prod
-.env.test

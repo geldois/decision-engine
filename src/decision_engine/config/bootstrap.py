@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import os
-
 from dotenv import load_dotenv
 
 from alembic import command, config
@@ -20,10 +18,7 @@ from decision_engine.infrastructure.persistence.sqlalchemy.db import SQLAlchemyD
 
 
 def load_environment() -> None:
-    env = os.getenv("ENV", "dev")
-    dotenv_file = f".env.{env}"
-
-    load_dotenv(dotenv_file, override=False)
+    load_dotenv(override=False)
 
 
 def run_migrations() -> None:

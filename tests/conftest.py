@@ -10,7 +10,7 @@ from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 
 from alembic import command, config
-from decision_engine.config.bootstrap import build_container, load_environment
+from decision_engine.config.bootstrap import build_container
 from decision_engine.config.container import Container, ContainerOverride
 from decision_engine.config.settings import Settings
 from decision_engine.domain.entities.decision import Decision
@@ -124,18 +124,21 @@ def make_simple_decision_trace() -> MakeSimpleDecisionTrace:
 
 @pytest.fixture(scope="session")
 def setup_environment() -> Generator[None, None, None]:
-    old_env = os.getenv("ENV")
+    keys = ("DATABASE_URL", "PERSISTENCE")
+    previous = {key: os.environ.get(key) for key in keys}
 
-    os.environ["ENV"] = "test"
-
-    load_environment()
+    os.environ["DATABASE_URL"] = (
+        "postgresql+psycopg://user:pass@localhost:5432/decision_engine_test"
+    )
+    os.environ["PERSISTENCE"] = "postgresql"
 
     yield
 
-    if old_env is None:
-        del os.environ["ENV"]
-    else:
-        os.environ["ENV"] = old_env
+    for key, value in previous.items():
+        if value is None:
+            os.environ.pop(key, None)
+        else:
+            os.environ[key] = value
 
 
 @pytest.fixture(params=["mem", "postgresql"])
@@ -145,7 +148,7 @@ def persistence(request: pytest.FixtureRequest) -> str:
 
 @pytest.fixture
 def settings(setup_environment: None, persistence: str) -> Settings:  # noqa: ARG001
-    return Settings.build(env=os.getenv("ENV"), persistence=persistence)
+    return Settings.build(persistence=persistence)
 
 
 @pytest.fixture(scope="session")
