@@ -202,8 +202,8 @@ def mem_db(
 
 
 @pytest.fixture
-def engine(settings: Settings, setup_migrations: None) -> Generator[Engine, None, None]:  # noqa: ARG001
-    engine = create_engine(url=settings.database_url)
+def engine(setup_migrations: None) -> Generator[Engine, None, None]:  # noqa: ARG001
+    engine = create_engine(url=build_database_url())
 
     yield engine
 
@@ -240,14 +240,13 @@ def sqlalchemy_uow_factory(
 
 @pytest.fixture
 def sqlalchemy_db(
-    settings: Settings,
     connection: Connection,
     session: Session,
     sqlalchemy_uow_factory: Callable[[], SQLAlchemyUoW],
 ) -> SQLAlchemyDB:
     return SQLAlchemyDB(
         uow_factory=sqlalchemy_uow_factory,
-        database_url=settings.database_url,
+        database_url=build_database_url(),
         engine=connection.engine,
         session_factory=lambda: session,
     )

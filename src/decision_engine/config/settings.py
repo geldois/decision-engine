@@ -62,14 +62,22 @@ class Settings:
         persistence = cls._parse_persistence(
             persistence=persistence or os.getenv("PERSISTENCE")
         )
-        database_url = build_database_url(
-            database_url=database_url,
-            db_prefix=db_prefix,
-            db_user=db_user,
-            db_pass=db_pass,
-            db_host=db_host,
-            db_port=db_port,
-            db_name=db_name,
+
+        # The in-memory backend touches no database, so it must not demand a DB
+        # config: requiring one would force meaningless dummy DB_* vars in mem
+        # deployments (e.g. Render free tier) just to satisfy validation.
+        resolved_database_url = (
+            build_database_url(
+                database_url=database_url,
+                db_prefix=db_prefix,
+                db_user=db_user,
+                db_pass=db_pass,
+                db_host=db_host,
+                db_port=db_port,
+                db_name=db_name,
+            )
+            if persistence == "postgresql"
+            else ""
         )
 
-        return cls(env=env, persistence=persistence, database_url=database_url)
+        return cls(env=env, persistence=persistence, database_url=resolved_database_url)
