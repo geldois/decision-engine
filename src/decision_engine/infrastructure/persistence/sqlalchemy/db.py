@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Engine, create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, sessionmaker
 
 from decision_engine.infrastructure.persistence.sqlalchemy.sqlalchemy_uow import (
@@ -32,10 +33,10 @@ class SQLAlchemyDB:
         try:
             with self.session_factory() as session:
                 session.execute(text("SELECT 1"))
-
-            return True
-        except Exception:
+        except SQLAlchemyError:
             return False
+        else:
+            return True
 
     def clear_db(self) -> None:
         with self.session_factory() as session:
