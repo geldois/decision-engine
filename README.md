@@ -75,7 +75,7 @@ flowchart LR
 - **Runtime:** Python 3.12, FastAPI, Uvicorn
 - **Persistence:** PostgreSQL, SQLAlchemy, Alembic, Docker
 - **Observability:** structlog, correlation IDs (ContextVar + `X-Correlation-ID` header)
-- **Tooling:** uv, Ruff, basedpyright (strict), Commitizen
+- **Tooling:** uv, mise, Ruff, basedpyright (strict), Commitizen
 - **Testing:** Pytest, GitHub Actions CI
 
 ## Observability
@@ -133,32 +133,32 @@ docker compose up -d --no-recreate && uv run decision-engine wait-db
 uv run pytest
 ```
 
-~160 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends. Schema
-lifecycle is managed by Alembic (`upgrade head` at session start, `downgrade base` on teardown).
+156 tests across unit, integration, and E2E. The same test body is parameterized over both persistence backends
+(the test database URL is injected by the test harness, so no `.env` is needed to run them). Schema lifecycle is
+managed by Alembic (`upgrade head` at session start, `downgrade base` on teardown).
 
 ## Quickstart
 
-Requires [Docker](https://docs.docker.com/get-docker/).
+No database, no Docker — the in-memory backend runs the full API in-process (data is ephemeral):
 
 ```bash
 git clone https://github.com/geldois/decision-engine.git && cd decision-engine
-cp .env.dev.example .env.dev && cp .env.test.example .env.test
-docker compose up --build
+uv sync
+PERSISTENCE=mem uv run decision-engine dev
 ```
 
-Postgres starts, the full test suite runs (~160 tests across mem and PostgreSQL backends), and the API
-starts at `http://localhost:8000` — only if all tests pass.
+The API starts at `http://localhost:8000`. This is also the deploy shape for a zero-infra demo host.
 
 ## Setup
 
-Requires [uv](https://docs.astral.sh/uv/) and Docker.
+For the PostgreSQL backend, requires [uv](https://docs.astral.sh/uv/) and Docker.
 
 ### Linux
 
 ```bash
 git clone https://github.com/geldois/decision-engine.git && cd decision-engine
 uv sync
-cp .env.dev.example .env.dev && cp .env.test.example .env.test
+cp .env.example .env
 docker compose up -d postgres && uv run decision-engine wait-db
 uv run pytest
 uv run decision-engine dev
@@ -170,8 +170,7 @@ uv run decision-engine dev
 git clone https://github.com/geldois/decision-engine.git
 cd decision-engine
 uv sync
-copy .env.dev.example .env.dev
-copy .env.test.example .env.test
+copy .env.example .env
 docker compose up -d postgres
 uv run decision-engine wait-db
 uv run pytest
