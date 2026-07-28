@@ -2,7 +2,7 @@ from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 from decision_engine.config.bootstrap import load_environment
-from decision_engine.infrastructure.config.db import build_database_url
+from decision_engine.infrastructure.config.db import get_database_url
 from decision_engine.infrastructure.persistence.sqlalchemy.models.model import Model
 
 # this is the Alembic Config object, which provides
@@ -11,7 +11,7 @@ config = context.config
 
 load_environment()
 
-config.set_main_option("sqlalchemy.url", build_database_url())
+config.set_main_option("sqlalchemy.url", get_database_url())
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

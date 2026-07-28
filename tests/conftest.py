@@ -24,7 +24,7 @@ from decision_engine.domain.value_objects.event_field import EventField
 from decision_engine.domain.value_objects.operators.comparison_operator import (
     ComparisonOperator,
 )
-from decision_engine.infrastructure.config.db import build_database_url
+from decision_engine.infrastructure.config.db import get_database_url
 from decision_engine.infrastructure.persistence.mem.db import MemDB
 from decision_engine.infrastructure.persistence.mem.mem_storage import MemStorage
 from decision_engine.infrastructure.persistence.mem.mem_uow import MemUoW
@@ -145,30 +145,13 @@ def persistence(request: pytest.FixtureRequest) -> str:
 
 @pytest.fixture
 def settings(setup_environment: None, persistence: str) -> Settings:  # noqa: ARG001
-    env = os.getenv("ENV")
-    db_prefix = os.getenv("DB_PREFIX")
-    db_user = os.getenv("DB_USER")
-    db_pass = os.getenv("DB_PASS")
-    db_host = os.getenv("DB_HOST")
-    db_port = os.getenv("DB_PORT")
-    db_name = os.getenv("DB_NAME")
-
-    return Settings.build(
-        env=env,
-        persistence=persistence,
-        db_prefix=db_prefix,
-        db_user=db_user,
-        db_pass=db_pass,
-        db_host=db_host,
-        db_port=db_port,
-        db_name=db_name,
-    )
+    return Settings.build(env=os.getenv("ENV"), persistence=persistence)
 
 
 @pytest.fixture(scope="session")
 def setup_migrations(setup_environment: None) -> Generator[None, None, None]:  # noqa: ARG001
     alembic_config = config.Config("alembic.ini")
-    alembic_config.set_main_option("sqlalchemy.url", build_database_url())
+    alembic_config.set_main_option("sqlalchemy.url", get_database_url())
 
     command.upgrade(alembic_config, "head")
 
@@ -203,7 +186,7 @@ def mem_db(
 
 @pytest.fixture
 def engine(setup_migrations: None) -> Generator[Engine, None, None]:  # noqa: ARG001
-    engine = create_engine(url=build_database_url())
+    engine = create_engine(url=get_database_url())
 
     yield engine
 
@@ -246,7 +229,7 @@ def sqlalchemy_db(
 ) -> SQLAlchemyDB:
     return SQLAlchemyDB(
         uow_factory=sqlalchemy_uow_factory,
-        database_url=build_database_url(),
+        database_url=get_database_url(),
         engine=connection.engine,
         session_factory=lambda: session,
     )

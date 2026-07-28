@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import socket
 import time
 
 import uvicorn
@@ -9,7 +8,7 @@ from sqlalchemy import create_engine, text
 from typer import Typer
 
 from decision_engine.config.bootstrap import load_environment
-from decision_engine.infrastructure.config.db import build_database_url
+from decision_engine.infrastructure.config.db import get_database_url
 
 cli = Typer()
 
@@ -32,10 +31,8 @@ def wait_db() -> None:
 
     for _ in range(60):
         try:
-            socket.gethostbyname(os.getenv("DB_HOST", ""))
-
             engine = create_engine(
-                build_database_url(),
+                get_database_url(),
                 pool_pre_ping=True,
                 connect_args={"connect_timeout": 3},
             )
