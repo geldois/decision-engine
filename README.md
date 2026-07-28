@@ -7,8 +7,6 @@ A deterministic rule engine with full execution traceability.
 Events are evaluated against composable, AST-based rules and produce a complete audit trail — every condition's result,
 the actual vs. expected values, and the full evaluation path, in order.
 
-**Live API:** <https://decision-engine.angelitochagas.com>
-
 ## Overview
 
 An **Event** carries an arbitrary JSON payload and a timestamp. **Rules** define composable condition trees (simple
